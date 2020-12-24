@@ -1,0 +1,23 @@
+{
+  "name": "my-ecommerce-frontend",
+  "version": "1.0.0",
+  "private": false,
+  "license": "MIT",
+  "dependencies": {
+    "clsx": "latest",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "typescript": "latest"
+  }
+}
