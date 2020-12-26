@@ -1,8 +1,8 @@
-/* eslint-disable jsx-a11y/anchor-has-content */
 import * as React from 'react'
 import clsx from 'clsx'
 import { useRouter } from 'next/router'
 import NextLink, { LinkProps as NextLinkProps } from 'next/link'
+import { Link as ChakraLink, LinkProps as ChakraLinkProps } from '@chakra-ui/react'
 
 type NextComposedProps = Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> & NextLinkProps
 
@@ -27,12 +27,20 @@ const NextComposed = React.forwardRef<HTMLAnchorElement, NextComposedProps>((pro
 interface LinkPropsBase {
   activeClassName?: string
   innerRef?: React.Ref<HTMLAnchorElement>
+  naked?: boolean
 }
 
-export type LinkProps = LinkPropsBase & NextComposedProps
+type LinkProps = LinkPropsBase & NextComposedProps & Omit<ChakraLinkProps, 'href'>
 
-function Link(props: LinkProps) {
-  const { href, activeClassName = 'active', className: classNameProps, innerRef, ...other } = props
+function ComposedLink(props: LinkProps) {
+  const {
+    href,
+    activeClassName = 'active',
+    className: classNameProps,
+    innerRef,
+    naked,
+    ...other
+  } = props
 
   const router = useRouter()
   const pathname = typeof href === 'string' ? href : href.pathname
@@ -40,9 +48,26 @@ function Link(props: LinkProps) {
     [activeClassName]: router.pathname === pathname && activeClassName,
   })
 
-  return <NextComposed className={className} ref={innerRef} href={href} {...other} />
+  if (naked) {
+    return <NextComposed className={className} ref={innerRef} href={href} {...other} />
+  }
+
+  return (
+    <ChakraLink
+      as={NextComposed}
+      className={className}
+      ref={innerRef}
+      to={pathname}
+      href={href as string}
+      display="flex"
+      alignItems="center"
+      transition="color 0.2s"
+      _hover={{ color: 'gray.500' }}
+      {...other}
+    />
+  )
 }
 
-export default React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
-  <Link {...props} innerRef={ref} />
+export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
+  <ComposedLink {...props} innerRef={ref} />
 ))
