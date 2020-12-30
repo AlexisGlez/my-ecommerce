@@ -1,5 +1,6 @@
 import { Image, Text, Heading, useColorModeValue } from '@chakra-ui/react'
 import { Link } from '@app-shared/components/Link'
+import { Rating } from '@app-shared/components/Rating'
 
 interface ProductCardProps {
   _id: string
@@ -37,7 +38,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         {name}
       </Heading>
       <Text fontSize="md" mt="2rem">
-        {rating} of {numReviews} reviews
+        <Rating rating={rating} label={`${numReviews} reviews`} />
       </Text>
       <Heading as="h3" mt="2rem">
         ${price}
