@@ -1,11 +1,3 @@
-import React from 'react'
-import { Link } from '@app-shared/components/Link'
+import { Home } from '@app-home/Home'
 
-export default function Index() {
-  return (
-    <>
-      <h1>Hello World</h1>
-      <Link href="/about">Go to the about page</Link>
-    </>
-  )
-}
+export default Home
