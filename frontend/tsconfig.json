@@ -19,7 +19,9 @@
     "paths": {
       "@app-src/*": ["src/*"],
       "@app-shared/*": ["src/shared/*"],
-      "@app-home/*": ["src/App/screens/Home/*"]
+      "@app-home/*": ["src/App/screens/Home/*"],
+      "@app-product/*": ["src/App/screens/Product/*"]
+
     },
     "preserveConstEnums": true,
     "removeComments": false,
