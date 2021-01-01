@@ -31,7 +31,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       border={`1px solid ${borderColor}`}
       borderRadius=".25rem"
       p="1rem"
-      href={`/products/${_id}`}
+      href={`/product/${_id}`}
     >
       <Image src={image} alt={description} />
       <Heading as="h1" fontSize="xl" fontWeight="bold" mt="2rem">
