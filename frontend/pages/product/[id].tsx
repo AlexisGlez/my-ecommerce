@@ -1,3 +1,4 @@
-import { Product } from '@app-product/Product'
+import * as ProductPage from '@app-product/Product'
 
-export default Product
+export const getServerSideProps = ProductPage.getServerSideProps
+export default ProductPage.Product
