@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": false,
   "license": "MIT",
+  "author": "AlexisGlez",
   "dependencies": {
     "@chakra-ui/react": "^1.0.4",
     "@emotion/react": "^11.1.4",
