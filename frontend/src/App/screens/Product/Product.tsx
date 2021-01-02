@@ -1,7 +1,10 @@
+import { GetServerSideProps } from 'next'
 import { Image, Grid, VStack, StackDivider, GridItem } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { GoBack } from '@app-shared/components/Link'
-import products from '@app-src/products'
+import { useGetProduct } from '@app-shared/hooks/useGetProduct'
+import { Fetcher } from '@app-shared/Fetcher'
+
 import { ProductInformation } from './components/ProductInformation'
 import { AddToCartTable } from './components/AddToCartTable'
 
@@ -12,7 +15,7 @@ interface ProductProps {}
 export const Product: React.FC<ProductProps> = () => {
   const router = useRouter()
 
-  const product = products.find((p) => p._id === router.query.id)
+  const { product } = useGetProduct(router.query.id as string)
 
   if (!product) {
     return <GoBack />
@@ -43,4 +46,26 @@ export const Product: React.FC<ProductProps> = () => {
       </Grid>
     </VStack>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  if (!context.params?.id) {
+    return {
+      notFound: true,
+    }
+  }
+
+  const res = await Fetcher.get<Product>(`http://127.0.0.1:8000/api/products/${context.params.id}`)
+
+  if (!res || !res.data) {
+    return {
+      notFound: true,
+    }
+  }
+
+  return {
+    props: {
+      productResponse: res,
+    },
+  }
 }

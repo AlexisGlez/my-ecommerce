@@ -1,4 +1,4 @@
-import { Image, Text, Heading, useColorModeValue } from '@chakra-ui/react'
+import { Image, Box, Heading, useColorModeValue } from '@chakra-ui/react'
 import { Link } from '@app-shared/components/Link'
 import { Rating } from '@app-shared/components/Rating'
 
@@ -37,9 +37,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       <Heading as="h1" fontSize="xl" fontWeight="bold" mt="2rem">
         {name}
       </Heading>
-      <Text fontSize="md" mt="2rem">
+      <Box fontSize="md" mt="2rem">
         <Rating rating={rating} label={`${numReviews} reviews`} />
-      </Text>
+      </Box>
       <Heading as="h3" mt="2rem">
         ${price}
       </Heading>

@@ -1,7 +1,12 @@
 import express from 'express'
+import cors from 'cors'
+
 import products from './data/products'
 
 const app = express()
+
+app.use(cors({ origin: 'http://localhost:3000', optionsSuccessStatus: 200 }))
+
 const PORT = 8000
 
 app.get('/', (_, res) => res.send('Express + TypeScript Server'))

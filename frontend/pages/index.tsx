@@ -1,3 +1,4 @@
-import { Home } from '@app-home/Home'
+import * as HomePage from '@app-home/Home'
 
-export default Home
+export const getStaticProps = HomePage.getStaticProps
+export default HomePage.Home

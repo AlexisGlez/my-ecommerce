@@ -1,12 +1,14 @@
+import { InferGetStaticPropsType } from 'next'
 import { SimpleGrid } from '@chakra-ui/react'
+import { useGetProducts } from '@app-shared/hooks/useGetProducts'
+import { Fetcher } from '@app-shared/Fetcher'
 
 import { ProductCard } from './components/ProductCard'
 
-import products from '@app-src/products'
+type HomeProps = InferGetStaticPropsType<typeof getStaticProps>
 
-interface HomeProps {}
-
-export const Home: React.FC<HomeProps> = () => {
+export const Home: React.FC<HomeProps> = ({ productsResponse }) => {
+  const { products } = useGetProducts(productsResponse)
   return (
     <SimpleGrid columns={{ sm: 1, md: 2, lg: 3, xl: 4 }} spacing="1rem">
       {products.map((product) => (
@@ -23,4 +25,20 @@ export const Home: React.FC<HomeProps> = () => {
       ))}
     </SimpleGrid>
   )
+}
+
+export const getStaticProps = async () => {
+  const res = await Fetcher.get<Products>('http://127.0.0.1:8000/api/products')
+
+  if (!res || !res.data) {
+    return {
+      notFound: true,
+    }
+  }
+
+  return {
+    props: {
+      productsResponse: res,
+    },
+  }
 }
