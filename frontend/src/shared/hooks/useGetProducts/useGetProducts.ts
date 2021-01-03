@@ -1,10 +1,11 @@
 import useSWR from 'swr'
 
 import { Fetcher } from '@app-shared/Fetcher'
+import { Config } from '@app-shared/Config'
 
 export function useGetProducts(initialProducts?: Fetcher.Response<Products>) {
   const { data, error } = useSWR<Fetcher.Response<Products>>(
-    'http://127.0.0.1:8000/api/products',
+    Config.Endpoints.getProducts(),
     Fetcher.get,
     {
       initialData: initialProducts,
