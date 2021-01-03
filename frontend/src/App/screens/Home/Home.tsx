@@ -2,6 +2,7 @@ import { InferGetStaticPropsType } from 'next'
 import { SimpleGrid } from '@chakra-ui/react'
 import { useGetProducts } from '@app-shared/hooks/useGetProducts'
 import { Fetcher } from '@app-shared/Fetcher'
+import { Config } from '@app-shared/Config'
 
 import { ProductCard } from './components/ProductCard'
 
@@ -28,7 +29,7 @@ export const Home: React.FC<HomeProps> = ({ productsResponse }) => {
 }
 
 export const getStaticProps = async () => {
-  const res = await Fetcher.get<Products>('http://127.0.0.1:8000/api/products')
+  const res = await Fetcher.get<Products>(Config.Endpoints.getProducts())
 
   if (!res || !res.data) {
     return {

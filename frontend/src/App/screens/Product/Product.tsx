@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { GoBack } from '@app-shared/components/Link'
 import { useGetProduct } from '@app-shared/hooks/useGetProduct'
 import { Fetcher } from '@app-shared/Fetcher'
+import { Config } from '@app-shared/Config'
 
 import { ProductInformation } from './components/ProductInformation'
 import { AddToCartTable } from './components/AddToCartTable'
@@ -55,7 +56,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
-  const res = await Fetcher.get<Product>(`http://127.0.0.1:8000/api/products/${context.params.id}`)
+  const res = await Fetcher.get<Product>(
+    Config.Endpoints.getProductById(context.params.id as string),
+  )
 
   if (!res || !res.data) {
     return {
