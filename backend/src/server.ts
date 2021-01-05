@@ -5,9 +5,11 @@ import { Config } from '@app-config/Config'
 
 import products from './data/products'
 
+Config.Database.connectDB()
+
 const app = express()
 
-app.use(cors({ origin: Config.ALLOWED_ORIGINS, optionsSuccessStatus: 200 }))
+app.use(cors({ origin: Config.Constants.allowedOrigins, optionsSuccessStatus: 200 }))
 
 app.get('/', (_, res) => res.send('Express + TypeScript Server'))
 
@@ -18,6 +20,10 @@ app.get('/api/products/:id', (req, res) => {
   res.json(product)
 })
 
-app.listen(Config.PORT, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${Config.PORT}`)
+app.listen(Config.Constants.port, () => {
+  console.log(
+    `Server is running in ${Config.Constants.isDev ? 'dev' : 'prod'} mode at http://localhost:${
+      Config.Constants.port
+    }`,
+  )
 })
