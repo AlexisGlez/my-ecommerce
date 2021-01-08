@@ -1,7 +1,42 @@
-import mongoose from 'mongoose'
+import mongoose, { Document } from 'mongoose'
 import { constants } from '@app-models/constants'
+import { UserDocument } from '@app-models/User'
+import { ProductDocument } from '@app-models/Product'
 
-const orderSchema = new mongoose.Schema(
+interface OrderDocument extends Document {
+  user: UserDocument
+  orderItems: [
+    {
+      name: string
+      qty: number
+      image: string
+      price: number
+      product: ProductDocument
+    },
+  ]
+  shippingAddress: {
+    address: string
+    city: string
+    postalCode: string
+    country: string
+  }
+  paymentMethod: string
+  paymentResult?: {
+    id: string
+    status: string
+    update_time: string
+    email_address: string
+  }
+  taxPrice: number
+  shippingPrice: number
+  totalPrice: number
+  isPaid?: boolean
+  paidAt?: string
+  isDelivered: boolean
+  deliveredAt?: string
+}
+
+const OrderSchema = new mongoose.Schema(
   {
     user: constants.userModelRef,
     orderItems: [
@@ -37,4 +72,4 @@ const orderSchema = new mongoose.Schema(
   constants.schemaOptions,
 )
 
-export const Order = mongoose.model('Order', orderSchema)
+export const Order = mongoose.model<OrderDocument>('Order', OrderSchema)
