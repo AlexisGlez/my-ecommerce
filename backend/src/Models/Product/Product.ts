@@ -1,7 +1,29 @@
-import mongoose from 'mongoose'
+import mongoose, { Document } from 'mongoose'
 import { constants } from '@app-models/constants'
+import { UserDocument } from '@app-models/User'
 
-const reviewSchema = new mongoose.Schema(
+export interface ProductDocument extends Document {
+  user: UserDocument
+  name: string
+  image: string
+  brand: string
+  category: string
+  description: string
+  reviews?: [
+    {
+      name: string
+      rating: number
+      comment: string
+      user: UserDocument
+    },
+  ]
+  rating: number
+  numReviews: number
+  price: number
+  countInStock: number
+}
+
+const ReviewSchema = new mongoose.Schema(
   {
     name: constants.requiredString,
     rating: constants.requiredNumber,
@@ -11,15 +33,15 @@ const reviewSchema = new mongoose.Schema(
   constants.schemaOptions,
 )
 
-const productSchema = new mongoose.Schema(
+const ProductSchema = new mongoose.Schema(
   {
-    user: constants.userModelRef,,
+    user: constants.userModelRef,
     name: constants.requiredString,
     image: constants.requiredString,
     brand: constants.requiredString,
     category: constants.requiredString,
     description: constants.requiredString,
-    reviews: [reviewSchema],
+    reviews: [ReviewSchema],
     rating: constants.requiredInteger,
     numReviews: constants.requiredInteger,
     price: constants.requiredFloat,
@@ -28,4 +50,4 @@ const productSchema = new mongoose.Schema(
   constants.schemaOptions,
 )
 
-export const Product = mongoose.model('Product', productSchema)
+export const Product = mongoose.model<ProductDocument>('Product', ProductSchema)

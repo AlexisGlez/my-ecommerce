@@ -1,7 +1,14 @@
-import mongoose from 'mongoose'
+import mongoose, { Document } from 'mongoose'
 import { constants } from '@app-models/constants'
 
-const userSchema = new mongoose.Schema(
+export interface UserDocument extends Document {
+  name: string
+  email: string
+  password: string
+  isAdmin: boolean
+}
+
+const UserSchema = new mongoose.Schema(
   {
     name: constants.requiredString,
     email: {
@@ -14,4 +21,4 @@ const userSchema = new mongoose.Schema(
   constants.schemaOptions,
 )
 
-export const User = mongoose.model('User', userSchema)
+export const User = mongoose.model<UserDocument>('User', UserSchema)

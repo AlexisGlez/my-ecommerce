@@ -3,7 +3,7 @@ import cors from 'cors'
 
 import { Config } from '@app-config/Config'
 
-import products from './data/products'
+const products: any = []
 
 Config.Database.connectDB()
 
@@ -16,7 +16,7 @@ app.get('/', (_, res) => res.send('Express + TypeScript Server'))
 app.get('/api/products', (_, res) => res.json(products))
 
 app.get('/api/products/:id', (req, res) => {
-  const product = products.find((p) => p._id === req.params.id)
+  const product = products.find((p: any) => p._id === req.params.id)
   res.json(product)
 })
 
