@@ -19,6 +19,8 @@
       "@app-src/*": ["src/*"],
       "@app-config/*": ["src/Config/*"],
       "@app-models/*": ["src/Models/*"],
+      "@app-routes/*": ["src/Routes/*"],
+      "@app-middlewares/*": ["src/Middlewares/*"],
     },
     "preserveConstEnums": true,
     "removeComments": false,
