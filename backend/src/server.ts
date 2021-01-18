@@ -2,8 +2,8 @@ import express from 'express'
 import cors from 'cors'
 
 import { Config } from '@app-config/Config'
-
-const products: any = []
+import { productRouter } from '@app-routes/product'
+import { urlNotFound } from '@app-middlewares/urlNotFound'
 
 Config.Database.connectDB()
 
@@ -11,14 +11,9 @@ const app = express()
 
 app.use(cors({ origin: Config.Constants.allowedOrigins, optionsSuccessStatus: 200 }))
 
-app.get('/', (_, res) => res.send('Express + TypeScript Server'))
+app.use('/api/products', productRouter)
 
-app.get('/api/products', (_, res) => res.json(products))
-
-app.get('/api/products/:id', (req, res) => {
-  const product = products.find((p: any) => p._id === req.params.id)
-  res.json(product)
-})
+app.use(urlNotFound)
 
 app.listen(Config.Constants.port, () => {
   console.log(
