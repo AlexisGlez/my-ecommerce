@@ -3,8 +3,14 @@ type HttpVerbs = 'get' | 'post' | 'patch' | 'delete'
 declare namespace Fetcher {
   type Url = string
 
+  type ResponseFromServer<T> = {
+    data: T
+    message: string | null
+  }
+
   type Response<T> = {
     data: T
+    message: string | null
     status: number
     statusText: string
     headers?: any
