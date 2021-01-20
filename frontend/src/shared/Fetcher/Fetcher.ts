@@ -3,9 +3,12 @@
 import axios, { AxiosResponse } from 'axios'
 
 export class Fetcher {
-  private static formatResponse<T>(response: AxiosResponse<T>): Fetcher.Response<T> {
+  private static formatResponse<T>(
+    response: AxiosResponse<Fetcher.ResponseFromServer<T>>,
+  ): Fetcher.Response<T> {
     return {
-      data: response.data,
+      data: response.data.data,
+      message: response.data.message ?? null,
       status: response.status,
       statusText: response.statusText,
       headers: response.headers,
@@ -34,13 +37,22 @@ export class Fetcher {
     config: Fetcher.GetRequest | Fetcher.PostRequest = {},
   ) {
     try {
-      const response: AxiosResponse<T> = await axios({ method: httpVerb, url, ...config })
+      const response: AxiosResponse<Fetcher.ResponseFromServer<T>> = await axios({
+        method: httpVerb,
+        url,
+        ...config,
+      })
 
       return Fetcher.formatResponse<T>(response)
     } catch (error) {
-      console.error(`An error has ocurred sending ${httpVerb} to: ${url}.\nError: ${error}`)
-    }
+      console.error(`An error has ocurred sending ${httpVerb} to: ${url}.\n${error}`)
 
+      if (error.response != null) {
+        return Fetcher.formatResponse<T>(
+          error.response as AxiosResponse<Fetcher.ResponseFromServer<T>>,
+        )
+      }
+    }
     return null
   }
 }
