@@ -16,7 +16,7 @@ export function App({ Component, pageProps }: AppProps) {
       </Head>
       <Header />
       <main>
-        <Box my="6rem" maxW="7xl" px="1rem" mx="auto">
+        <Box my="6rem" maxW="7xl" px="1rem" mx="auto" textAlign="center">
           <Component {...pageProps} />
         </Box>
       </main>

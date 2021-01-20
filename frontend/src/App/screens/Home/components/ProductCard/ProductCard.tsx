@@ -3,7 +3,7 @@ import { Link } from '@app-shared/components/Link'
 import { Rating } from '@app-shared/components/Rating'
 
 interface ProductCardProps {
-  _id: string
+  id: string
   name: string
   image: string
   description: string
@@ -13,7 +13,7 @@ interface ProductCardProps {
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
-  _id,
+  id,
   name,
   image,
   description,
@@ -31,7 +31,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       border={`1px solid ${borderColor}`}
       borderRadius=".25rem"
       p="1rem"
-      href={`/product/${_id}`}
+      href={`/product/${id}`}
     >
       <Image src={image} alt={description} />
       <Heading as="h1" fontSize="xl" fontWeight="bold" mt="2rem">
