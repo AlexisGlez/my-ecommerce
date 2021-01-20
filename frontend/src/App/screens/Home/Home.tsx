@@ -9,7 +9,14 @@ import { ProductCard } from './components/ProductCard'
 type HomeProps = InferGetStaticPropsType<typeof getStaticProps>
 
 export const Home: React.FC<HomeProps> = ({ productsResponse }) => {
-  const { products } = useGetProducts(productsResponse)
+  const { products, state, error } = useGetProducts(productsResponse)
+
+  if (state === 'error') {
+    return <h1>{error}</h1>
+  } else if (state === 'loading') {
+    return <h1>Loading...</h1>
+  }
+
   return (
     <SimpleGrid columns={{ sm: 1, md: 2, lg: 3, xl: 4 }} spacing="1rem">
       {products.map((product) => (
