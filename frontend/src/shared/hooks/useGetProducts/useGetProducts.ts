@@ -3,7 +3,9 @@ import useSWR from 'swr'
 import { Fetcher } from '@app-shared/Fetcher'
 import { Config } from '@app-shared/Config'
 
-export function useGetProducts(initialProducts?: Fetcher.Response<Products>) {
+type Response = { products: Products } & StateMachine
+
+export function useGetProducts(initialProducts?: Fetcher.Response<Products>): Response {
   const { data, error } = useSWR<Fetcher.Response<Products>>(
     Config.Endpoints.getProducts(),
     Fetcher.get,
@@ -14,12 +16,16 @@ export function useGetProducts(initialProducts?: Fetcher.Response<Products>) {
 
   if (error) {
     console.error(error)
-    return { products: [], isError: true, isLoading: false }
+    return { products: [], state: 'error', error }
   }
 
   if (!data) {
-    return { products: [], isError: false, isLoading: true }
+    return { products: [], state: 'loading', error: null }
   }
 
-  return { products: data.data, isError: false, isLoading: false }
+  if (data.status >= 500) {
+    return { products: data.data, state: 'error', error: data.message }
+  }
+
+  return { products: data.data, state: 'success', error: null }
 }
