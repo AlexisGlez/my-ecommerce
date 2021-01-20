@@ -26,7 +26,7 @@ export function useGetProduct(
     return { product: null, state: 'loading', error: null }
   }
 
-  if (data.status >= 500) {
+  if (data.status >= 400) {
     return { product: data.data, state: 'error', error: data.message }
   }
 

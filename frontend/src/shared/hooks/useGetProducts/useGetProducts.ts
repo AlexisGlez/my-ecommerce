@@ -23,7 +23,7 @@ export function useGetProducts(initialProducts?: Fetcher.Response<Products>): Re
     return { products: [], state: 'loading', error: null }
   }
 
-  if (data.status >= 500) {
+  if (data.status >= 400) {
     return { products: data.data, state: 'error', error: data.message }
   }
 

@@ -13,7 +13,9 @@ type Product = {
 
 type Products = Array<Product>
 
+type State = 'idle' | 'loading' | 'error' | 'success'
+
 type StateMachine = {
-  state: 'idle' | 'loading' | 'error' | 'success'
+  state: State
   error: string | null
 }
