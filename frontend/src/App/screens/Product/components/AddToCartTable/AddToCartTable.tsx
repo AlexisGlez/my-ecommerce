@@ -1,15 +1,16 @@
-import { VStack, Text, Flex, Button } from '@chakra-ui/react'
+import { VStack, Text, Flex, Button, Select } from '@chakra-ui/react'
 
 const containerStyles = {
-  width: '100%',
-  p: '0.5rem 1rem',
+  alignItems: 'center',
   justifyContent: 'space-between',
+  p: '0.5rem 1rem',
+  width: '100%',
 }
 
 interface AddToCartTableProps {
-  price: number
   countInStock: number
   divider: React.ReactElement
+  price: number
 }
 
 export const AddToCartTable: React.FC<AddToCartTableProps> = ({ price, countInStock, divider }) => {
@@ -23,10 +24,18 @@ export const AddToCartTable: React.FC<AddToCartTableProps> = ({ price, countInSt
         <Text>Status:</Text>
         <Text>{countInStock > 0 ? 'In' : 'Out of'} Stock</Text>
       </Flex>
-      <Flex {...containerStyles}>
-        <Text>Quantity:</Text>
-        <Text>1</Text>
-      </Flex>
+      {countInStock > 0 && (
+        <Flex {...containerStyles}>
+          <Text>Quantity:</Text>
+          <Select width="auto">
+            {[...Array(countInStock).keys()].map((value) => (
+              <option key={value} value={value + 1}>
+                {value + 1}
+              </option>
+            ))}
+          </Select>
+        </Flex>
+      )}
       <Flex {...containerStyles}>
         <Button width="100%" textTransform="uppercase" disabled={countInStock <= 0}>
           Add To Cart
