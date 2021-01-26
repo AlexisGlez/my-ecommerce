@@ -20,7 +20,8 @@
       "@app-src/*": ["src/*"],
       "@app-shared/*": ["src/shared/*"],
       "@app-home/*": ["src/App/screens/Home/*"],
-      "@app-product/*": ["src/App/screens/Product/*"]
+      "@app-product/*": ["src/App/screens/Product/*"],
+      "@app-cart/*": ["src/App/screens/Cart/*"]
     },
     "preserveConstEnums": true,
     "removeComments": false,

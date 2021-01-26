@@ -1,3 +1,9 @@
+class Routes {
+  public static cart() {
+    return '/cart'
+  }
+}
+
 class Endpoints {
   public static getProducts() {
     return `${process.env.BACKEND_ENDPOINT}/products`
@@ -9,5 +15,6 @@ class Endpoints {
 }
 
 export const Config = {
+  Routes,
   Endpoints,
 }
