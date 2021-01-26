@@ -7,6 +7,7 @@ import { useGetProduct } from '@app-shared/hooks/useGetProduct'
 import { Fetcher } from '@app-shared/Fetcher'
 import { Config } from '@app-shared/Config'
 import { StateMachineContent } from '@app-shared/components/StateMachineContent'
+import { CartStore } from '@app-stores/CartStore'
 
 import { ProductInformation } from './components/ProductInformation'
 import { AddToCartTable } from './components/AddToCartTable'
@@ -30,7 +31,7 @@ export const Product: React.FC<ProductProps> = ({ productResponse }) => {
 
   const onAddToCart = useCallback(
     (quantity: number) => {
-      console.log(product, quantity)
+      CartStore.addProductToCart(product, quantity)
       router.push(Config.Routes.cart())
     },
     [router, product],

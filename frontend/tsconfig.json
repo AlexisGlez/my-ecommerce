@@ -21,7 +21,8 @@
       "@app-shared/*": ["src/shared/*"],
       "@app-home/*": ["src/App/screens/Home/*"],
       "@app-product/*": ["src/App/screens/Product/*"],
-      "@app-cart/*": ["src/App/screens/Cart/*"]
+      "@app-cart/*": ["src/App/screens/Cart/*"],
+      "@app-stores/*": ["src/shared/stores/*"]
     },
     "preserveConstEnums": true,
     "removeComments": false,
