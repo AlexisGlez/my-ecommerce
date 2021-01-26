@@ -1,5 +1,7 @@
 import { proxy, useProxy } from 'valtio'
 
+import { Cookies } from '@app-shared/Cookies'
+
 type CartState = {
   items: Record<string, { product: Product; quantity: number }>
 }
@@ -7,6 +9,10 @@ type CartState = {
 const state = proxy<CartState>({ items: {} })
 
 export class CartStore {
+  public static initialize(savedState: CartState) {
+    state.items = { ...savedState.items }
+  }
+
   public static addProductToCart(product: Product, quantity: number) {
     if (state.items[product._id]) {
       state.items[product._id].quantity = quantity
@@ -16,6 +22,8 @@ export class CartStore {
         quantity,
       }
     }
+
+    Cookies.set(Cookies.Cart, state)
   }
 
   public static useGetCartItems() {

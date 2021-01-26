@@ -10,8 +10,10 @@
     "@emotion/styled": "^11.0.0",
     "axios": "^0.21.1",
     "clsx": "latest",
+    "cookie": "^0.4.1",
     "dotenv": "^8.2.0",
     "framer-motion": "^3.1.1",
+    "js-cookie": "^2.2.1",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
@@ -25,6 +27,8 @@
     "start": "next start"
   },
   "devDependencies": {
+    "@types/cookie": "^0.4.0",
+    "@types/js-cookie": "^2.2.6",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
