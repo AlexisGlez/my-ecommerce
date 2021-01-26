@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { Image, Grid, VStack, StackDivider, GridItem } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
@@ -27,6 +28,14 @@ export const Product: React.FC<ProductProps> = ({ productResponse }) => {
     )
   }
 
+  const onAddToCart = useCallback(
+    (quantity: number) => {
+      console.log(product, quantity)
+      router.push(Config.Routes.cart())
+    },
+    [router, product],
+  )
+
   return (
     <StateMachineContent state={state} error={error}>
       <VStack alignItems="flex-start">
@@ -48,6 +57,7 @@ export const Product: React.FC<ProductProps> = ({ productResponse }) => {
               price={product.price}
               countInStock={product.countInStock}
               divider={divider}
+              onAddToCart={onAddToCart}
             />
           </GridItem>
         </Grid>
