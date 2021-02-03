@@ -28,4 +28,15 @@ UserSchema.methods.matchPassword = async function (this: UserDocument, providedP
   return bcrypt.compare(providedPassword, this.password)
 }
 
+// Hash the password before it gets saved
+UserSchema.pre('save', async function (this: UserDocument, next) {
+  if (!this.isModified('password')) {
+    next()
+    return
+  }
+
+  const salt = await bcrypt.genSalt(10)
+  this.password = await bcrypt.hash(this.password, salt)
+})
+
 export const UserModel = mongoose.model<UserDocument>('User', UserSchema)
