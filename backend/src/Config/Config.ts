@@ -7,6 +7,7 @@ class Constants {
   public static readonly isDev = process.env.NODE_ENV !== 'production'
   public static readonly port = process.env.PORT
   public static readonly allowedOrigins = [process.env.FRONTEND_ORIGIN as string]
+  public static readonly jwtSecret = process.env.JWT_TOKEN_SECRET as string
 }
 
 class Database {
