@@ -1,6 +1,22 @@
 class Routes {
+  public static home() {
+    return '/'
+  }
+
   public static cart() {
     return '/cart'
+  }
+
+  public static login() {
+    return '/login'
+  }
+
+  public static shipping() {
+    return '/shipping'
+  }
+
+  public static checkoutProcess() {
+    return `${Routes.login()}?redirect=${Routes.shipping().replace('/', '')}`
   }
 }
 
