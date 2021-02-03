@@ -72,4 +72,4 @@ const OrderSchema = new mongoose.Schema(
   constants.schemaOptions,
 )
 
-export const Order = mongoose.model<OrderDocument>('Order', OrderSchema)
+export const OrderModel = mongoose.model<OrderDocument>('Order', OrderSchema)

@@ -21,4 +21,4 @@ const UserSchema = new mongoose.Schema(
   constants.schemaOptions,
 )
 
-export const User = mongoose.model<UserDocument>('User', UserSchema)
+export const UserModel = mongoose.model<UserDocument>('User', UserSchema)

@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 
 import { Config } from '@app-config/Config'
-import { productRouter } from '@app-routes/product'
+import { ProductRouter } from '@app-routes/Product'
 import { urlNotFound } from '@app-middlewares/urlNotFound'
 
 Config.Database.connectDB()
@@ -11,7 +11,7 @@ const app = express()
 
 app.use(cors({ origin: Config.Constants.allowedOrigins, optionsSuccessStatus: 200 }))
 
-app.use('/api/products', productRouter)
+app.use('/api/products', ProductRouter)
 
 app.use(urlNotFound)
 
