@@ -26,6 +26,14 @@ export class CartStore {
     Cookies.set(Cookies.Cart, state)
   }
 
+  public static removeItemFromCart(product: Product) {
+    if (state.items[product._id]) {
+      delete state.items[product._id]
+    }
+
+    Cookies.set(Cookies.Cart, state)
+  }
+
   public static useGetCartItems() {
     const snapshot = useProxy(state)
 

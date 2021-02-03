@@ -1,4 +1,4 @@
-import { VStack, Heading, StackDivider, Text, Flex, ResponsiveValue } from '@chakra-ui/react'
+import { VStack, Heading, Text, Flex, ResponsiveValue } from '@chakra-ui/react'
 import { Rating } from '@app-shared/components/Rating'
 import * as CSS from 'csstype'
 
