@@ -11,6 +11,7 @@ import {
 import { useViewportScroll } from 'framer-motion'
 import { FaMoon, FaSun, FaShoppingCart, FaUser } from 'react-icons/fa'
 
+import { Config } from '@app-shared/Config'
 import { Link } from '@app-shared/components/Link'
 
 interface HeaderProps {}
@@ -43,15 +44,20 @@ export const Header: React.FC<HeaderProps> = () => {
     >
       <chakra.nav maxW="7xl" py="1.5rem" px="1rem" mx="auto">
         <Flex alignItems="center">
-          <Link href="/" fontWeight="semibold" fontSize="lg" textTransform="uppercase">
+          <Link
+            href={Config.Routes.home()}
+            fontWeight="semibold"
+            fontSize="lg"
+            textTransform="uppercase"
+          >
             My-Ecommerce
           </Link>
           <Spacer />
           <Flex alignItems="center">
-            <Link href="/cart">
+            <Link href={Config.Routes.cart()}>
               <Icon as={FaShoppingCart} mr="0.5rem" /> Cart
             </Link>
-            <Link href="/login" ml="1rem">
+            <Link href={Config.Routes.login()} ml="1rem">
               <Icon as={FaUser} mr="0.5rem" /> Sign In
             </Link>
             <IconButton

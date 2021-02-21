@@ -3,6 +3,7 @@ import { FaTrash } from 'react-icons/fa'
 
 import { CartStore } from '@app-stores/CartStore'
 import { Link } from '@app-shared/components/Link'
+import { Config } from '@app-shared/Config'
 
 interface CartItemProps {
   product: Product
@@ -18,7 +19,7 @@ export const CartItem: React.FC<CartItemProps> = ({ product, quantity }) => {
     >
       <Image width={{ base: '100%', lg: '20%' }} src={product.image} alt={product.description} />
       <Link
-        href={`/product/${product._id}`}
+        href={Config.Routes.product(product._id)}
         fontWeight="semibold"
         fontSize="lg"
         mt={{ base: '0.5rem', lg: 0 }}

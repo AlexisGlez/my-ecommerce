@@ -11,12 +11,32 @@ class Routes {
     return '/login'
   }
 
+  public static register() {
+    return '/register'
+  }
+
+  public static product(productId: string) {
+    return `/product/${productId}`
+  }
+
   public static shipping() {
     return '/shipping'
   }
 
   public static checkoutProcess() {
-    return `${Routes.login()}?redirect=${Routes.shipping().replace('/', '')}`
+    return `${Routes.login()}?${Routes.addRedirectTo(Routes.shipping())}`
+  }
+
+  public static formatPossibleRedirect(route: string, redirect: string | undefined) {
+    if (!redirect) {
+      return route
+    }
+
+    return `${route}?${Routes.addRedirectTo(redirect)}`
+  }
+
+  private static addRedirectTo(route: string) {
+    return `redirect=${route.replace('/', '')}`
   }
 }
 
