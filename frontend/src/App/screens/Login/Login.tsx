@@ -1,8 +1,10 @@
 import { Heading, VStack, Button, Text } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useState, FormEvent } from 'react'
+import { useRouter } from 'next/router'
 
 import { Link } from '@app-shared/components/Link'
 import { UserStore } from '@app-stores/UserStore'
+import { Config } from '@app-shared/Config'
 
 import { Input } from './components/Input'
 
@@ -15,7 +17,11 @@ export const Login: React.FC<LoginProps> = () => {
   const [passwordError, setPasswordError] = useState('')
   const [isLoading, setLoading] = useState(false)
 
-  const performLogin = async () => {
+  const router = useRouter()
+
+  const performLogin = async (event: FormEvent<HTMLDivElement>) => {
+    event.preventDefault()
+
     setEmailError('')
     setPasswordError('')
 
@@ -47,7 +53,14 @@ export const Login: React.FC<LoginProps> = () => {
   }
 
   return (
-    <VStack margin="0 auto" maxWidth="500px" alignItems="start" spacing="1.5rem">
+    <VStack
+      margin="0 auto"
+      maxWidth="500px"
+      alignItems="start"
+      spacing="1.5rem"
+      as="form"
+      onSubmit={performLogin}
+    >
       <Heading as="h1" textAlign="start">
         Sign In
       </Heading>
@@ -72,12 +85,19 @@ export const Login: React.FC<LoginProps> = () => {
         onChange={(event) => setPassword(event.target.value)}
         error={passwordError}
       />
-      <Button type="submit" isLoading={isLoading} onClick={performLogin}>
+      <Button type="submit" isLoading={isLoading}>
         Submit
       </Button>
       <Text fontSize="md" mt="1rem">
         New Customer?{' '}
-        <Link href="/signup" fontWeight="semibold" display="inline-block">
+        <Link
+          href={Config.Routes.formatPossibleRedirect(
+            Config.Routes.register(),
+            router.query.redirect as string | undefined,
+          )}
+          fontWeight="semibold"
+          display="inline-block"
+        >
           Register
         </Link>
       </Text>

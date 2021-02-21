@@ -1,6 +1,7 @@
 import { Image, Box, Heading, useColorModeValue } from '@chakra-ui/react'
 import { Link } from '@app-shared/components/Link'
 import { Rating } from '@app-shared/components/Rating'
+import { Config } from '@app-shared/Config'
 
 interface ProductCardProps {
   id: string
@@ -31,7 +32,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       border={`1px solid ${borderColor}`}
       borderRadius=".25rem"
       p="1rem"
-      href={`/product/${id}`}
+      href={Config.Routes.product(id)}
     >
       <Image src={image} alt={description} />
       <Heading as="h1" fontSize="xl" fontWeight="bold" mt="2rem">
