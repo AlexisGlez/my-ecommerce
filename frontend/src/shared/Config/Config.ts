@@ -28,6 +28,18 @@ class Endpoints {
   public static getProductById(productId: string) {
     return `${Endpoints.getProducts()}/${productId}`
   }
+
+  public static users() {
+    return `${process.env.BACKEND_ENDPOINT}/users`
+  }
+
+  public static userProfile() {
+    return `${Endpoints.users()}/profile`
+  }
+
+  public static login() {
+    return `${Endpoints.users()}/login`
+  }
 }
 
 export const Config = {

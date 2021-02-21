@@ -13,6 +13,14 @@ type Product = {
 
 type Products = Array<Product>
 
+type User = {
+  _id: string
+  name: string
+  email: string
+  isAdmin: boolean
+  token: string
+}
+
 type State = 'idle' | 'loading' | 'error' | 'success'
 
 type StateMachine = {
