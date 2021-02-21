@@ -10,6 +10,7 @@ import { Footer } from './components/Footer'
 import { theme } from './theme'
 import { Cookies } from '@app-shared/Cookies'
 import { CartStore } from '@app-stores/CartStore'
+import { UserStore } from '@app-src/shared/stores/UserStore'
 
 export function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
@@ -17,6 +18,10 @@ export function App({ Component, pageProps }: AppProps) {
 
     if (cookies[Cookies.Cart]) {
       CartStore.initialize(cookies[Cookies.Cart])
+    }
+
+    if (cookies[Cookies.User]) {
+      UserStore.initialize(cookies[Cookies.User])
     }
   }, [])
 

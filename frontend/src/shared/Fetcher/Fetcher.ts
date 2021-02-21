@@ -35,7 +35,7 @@ export class Fetcher {
     httpVerb: HttpVerbs,
     url: Fetcher.Url,
     config: Fetcher.GetRequest | Fetcher.PostRequest = {},
-  ) {
+  ): Promise<Fetcher.Response<T> | null> {
     try {
       const response: AxiosResponse<Fetcher.ResponseFromServer<T>> = await axios({
         method: httpVerb,
@@ -53,6 +53,7 @@ export class Fetcher {
         )
       }
     }
+
     return null
   }
 }
