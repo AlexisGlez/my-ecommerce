@@ -35,17 +35,29 @@ export class UserStore {
     return UserStore.performUserOperation('register', { name, email, password })
   }
 
+  public static async updateUserProfile(name: string, password: string) {
+    return UserStore.performUserOperation('update', { name, password })
+  }
+
   private static async performUserOperation(
-    type: 'login' | 'register',
+    type: 'login' | 'register' | 'update',
     data: any,
   ): Promise<{ currentUser: User | null } & StateMachine> {
     try {
-      const response = await Fetcher.post<User>(
-        type === 'login' ? Config.Endpoints.login() : Config.Endpoints.users(),
-        {
+      let response: Fetcher.Response<User>
+      if (type === 'update') {
+        response = await Fetcher.patch<User>(Config.Endpoints.userProfile(), {
           data,
-        },
-      )
+          headers: { Authorization: `Bearer ${state.currentUser?.token}` },
+        })
+      } else {
+        response = await Fetcher.post<User>(
+          type === 'login' ? Config.Endpoints.login() : Config.Endpoints.users(),
+          {
+            data,
+          },
+        )
+      }
 
       if (!response) {
         throw new Error('Null response received.')

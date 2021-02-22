@@ -10,6 +10,7 @@ import {
 interface InputProps {
   id: string
   isInvalid: boolean
+  disabled?: boolean
   label: string
   type: string
   onChange: (event: ChangeEvent<HTMLInputElement>) => void
@@ -29,11 +30,18 @@ export const Input: React.FC<InputProps> = ({
   onChange,
   helperText,
   error,
+  disabled,
 }) => {
   return (
     <FormControl id={id} isInvalid={isInvalid}>
       <FormLabel>{label}</FormLabel>
-      <ChakraInput type={type} placeholder={placeholder} value={value} onChange={onChange} />
+      <ChakraInput
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        disabled={disabled}
+      />
       {helperText && <FormHelperText textAlign="start">{helperText}</FormHelperText>}
       <FormErrorMessage>{error}</FormErrorMessage>
     </FormControl>
