@@ -7,12 +7,18 @@ import {
   Icon,
   useColorMode,
   useColorModeValue,
+  Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from '@chakra-ui/react'
 import { useViewportScroll } from 'framer-motion'
-import { FaMoon, FaSun, FaShoppingCart, FaUser } from 'react-icons/fa'
+import { FaMoon, FaSun, FaShoppingCart, FaUser, FaChevronDown } from 'react-icons/fa'
 
 import { Config } from '@app-shared/Config'
 import { Link } from '@app-shared/components/Link'
+import { UserStore } from '@app-stores/UserStore'
 
 interface HeaderProps {}
 
@@ -28,6 +34,8 @@ export const Header: React.FC<HeaderProps> = () => {
 
   const ref = useRef<HTMLHeadingElement>(null)
   const { height = 0 } = ref.current?.getBoundingClientRect() ?? {}
+
+  const currentUser = UserStore.useCurrentUser()
 
   return (
     <chakra.header
@@ -57,9 +65,23 @@ export const Header: React.FC<HeaderProps> = () => {
             <Link href={Config.Routes.cart()}>
               <Icon as={FaShoppingCart} mr="0.5rem" /> Cart
             </Link>
-            <Link href={Config.Routes.login()} ml="1rem">
-              <Icon as={FaUser} mr="0.5rem" /> Sign In
-            </Link>
+            {currentUser ? (
+              <Menu>
+                <MenuButton as={Button} ml="1rem" rightIcon={<FaChevronDown />}>
+                  {currentUser.name}
+                </MenuButton>
+                <MenuList>
+                  <MenuItem>
+                    <Link href={Config.Routes.profile()}>Profile</Link>
+                  </MenuItem>
+                  <MenuItem onClick={UserStore.logout}>Logout</MenuItem>
+                </MenuList>
+              </Menu>
+            ) : (
+              <Link href={Config.Routes.login()} ml="1rem">
+                <Icon as={FaUser} mr="0.5rem" /> Sign In
+              </Link>
+            )}
             <IconButton
               size="md"
               fontSize="lg"

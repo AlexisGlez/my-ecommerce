@@ -33,16 +33,27 @@ export class UserStore {
       }
 
       state.currentUser = response.data
-      Cookies.set(Cookies.Cart, state)
+      Cookies.set(Cookies.User, state)
 
       return { currentUser: response.data, state: 'success', error: null }
     } catch (error) {
       state.currentUser = null
-      Cookies.set(Cookies.Cart, state)
+      Cookies.remove(Cookies.User)
 
       console.error('An error occurred while performing login:', error)
 
       return { currentUser: null, state: 'error', error }
     }
+  }
+
+  public static logout() {
+    Cookies.remove(Cookies.User)
+    state.currentUser = null
+  }
+
+  public static useCurrentUser() {
+    const snapshot = useProxy(state)
+
+    return snapshot.currentUser
   }
 }

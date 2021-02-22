@@ -1,5 +1,5 @@
 import { Heading, VStack, Button, Text } from '@chakra-ui/react'
-import { useState, FormEvent } from 'react'
+import { useState, useEffect, FormEvent } from 'react'
 import { useRouter } from 'next/router'
 
 import { Link } from '@app-shared/components/Link'
@@ -18,6 +18,19 @@ export const Login: React.FC<LoginProps> = () => {
   const [isLoading, setLoading] = useState(false)
 
   const router = useRouter()
+  const currentUser = UserStore.useCurrentUser()
+
+  useEffect(() => {
+    if (!currentUser) {
+      return
+    }
+
+    if (router.query.redirect) {
+      router.replace(router.query.redirect as string)
+    } else {
+      router.replace(Config.Routes.home())
+    }
+  }, [router, currentUser])
 
   const performLogin = async (event: FormEvent<HTMLDivElement>) => {
     event.preventDefault()
@@ -85,7 +98,7 @@ export const Login: React.FC<LoginProps> = () => {
         onChange={(event) => setPassword(event.target.value)}
         error={passwordError}
       />
-      <Button type="submit" isLoading={isLoading}>
+      <Button type="submit" isLoading={isLoading} disabled={Boolean(currentUser)}>
         Submit
       </Button>
       <Text fontSize="md" mt="1rem">
