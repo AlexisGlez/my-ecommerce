@@ -92,14 +92,45 @@ export class UserController {
       return
     }
 
-    const user = await UserModel.findById(req.user._id)
+    try {
+      const user = await UserModel.findById(req.user._id)
 
-    if (!user) {
-      res.status(404).json({ data: null, message: 'Not user found.' })
+      if (!user) {
+        res.status(404).json({ data: null, message: 'Not user found.' })
+        return
+      }
+
+      res.status(200).json({ data: UserController.getUserPublicData(user) })
+    } catch (error) {
+      console.error("An error happened while retrieving the user's data:", error)
+      res.status(500).json({ data: null, message: "Unable get user's data." })
+    }
+  }
+
+  public static async updateUserProfile(req: RequestWithUser, res: Response) {
+    if (!req.user?._id) {
+      res.status(401).json({ data: null, message: 'Unauthorized. Invalid user.' })
       return
     }
 
-    res.status(200).json({ data: UserController.getUserPublicData(user) })
+    try {
+      const user = await UserModel.findById(req.user._id)
+
+      if (!user) {
+        res.status(404).json({ data: null, message: 'Not user found.' })
+        return
+      }
+
+      user.name = req.body.name || user.name
+      user.password = req.body.password || user.password
+
+      const updatedUser = await user.save()
+
+      res.status(200).json({ data: UserController.getUserData(updatedUser) })
+    } catch (error) {
+      console.error("An error happened while updating the user's data:", error)
+      res.status(500).json({ data: null, message: "Unable to update user's data." })
+    }
   }
 
   private static getUserPublicData(user: UserDocument) {
