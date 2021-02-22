@@ -38,5 +38,5 @@ export const Login: React.FC<LoginProps> = () => {
     }
   }
 
-  return <UserForm onLogin={performLogin} isLoading={isLoading} />
+  return <UserForm type="login" onLogin={performLogin} isLoading={isLoading} />
 }

@@ -24,6 +24,7 @@
       "@app-cart/*": ["src/App/screens/Cart/*"],
       "@app-login/*": ["src/App/screens/Login/*"],
       "@app-register/*": ["src/App/screens/Register/*"],
+      "@app-profile/*": ["src/App/screens/Profile/*"],
       "@app-stores/*": ["src/shared/stores/*"]
     },
     "preserveConstEnums": true,

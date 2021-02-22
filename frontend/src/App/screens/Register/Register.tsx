@@ -31,5 +31,5 @@ export const Register: React.FC<RegisterProps> = () => {
     }
   }
 
-  return <UserForm onRegister={performRegister} isLoading={isLoading} />
+  return <UserForm type="register" onRegister={performRegister} isLoading={isLoading} />
 }

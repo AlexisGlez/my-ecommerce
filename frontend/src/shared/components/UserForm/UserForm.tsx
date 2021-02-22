@@ -5,9 +5,9 @@ import { useRouter } from 'next/router'
 import { Link } from '@app-shared/components/Link'
 import { Input } from '@app-shared/components/Input'
 import { Config } from '@app-shared/Config'
-import { UserStore } from '@app-stores/UserStore'
 
 interface UserFormProps {
+  type: 'login' | 'register' | 'profile'
   onLogin?: (
     email: string,
     password: string,
@@ -20,13 +20,24 @@ interface UserFormProps {
     password: string,
     setEmailError: Dispatch<SetStateAction<string>>,
   ) => void
+  onProfileUpdate?: (name: string, password: string) => void
   isLoading: boolean
+  defaultEmail?: string
+  defaultName?: string
 }
 
-export const UserForm: React.FC<UserFormProps> = ({ isLoading, onLogin, onRegister }) => {
-  const [email, setEmail] = useState('')
+export const UserForm: React.FC<UserFormProps> = ({
+  type,
+  isLoading,
+  onLogin,
+  onRegister,
+  onProfileUpdate,
+  defaultName,
+  defaultEmail,
+}) => {
+  const [email, setEmail] = useState(defaultEmail || '')
   const [password, setPassword] = useState('')
-  const [name, setName] = useState('')
+  const [name, setName] = useState(defaultName || '')
   const [confirmPassword, setConfirmPassword] = useState('')
 
   const [nameError, setNameError] = useState('')
@@ -35,10 +46,11 @@ export const UserForm: React.FC<UserFormProps> = ({ isLoading, onLogin, onRegist
   const [confirmPasswordError, setConfirmPasswordError] = useState('')
 
   const router = useRouter()
-  const currentUser = UserStore.useCurrentUser()
 
-  const isRegister = onRegister != null
-  const title = isRegister ? 'Sign Up' : 'Sign In'
+  const isProfile = type === 'profile'
+  const isRegister = type === 'register'
+  const isLogin = type === 'login'
+  const title = isProfile ? 'User Profile' : isRegister ? 'Sign Up' : 'Sign In'
 
   const onFormCompleted = async (event: FormEvent<HTMLDivElement>) => {
     event.preventDefault()
@@ -50,28 +62,33 @@ export const UserForm: React.FC<UserFormProps> = ({ isLoading, onLogin, onRegist
 
     let isValid = true
 
-    if (!email) {
+    const trimmedName = name.trim()
+    const trimmedEmail = email.trim()
+    const trimmedPassword = password.trim()
+    const trimmedConfirmPassword = confirmPassword.trim()
+
+    if (!trimmedEmail) {
       setEmailError('Email is required.')
       isValid = false
     }
 
-    if (!password) {
+    if (!trimmedPassword) {
       setPasswordError('Password is required.')
       isValid = false
     }
 
-    if (isRegister) {
-      if (!name) {
+    if (!isLogin) {
+      if (!trimmedName) {
         setNameError('Name is required.')
         isValid = false
       }
 
-      if (!confirmPassword) {
+      if (!trimmedConfirmPassword) {
         setConfirmPasswordError('Please confirm your password.')
         isValid = false
       }
 
-      if (password !== confirmPassword) {
+      if (trimmedPassword !== trimmedConfirmPassword) {
         setPasswordError('Passwords do not match.')
         setConfirmPasswordError('Passwords do not match.')
         isValid = false
@@ -83,9 +100,11 @@ export const UserForm: React.FC<UserFormProps> = ({ isLoading, onLogin, onRegist
     }
 
     if (onRegister != null) {
-      onRegister(name, email, password, setEmailError)
+      onRegister(trimmedName, trimmedEmail, trimmedPassword, setEmailError)
     } else if (onLogin != null) {
-      onLogin(email, password, setEmailError, setPasswordError)
+      onLogin(trimmedEmail, trimmedPassword, setEmailError, setPasswordError)
+    } else if (onProfileUpdate != null) {
+      onProfileUpdate(trimmedName, trimmedPassword)
     }
   }
 
@@ -101,7 +120,7 @@ export const UserForm: React.FC<UserFormProps> = ({ isLoading, onLogin, onRegist
       <Heading as="h1" textAlign="start">
         {title}
       </Heading>
-      {isRegister && (
+      {!isLogin && (
         <Input
           id="name"
           isInvalid={Boolean(nameError)}
@@ -116,6 +135,7 @@ export const UserForm: React.FC<UserFormProps> = ({ isLoading, onLogin, onRegist
       <Input
         id="email"
         isInvalid={Boolean(emailError)}
+        disabled={Boolean(defaultEmail)}
         label="Email address"
         type="email"
         placeholder="Enter your email"
@@ -134,7 +154,7 @@ export const UserForm: React.FC<UserFormProps> = ({ isLoading, onLogin, onRegist
         onChange={(event) => setPassword(event.target.value)}
         error={passwordError}
       />
-      {isRegister && (
+      {!isLogin && (
         <Input
           id="confirmPassword"
           isInvalid={Boolean(confirmPasswordError)}
@@ -146,23 +166,25 @@ export const UserForm: React.FC<UserFormProps> = ({ isLoading, onLogin, onRegist
           error={confirmPasswordError}
         />
       )}
-      <Button type="submit" isLoading={isLoading} disabled={Boolean(currentUser)}>
-        {title}
+      <Button type="submit" isLoading={isLoading} disabled={isLoading}>
+        {isProfile ? 'Update' : title}
       </Button>
-      <Text fontSize="md" mt="1rem">
-        {isRegister ? 'Have an Account' : 'New Customer'}
-        {'? '}
-        <Link
-          href={Config.Routes.formatPossibleRedirect(
-            isRegister ? Config.Routes.login() : Config.Routes.register(),
-            router.query.redirect as string | undefined,
-          )}
-          fontWeight="semibold"
-          display="inline-block"
-        >
-          {isRegister ? 'Sign In' : 'Sign Up'}
-        </Link>
-      </Text>
+      {!isProfile && (
+        <Text fontSize="md" mt="1rem">
+          {isRegister ? 'Have an Account' : 'New Customer'}
+          {'? '}
+          <Link
+            href={Config.Routes.formatPossibleRedirect(
+              isRegister ? Config.Routes.login() : Config.Routes.register(),
+              router.query.redirect as string | undefined,
+            )}
+            fontWeight="semibold"
+            display="inline-block"
+          >
+            {isRegister ? 'Sign In' : 'Sign Up'}
+          </Link>
+        </Text>
+      )}
     </VStack>
   )
 }

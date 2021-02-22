@@ -12,19 +12,25 @@ import { Cookies } from '@app-shared/Cookies'
 import { CartStore } from '@app-stores/CartStore'
 import { UserStore } from '@app-src/shared/stores/UserStore'
 
+function initializeState() {
+  const cookies = Cookies.getAll()
+
+  if (!cookies) {
+    return
+  }
+
+  if (cookies[Cookies.Cart]) {
+    CartStore.initialize(cookies[Cookies.Cart])
+  }
+
+  if (cookies[Cookies.User]) {
+    UserStore.initialize(cookies[Cookies.User])
+  }
+}
+
+initializeState()
+
 export function App({ Component, pageProps }: AppProps) {
-  useEffect(() => {
-    const cookies = Cookies.getAll()
-
-    if (cookies[Cookies.Cart]) {
-      CartStore.initialize(cookies[Cookies.Cart])
-    }
-
-    if (cookies[Cookies.User]) {
-      UserStore.initialize(cookies[Cookies.User])
-    }
-  }, [])
-
   return (
     <ChakraProvider theme={theme}>
       <Head>

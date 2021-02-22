@@ -36,6 +36,8 @@ export const Header: React.FC<HeaderProps> = () => {
   const { height = 0 } = ref.current?.getBoundingClientRect() ?? {}
 
   const currentUser = UserStore.useCurrentUser()
+  const [isMounted, setIsMounted] = useState(false)
+  useEffect(() => setIsMounted(true), [setIsMounted])
 
   return (
     <chakra.header
@@ -65,14 +67,16 @@ export const Header: React.FC<HeaderProps> = () => {
             <Link href={Config.Routes.cart()}>
               <Icon as={FaShoppingCart} mr="0.5rem" /> Cart
             </Link>
-            {currentUser ? (
+            {isMounted && currentUser ? (
               <Menu>
                 <MenuButton as={Button} ml="1rem" rightIcon={<FaChevronDown />}>
                   {currentUser.name}
                 </MenuButton>
                 <MenuList>
                   <MenuItem>
-                    <Link href={Config.Routes.profile()}>Profile</Link>
+                    <Link href={Config.Routes.profile()} width="100%">
+                      Profile
+                    </Link>
                   </MenuItem>
                   <MenuItem onClick={UserStore.logout}>Logout</MenuItem>
                 </MenuList>
