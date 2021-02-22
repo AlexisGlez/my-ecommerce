@@ -122,7 +122,10 @@ export class UserController {
       }
 
       user.name = req.body.name || user.name
-      user.password = req.body.password || user.password
+      if (req.body.password) {
+        // Only set password if there is a new one provided so the user model does not hash the password again.
+        user.password = req.body.password
+      }
 
       const updatedUser = await user.save()
 
