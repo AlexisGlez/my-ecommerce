@@ -23,6 +23,7 @@
       "@app-product/*": ["src/App/screens/Product/*"],
       "@app-cart/*": ["src/App/screens/Cart/*"],
       "@app-login/*": ["src/App/screens/Login/*"],
+      "@app-register/*": ["src/App/screens/Register/*"],
       "@app-stores/*": ["src/shared/stores/*"]
     },
     "preserveConstEnums": true,
