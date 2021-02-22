@@ -8,6 +8,6 @@ const UserRouter = express.Router()
 UserRouter.route('/').post(UserController.createUser)
 UserRouter.route('/login').post(UserController.authUser)
 UserRouter.route('/profile').get(authMiddleware, UserController.getUserProfile)
-UserRouter.route('/profile').put(authMiddleware, UserController.updateUserProfile)
+UserRouter.route('/profile').patch(authMiddleware, UserController.updateUserProfile)
 
 export { UserRouter }
