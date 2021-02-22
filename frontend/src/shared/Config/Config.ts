@@ -15,6 +15,10 @@ class Routes {
     return '/register'
   }
 
+  public static profile() {
+    return '/profile'
+  }
+
   public static product(productId: string) {
     return `/product/${productId}`
   }
