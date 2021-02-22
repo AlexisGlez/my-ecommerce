@@ -19,10 +19,33 @@ export class UserStore {
     email: string,
     password: string,
   ): Promise<{ currentUser: User | null } & StateMachine> {
+    return UserStore.performUserOperation('login', { email, password })
+  }
+
+  public static logout() {
+    Cookies.remove(Cookies.User)
+    state.currentUser = null
+  }
+
+  public static async register(
+    name: string,
+    email: string,
+    password: string,
+  ): Promise<{ currentUser: User | null } & StateMachine> {
+    return UserStore.performUserOperation('register', { name, email, password })
+  }
+
+  private static async performUserOperation(
+    type: 'login' | 'register',
+    data: any,
+  ): Promise<{ currentUser: User | null } & StateMachine> {
     try {
-      const response = await Fetcher.post<User>(Config.Endpoints.login(), {
-        data: { email, password },
-      })
+      const response = await Fetcher.post<User>(
+        type === 'login' ? Config.Endpoints.login() : Config.Endpoints.users(),
+        {
+          data,
+        },
+      )
 
       if (!response) {
         throw new Error('Null response received.')
@@ -40,15 +63,10 @@ export class UserStore {
       state.currentUser = null
       Cookies.remove(Cookies.User)
 
-      console.error('An error occurred while performing login:', error)
+      console.error(`An error occurred while performing ${type}:`, error)
 
       return { currentUser: null, state: 'error', error }
     }
-  }
-
-  public static logout() {
-    Cookies.remove(Cookies.User)
-    state.currentUser = null
   }
 
   public static useCurrentUser() {

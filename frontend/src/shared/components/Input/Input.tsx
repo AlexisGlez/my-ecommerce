@@ -16,7 +16,7 @@ interface InputProps {
   placeholder: string
   value: string
   helperText?: string
-  error: string
+  error?: string
 }
 
 export const Input: React.FC<InputProps> = ({
