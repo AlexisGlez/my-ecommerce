@@ -4,13 +4,23 @@ import { Cookies } from '@app-shared/Cookies'
 
 type CartState = {
   items: Record<string, { product: Product; quantity: number }>
+  shipping: {
+    address: string
+    city: string
+    postalCode: string
+    country: string
+  }
 }
 
-const state = proxy<CartState>({ items: {} })
+const state = proxy<CartState>({
+  items: {},
+  shipping: { address: '', city: '', postalCode: '', country: '' },
+})
 
 export class CartStore {
   public static initialize(savedState: CartState) {
     state.items = { ...savedState.items }
+    state.shipping = { ...savedState.shipping }
   }
 
   public static addProductToCart(product: Product, quantity: number) {
@@ -34,11 +44,28 @@ export class CartStore {
     Cookies.set(Cookies.Cart, state)
   }
 
+  public static saveShippingAddress(
+    address: string,
+    city: string,
+    postalCode: string,
+    country: string,
+  ) {
+    state.shipping = { address, city, postalCode, country }
+
+    Cookies.set(Cookies.Cart, state)
+  }
+
   public static useGetCartItems() {
     const snapshot = useProxy(state)
 
     const items = Object.keys(snapshot.items).map((key) => snapshot.items[key])
 
     return items
+  }
+
+  public static useShippingAddress() {
+    const snapshot = useProxy(state)
+
+    return snapshot.shipping
   }
 }

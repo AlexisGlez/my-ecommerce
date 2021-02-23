@@ -1,4 +1,4 @@
-import { useState, useEffect, Dispatch, SetStateAction } from 'react'
+import { useState, Dispatch, SetStateAction } from 'react'
 
 import { UserForm } from '@app-shared/components/UserForm'
 import { UserStore } from '@app-stores/UserStore'
@@ -12,13 +12,10 @@ export const Login: React.FC<LoginProps> = () => {
   const currentUser = UserStore.useCurrentUser()
   const redirect = useRedirect()
 
-  useEffect(() => {
-    if (!currentUser) {
-      return
-    }
-
+  if (currentUser) {
     redirect()
-  }, [currentUser, redirect])
+    return null
+  }
 
   const performLogin = async (
     email: string,

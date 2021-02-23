@@ -27,6 +27,10 @@ class Routes {
     return '/shipping'
   }
 
+  public static payment() {
+    return '/payment'
+  }
+
   public static checkoutProcess() {
     return `${Routes.login()}?${Routes.addRedirectTo(Routes.shipping())}`
   }
