@@ -18,6 +18,7 @@ interface InputProps {
   value: string
   helperText?: string
   error?: string
+  required?: boolean
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -31,6 +32,7 @@ export const Input: React.FC<InputProps> = ({
   helperText,
   error,
   disabled,
+  required,
 }) => {
   return (
     <FormControl id={id} isInvalid={isInvalid}>
@@ -41,6 +43,7 @@ export const Input: React.FC<InputProps> = ({
         value={value}
         onChange={onChange}
         disabled={disabled}
+        required={required}
       />
       {helperText && <FormHelperText textAlign="start">{helperText}</FormHelperText>}
       <FormErrorMessage>{error}</FormErrorMessage>
