@@ -1,9 +1,9 @@
-import { Breadcrumb as ChakraBreadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react'
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react'
 
 import { Link } from '@app-shared/components/Link'
 import { Config } from '@app-shared/Config'
 
-interface BreadcrumbProps {
+interface CheckoutStepsProps {
   page: 'login' | 'shipping' | 'payment' | 'checkout'
 }
 
@@ -27,12 +27,12 @@ const disableLink = {
   cursor: 'not-allowed',
 }
 
-export const Breadcrumb: React.FC<BreadcrumbProps> = ({ page }) => {
+export const CheckoutSteps: React.FC<CheckoutStepsProps> = ({ page }) => {
   const paymentLinkProps = page === 'payment' || page === 'checkout' ? paymentLink : disableLink
   const checkoutLinkProps = page === 'checkout' ? checkoutLink : disableLink
 
   return (
-    <ChakraBreadcrumb margin="0 auto" width="100%" spacing={{ base: '0.5rem', sm: 'auto' }}>
+    <Breadcrumb margin="0 auto" width="100%" spacing={{ base: '0.5rem', sm: 'auto' }}>
       <BreadcrumbItem isCurrentPage={page === 'login'} width={{ base: 'auto', sm: '20%' }}>
         <BreadcrumbLink>Sign In</BreadcrumbLink>
       </BreadcrumbItem>
@@ -45,6 +45,6 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ page }) => {
       <BreadcrumbItem isCurrentPage={page === 'checkout'} width={{ base: 'auto', sm: '20%' }}>
         <BreadcrumbLink {...checkoutLinkProps}>Checkout</BreadcrumbLink>
       </BreadcrumbItem>
-    </ChakraBreadcrumb>
+    </Breadcrumb>
   )
 }

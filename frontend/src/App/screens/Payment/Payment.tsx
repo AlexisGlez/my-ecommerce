@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 
-import { Breadcrumb } from '@app-shared/components/Breadcrumb'
+import { CheckoutSteps } from '@app-shared/components/CheckoutSteps'
 import { Config } from '@app-shared/Config'
 import { CartStore } from '@app-shared/stores/CartStore'
 
@@ -45,7 +45,7 @@ export const Payment: React.FC<PaymentProps> = () => {
       as="form"
       onSubmit={onFormCompleted}
     >
-      <Breadcrumb page="payment" />
+      <CheckoutSteps page="payment" />
       <Heading as="h1" textAlign="start">
         Payment Method
       </Heading>
