@@ -3,7 +3,7 @@ import { Heading, VStack, Button } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 
 import { Input } from '@app-shared/components/Input'
-import { Breadcrumb } from '@app-shared/components/Breadcrumb'
+import { CheckoutSteps } from '@app-shared/components/CheckoutSteps'
 import { Config } from '@app-shared/Config'
 import { CartStore } from '@app-shared/stores/CartStore'
 
@@ -77,7 +77,7 @@ export const Shipping: React.FC<ShippingProps> = () => {
       as="form"
       onSubmit={onFormCompleted}
     >
-      <Breadcrumb page="shipping" />
+      <CheckoutSteps page="shipping" />
       <Heading as="h1" textAlign="start">
         Shipping Address
       </Heading>
