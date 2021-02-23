@@ -26,6 +26,7 @@
       "@app-register/*": ["src/App/screens/Register/*"],
       "@app-profile/*": ["src/App/screens/Profile/*"],
       "@app-shipping/*": ["src/App/screens/Shipping/*"],
+      "@app-payment/*": ["src/App/screens/Payment/*"],
       "@app-stores/*": ["src/shared/stores/*"]
     },
     "preserveConstEnums": true,

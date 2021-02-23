@@ -10,11 +10,17 @@ type CartState = {
     postalCode: string
     country: string
   }
+  payment: {
+    method: string
+  }
 }
 
 const state = proxy<CartState>({
   items: {},
   shipping: { address: '', city: '', postalCode: '', country: '' },
+  payment: {
+    method: '',
+  },
 })
 
 export class CartStore {
@@ -51,6 +57,12 @@ export class CartStore {
     country: string,
   ) {
     state.shipping = { address, city, postalCode, country }
+
+    Cookies.set(Cookies.Cart, state)
+  }
+
+  public static savePaymentMathod(paymentMathod: string) {
+    state.payment.method = paymentMathod
 
     Cookies.set(Cookies.Cart, state)
   }
