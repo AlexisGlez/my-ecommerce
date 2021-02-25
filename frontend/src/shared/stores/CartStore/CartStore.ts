@@ -27,6 +27,7 @@ export class CartStore {
   public static initialize(savedState: CartState) {
     state.items = { ...savedState.items }
     state.shipping = { ...savedState.shipping }
+    state.payment = { ...savedState.payment }
   }
 
   public static addProductToCart(product: Product, quantity: number) {

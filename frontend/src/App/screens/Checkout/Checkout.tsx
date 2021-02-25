@@ -1,12 +1,12 @@
 import { Fragment } from 'react'
 import { Heading, VStack, Button, Grid, GridItem, Text, Image, Flex } from '@chakra-ui/react'
-import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 
 import { CheckoutSteps } from '@app-shared/components/CheckoutSteps'
 import { Link } from '@app-shared/components/Link'
 import { TableRow } from '@app-shared/components/TableRow'
 import { stackDivider, divider, dividerColor } from '@app-shared/components/Divider'
+import { Spinner } from '@app-shared/components/Spinner'
 import { Config } from '@app-shared/Config'
 import { CartStore } from '@app-shared/stores/CartStore'
 
@@ -26,12 +26,12 @@ export const Checkout: React.FC<CheckoutProps> = () => {
 
   if (!shipping.address) {
     router.replace(Config.Routes.shipping())
-    return null
+    return <Spinner />
   }
 
   if (!payment.method) {
     router.replace(Config.Routes.payment())
-    return null
+    return <Spinner />
   }
 
   const subtotal = cartItems.reduce((acc, curr) => acc + curr.product.price * curr.quantity, 0)
@@ -100,10 +100,4 @@ export const Checkout: React.FC<CheckoutProps> = () => {
       </Grid>
     </>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  return {
-    props: {},
-  }
 }

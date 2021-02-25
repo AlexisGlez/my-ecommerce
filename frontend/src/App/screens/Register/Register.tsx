@@ -1,6 +1,7 @@
 import { useState, Dispatch, SetStateAction } from 'react'
 
 import { UserForm } from '@app-shared/components/UserForm'
+import { Spinner } from '@app-shared/components/Spinner'
 import { UserStore } from '@app-stores/UserStore'
 import { useRedirect } from '@app-shared/hooks/useRedirect'
 
@@ -8,7 +9,13 @@ interface RegisterProps {}
 
 export const Register: React.FC<RegisterProps> = () => {
   const [isLoading, setLoading] = useState(false)
+  const currentUser = UserStore.useCurrentUser()
   const redirect = useRedirect()
+
+  if (currentUser) {
+    redirect()
+    return <Spinner />
+  }
 
   const performRegister = async (
     name: string,

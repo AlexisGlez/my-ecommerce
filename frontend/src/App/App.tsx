@@ -1,6 +1,5 @@
 /// <reference path="./App.d.ts" />
 
-import { useEffect } from 'react'
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
 import { ChakraProvider, Box } from '@chakra-ui/react'
