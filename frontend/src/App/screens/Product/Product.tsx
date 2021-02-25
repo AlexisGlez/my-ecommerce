@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import { Image, Grid, VStack, StackDivider, GridItem } from '@chakra-ui/react'
+import { Image, Grid, VStack, GridItem } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 
 import { useGetProduct } from '@app-shared/hooks/useGetProduct'

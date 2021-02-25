@@ -1,6 +1,7 @@
 import { useState, Dispatch, SetStateAction } from 'react'
 
 import { UserForm } from '@app-shared/components/UserForm'
+import { Spinner } from '@app-shared/components/Spinner'
 import { UserStore } from '@app-stores/UserStore'
 import { useRedirect } from '@app-shared/hooks/useRedirect'
 
@@ -14,7 +15,7 @@ export const Login: React.FC<LoginProps> = () => {
 
   if (currentUser) {
     redirect()
-    return null
+    return <Spinner />
   }
 
   const performLogin = async (

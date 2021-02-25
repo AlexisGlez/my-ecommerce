@@ -12,6 +12,7 @@ import {
 import { useRouter } from 'next/router'
 
 import { CheckoutSteps } from '@app-shared/components/CheckoutSteps'
+import { Spinner } from '@app-shared/components/Spinner'
 import { Config } from '@app-shared/Config'
 import { CartStore } from '@app-shared/stores/CartStore'
 
@@ -23,7 +24,7 @@ export const Payment: React.FC<PaymentProps> = () => {
 
   if (!shipping.address) {
     router.replace(Config.Routes.shipping())
-    return null
+    return <Spinner />
   }
 
   const [paymentMethod, setPaymentMethod] = useState('PayPal')
