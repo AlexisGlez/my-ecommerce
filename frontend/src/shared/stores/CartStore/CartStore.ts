@@ -80,4 +80,10 @@ export class CartStore {
 
     return snapshot.shipping
   }
+
+  public static usePaymentMethod() {
+    const snapshot = useProxy(state)
+
+    return snapshot.payment
+  }
 }
