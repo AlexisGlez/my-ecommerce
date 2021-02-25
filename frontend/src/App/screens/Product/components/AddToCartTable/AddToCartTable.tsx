@@ -1,12 +1,8 @@
 import { ChangeEvent, useCallback, useState } from 'react'
-import { VStack, Text, Flex, Button, Select } from '@chakra-ui/react'
+import { VStack, Button, Select } from '@chakra-ui/react'
 
-const containerStyles = {
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  p: '0.5rem 1rem',
-  width: '100%',
-}
+import { TableRow } from '@app-shared/components/TableRow'
+import { dividerColor } from '@app-shared/components/Divider'
 
 interface AddToCartTableProps {
   countInStock: number
@@ -41,37 +37,35 @@ export const AddToCartTable: React.FC<AddToCartTableProps> = ({
   }, [onAddToCart, quantity])
 
   return (
-    <VStack divider={divider} borderWidth="1px" borderColor="gray.200">
-      <Flex {...containerStyles}>
-        <Text>Price:</Text>
-        <Text fontWeight="bold">${price}</Text>
-      </Flex>
-      <Flex {...containerStyles}>
-        <Text>Status:</Text>
-        <Text>{countInStock > 0 ? 'In' : 'Out of'} Stock</Text>
-      </Flex>
+    <VStack divider={divider} borderWidth="1px" borderColor={dividerColor}>
+      <TableRow title="Price" value={`$${price}`} />
+      <TableRow title="Status" value={`${countInStock > 0 ? 'In' : 'Out of'} Stock`} />
       {countInStock > 0 && (
-        <Flex {...containerStyles}>
-          <Text>Quantity:</Text>
-          <Select width="auto" onChange={onQuantitySelected}>
-            {[...Array(countInStock).keys()].map((value) => (
-              <option key={value} value={value + 1}>
-                {value + 1}
-              </option>
-            ))}
-          </Select>
-        </Flex>
+        <TableRow
+          title="Quantity"
+          value={
+            <Select width="auto" onChange={onQuantitySelected}>
+              {[...Array(countInStock).keys()].map((value) => (
+                <option key={value} value={value + 1}>
+                  {value + 1}
+                </option>
+              ))}
+            </Select>
+          }
+        />
       )}
-      <Flex {...containerStyles}>
-        <Button
-          width="100%"
-          textTransform="uppercase"
-          disabled={countInStock <= 0}
-          onClick={addToCart}
-        >
-          Add To Cart
-        </Button>
-      </Flex>
+      <TableRow
+        value={
+          <Button
+            width="100%"
+            textTransform="uppercase"
+            disabled={countInStock <= 0}
+            onClick={addToCart}
+          >
+            Add To Cart
+          </Button>
+        }
+      />
     </VStack>
   )
 }

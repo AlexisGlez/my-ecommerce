@@ -1,4 +1,6 @@
-import { Flex, Text, Button, Divider, Box, VStack, Heading } from '@chakra-ui/react'
+import { Flex, Text, Button, Box, VStack, Heading } from '@chakra-ui/react'
+
+import { divider } from '@app-shared/components/Divider'
 
 interface SubtotalBoxProps {
   borderColor: string
@@ -14,11 +16,7 @@ export const SubtotalBox: React.FC<SubtotalBoxProps> = ({
   onCheckoutClick,
 }) => {
   return (
-    <VStack
-      borderWidth="1px"
-      borderColor={borderColor}
-      divider={<Divider borderColor={borderColor} />}
-    >
+    <VStack borderWidth="1px" borderColor={borderColor} divider={divider}>
       <Box padding="1rem">
         <Heading as="h2">Subtotal ({totalItems}) Items</Heading>
         <Text fontSize="md" mt="1rem">

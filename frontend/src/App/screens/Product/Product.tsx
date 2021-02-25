@@ -2,17 +2,17 @@ import { useCallback } from 'react'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { Image, Grid, VStack, StackDivider, GridItem } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import { GoBack } from '@app-shared/components/Link'
+
 import { useGetProduct } from '@app-shared/hooks/useGetProduct'
+import { StateMachineContent } from '@app-shared/components/StateMachineContent'
+import { GoBack } from '@app-shared/components/Link'
+import { stackDivider } from '@app-shared/components/Divider'
 import { Fetcher } from '@app-shared/Fetcher'
 import { Config } from '@app-shared/Config'
-import { StateMachineContent } from '@app-shared/components/StateMachineContent'
 import { CartStore } from '@app-stores/CartStore'
 
 import { ProductInformation } from './components/ProductInformation'
 import { AddToCartTable } from './components/AddToCartTable'
-
-const divider = <StackDivider borderColor="gray.200" />
 
 type ProductProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
@@ -50,14 +50,14 @@ export const Product: React.FC<ProductProps> = ({ productResponse }) => {
               name={product.name}
               description={product.description}
               price={product.price}
-              divider={divider}
+              divider={stackDivider}
             />
           </GridItem>
           <GridItem colSpan={{ md: 1, lg: 3 }}>
             <AddToCartTable
               price={product.price}
               countInStock={product.countInStock}
-              divider={divider}
+              divider={stackDivider}
               onAddToCart={onAddToCart}
             />
           </GridItem>
