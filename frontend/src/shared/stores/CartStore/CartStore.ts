@@ -2,7 +2,7 @@ import { proxy, useProxy } from 'valtio'
 
 import { Cookies } from '@app-shared/Cookies'
 
-type CartState = {
+export type CartState = {
   items: Record<string, { product: Product; quantity: number }>
   shipping: {
     address: string
@@ -86,5 +86,11 @@ export class CartStore {
     const snapshot = useProxy(state)
 
     return snapshot.payment
+  }
+
+  public static useGetCurrentCart() {
+    const snapshot = useProxy(state)
+
+    return snapshot
   }
 }

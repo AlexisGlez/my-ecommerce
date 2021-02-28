@@ -4,6 +4,7 @@ import JSCookies from 'js-cookie'
 export class Cookies {
   public static readonly Cart = 'cart'
   public static readonly User = 'user'
+  public static readonly Order = 'order'
 
   public static set(name: string, value: any) {
     if (value != null) {

@@ -20,7 +20,7 @@ export class OrderController {
     } = req.body
 
     if (!orderItems || !orderItems.length) {
-      res.status(400).json({ data: null, message: 'No order items.' })
+      res.status(400).json({ data: null, message: 'No order items found.' })
       return
     }
 

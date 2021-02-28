@@ -21,6 +21,22 @@ type User = {
   token: string
 }
 
+type Order = {
+  createdAt: string
+  isDelivered: boolean
+  isPaid: boolean
+  orderItems: Array<Product>
+  paymentMethod: string
+  shippingAddress: { address: string; city: string; postalCode: string; country: string }
+  shippingPrice: number
+  taxPrice: number
+  totalPrice: number
+  updatedAt: string
+  user: string
+  __v: number
+  _id: string
+}
+
 type State = 'idle' | 'loading' | 'error' | 'success'
 
 type StateMachine = {
