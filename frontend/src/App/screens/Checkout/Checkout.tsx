@@ -1,14 +1,17 @@
-import { Fragment } from 'react'
-import { Heading, VStack, Button, Grid, GridItem, Text, Image, Flex } from '@chakra-ui/react'
+import { useState, Fragment } from 'react'
+import { Heading, VStack, Button, Grid, GridItem, Text, Image, Flex, Box } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 
 import { CheckoutSteps } from '@app-shared/components/CheckoutSteps'
 import { Link } from '@app-shared/components/Link'
 import { TableRow } from '@app-shared/components/TableRow'
 import { stackDivider, divider, dividerColor } from '@app-shared/components/Divider'
+import { ErrorMessage } from '@app-shared/components/ErrorMessage'
 import { Spinner } from '@app-shared/components/Spinner'
 import { Config } from '@app-shared/Config'
 import { CartStore } from '@app-shared/stores/CartStore'
+import { UserStore } from '@app-shared/stores/UserStore'
+import { OrderStore } from '@app-shared/stores/OrderStore'
 
 import { UserInfo } from './components/UserInfo'
 
@@ -19,10 +22,19 @@ function formatNumber(num: number) {
 interface CheckoutProps {}
 
 export const Checkout: React.FC<CheckoutProps> = () => {
+  const [isLoading, setLoading] = useState(false)
   const shipping = CartStore.useShippingAddress()
   const payment = CartStore.usePaymentMethod()
   const cartItems = CartStore.useGetCartItems()
+  const currentUser = UserStore.useCurrentUser()
+  const currentCart = CartStore.useGetCurrentCart()
+  const [errorMessage, setErrorMessage] = useState('')
   const router = useRouter()
+
+  if (!currentUser) {
+    router.replace(Config.Routes.login())
+    return <Spinner />
+  }
 
   if (!shipping.address) {
     router.replace(Config.Routes.shipping())
@@ -39,10 +51,33 @@ export const Checkout: React.FC<CheckoutProps> = () => {
   const taxPrice = subtotal * 0.15
   const totalPrice = subtotal + shippingPrice + taxPrice
 
-  const placeOrder = () => {}
+  const placeOrder = async () => {
+    setLoading(true)
+    const response = await OrderStore.createOrder(
+      currentUser,
+      currentCart,
+      taxPrice,
+      shippingPrice,
+      totalPrice,
+    )
+    setLoading(false)
+
+    if (!response || response.error || response.state === 'error' || !response.order) {
+      setErrorMessage(
+        response.error ?? 'An error occured while placing the order. Please try again later.',
+      )
+    } else {
+      router.push(Config.Routes.order(response.order._id))
+    }
+  }
 
   return (
     <>
+      {errorMessage && (
+        <Box mb="1rem">
+          <ErrorMessage message={errorMessage} />
+        </Box>
+      )}
       <VStack margin="0 auto" maxWidth="500px" alignItems="start" spacing="1.5rem">
         <CheckoutSteps page="checkout" />
       </VStack>
@@ -90,7 +125,12 @@ export const Checkout: React.FC<CheckoutProps> = () => {
             <TableRow title="Total" value={formatNumber(totalPrice)} />
             <TableRow
               value={
-                <Button width="100%" textTransform="uppercase" onClick={placeOrder}>
+                <Button
+                  width="100%"
+                  textTransform="uppercase"
+                  onClick={placeOrder}
+                  isLoading={isLoading}
+                >
                   Place Order
                 </Button>
               }

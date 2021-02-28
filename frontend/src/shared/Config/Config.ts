@@ -35,6 +35,10 @@ class Routes {
     return '/checkout'
   }
 
+  public static order(orderId: string) {
+    return `/order/${orderId}`
+  }
+
   public static checkoutProcess() {
     return `${Routes.login()}?${Routes.addRedirectTo(Routes.shipping())}`
   }
@@ -71,6 +75,10 @@ class Endpoints {
 
   public static login() {
     return `${Endpoints.users()}/login`
+  }
+
+  public static orders() {
+    return `${process.env.BACKEND_ENDPOINT}/orders`
   }
 }
 
