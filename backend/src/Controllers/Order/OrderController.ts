@@ -43,4 +43,25 @@ export class OrderController {
       res.status(500).json({ data: [], message: 'Unable to create order.' })
     }
   }
+
+  public static async getOrderById(req: RequestWithUser, res: Response) {
+    if (!req.params.id) {
+      res.status(400).json({ data: null, message: 'No order id found.' })
+      return
+    }
+
+    try {
+      const order = await OrderModel.findById(req.params.id).populate('user', 'name email')
+
+      if (!order) {
+        res.status(404).json({ data: null, message: 'No order found.' })
+        return
+      }
+
+      res.status(200).json({ data: order, message: 'Order found.' })
+    } catch (error) {
+      console.error('An error happened while getting order by id:', error)
+      res.status(500).json({ data: null, message: 'Unable to get order.' })
+    }
+  }
 }
