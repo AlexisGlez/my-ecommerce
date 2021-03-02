@@ -68,6 +68,31 @@ export class OrderStore {
     }
   }
 
+  public static async getOrderById(
+    currentUser: User,
+    orderId: string,
+  ): Promise<{ order: OrderDetails | null } & StateMachine> {
+    try {
+      let response = await Fetcher.get<OrderDetails>(Config.Endpoints.orderById(orderId), {
+        headers: { Authorization: `Bearer ${currentUser.token}` },
+      })
+
+      if (!response) {
+        throw new Error('Null response received.')
+      }
+
+      if (response.status >= 400) {
+        throw new Error(response.message ?? 'empty error message received.')
+      }
+      console.log(response.data)
+      return { order: response.data, state: 'success', error: null }
+    } catch (error) {
+      console.error(`An error occurred while getting order by id:`, error)
+
+      return { order: null, state: 'error', error: error.message }
+    }
+  }
+
   public static useGetPlacedOrders() {
     const snapshot = useProxy(state)
 

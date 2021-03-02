@@ -21,13 +21,20 @@ type User = {
   token: string
 }
 
+type ShippingInformation = {
+  address: string
+  city: string
+  postalCode: string
+  country: string
+}
+
 type Order = {
   createdAt: string
   isDelivered: boolean
   isPaid: boolean
   orderItems: Array<Product>
   paymentMethod: string
-  shippingAddress: { address: string; city: string; postalCode: string; country: string }
+  shippingAddress: ShippingInformation
   shippingPrice: number
   taxPrice: number
   totalPrice: number
@@ -36,6 +43,23 @@ type Order = {
   __v: number
   _id: string
 }
+
+type OrderDetails = {
+  orderItems: Array<{
+    name: string
+    qty: number
+    image: string
+    price: number
+    product: string
+  }>
+  user: {
+    _id: string
+    name: string
+    email: string
+  }
+  paidAt?: string
+  deliveredAt?: string
+} & Order
 
 type State = 'idle' | 'loading' | 'error' | 'success'
 
