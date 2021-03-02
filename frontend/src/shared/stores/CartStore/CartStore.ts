@@ -4,12 +4,7 @@ import { Cookies } from '@app-shared/Cookies'
 
 export type CartState = {
   items: Record<string, { product: Product; quantity: number }>
-  shipping: {
-    address: string
-    city: string
-    postalCode: string
-    country: string
-  }
+  shipping: ShippingInformation
   payment: {
     method: string
   }

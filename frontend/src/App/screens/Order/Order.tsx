@@ -1,5 +1,80 @@
+import { useState, useEffect } from 'react'
+import { Heading, Alert, Box } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
+
+import { OrderDetails } from '@app-shared/components/OrderDetails'
+import { Spinner } from '@app-shared/components/Spinner'
+import { ErrorMessage } from '@app-shared/components/ErrorMessage'
+import { Config } from '@app-shared/Config'
+import { UserStore } from '@app-shared/stores/UserStore'
+import { OrderStore } from '@app-shared/stores/OrderStore'
+
 interface OrderProps {}
 
 export const Order: React.FC<OrderProps> = () => {
-  return <div>Hello World</div>
+  const [isLoading, setLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+  const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null)
+  const currentUser = UserStore.useCurrentUser()
+  const router = useRouter()
+
+  useEffect(() => {
+    async function getOrderDetails() {
+      if (!currentUser || !router.query.id) {
+        return
+      }
+
+      setLoading(true)
+      const response = await OrderStore.getOrderById(currentUser, router.query.id as string)
+
+      if (!response || response.error || response.state === 'error' || !response.order) {
+        setErrorMessage(
+          response.error ?? 'An error occured while getting order details. Please try again later.',
+        )
+      } else {
+        setOrderDetails(response.order)
+      }
+      setLoading(false)
+    }
+
+    getOrderDetails()
+  }, [currentUser, router])
+
+  if (!currentUser) {
+    router.replace(Config.Routes.login())
+    return <Spinner />
+  }
+
+  return (
+    <>
+      {errorMessage && (
+        <Box mb="1rem">
+          <ErrorMessage message={errorMessage} />
+        </Box>
+      )}
+      <Heading as="h1" textAlign="start">
+        Order {router.query.id}
+      </Heading>
+      {isLoading && <Spinner />}
+      {orderDetails && (
+        <OrderDetails
+          shipping={orderDetails.shippingAddress}
+          shippingPrice={orderDetails.shippingPrice}
+          taxPrice={orderDetails.taxPrice}
+          totalPrice={orderDetails.totalPrice}
+          items={orderDetails.orderItems.map((item) => ({
+            quantity: item.qty,
+            product: {
+              _id: item.product,
+              image: item.image,
+              name: item.name,
+              price: item.price,
+            },
+          }))}
+          paymentMethod={orderDetails.paymentMethod}
+          orderData={orderDetails}
+        />
+      )}
+    </>
+  )
 }

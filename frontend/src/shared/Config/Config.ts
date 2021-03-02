@@ -80,6 +80,10 @@ class Endpoints {
   public static orders() {
     return `${process.env.BACKEND_ENDPOINT}/orders`
   }
+
+  public static orderById(orderId: string) {
+    return `${Endpoints.orders()}/${orderId}`
+  }
 }
 
 export const Config = {
