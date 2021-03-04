@@ -5,6 +5,7 @@ import { Config } from '@app-config/Config'
 import { ProductRouter } from '@app-routes/Product'
 import { UserRouter } from '@app-routes/User'
 import { OrderRouter } from '@app-routes/Order'
+import { ConfigRouter } from '@app-routes/Config'
 import { urlNotFound } from '@app-middlewares/urlNotFound'
 
 Config.Database.connectDB()
@@ -17,6 +18,7 @@ app.use(express.json())
 app.use('/api/products', ProductRouter)
 app.use('/api/users', UserRouter)
 app.use('/api/orders', OrderRouter)
+app.use('/api/config', ConfigRouter)
 
 app.use(urlNotFound)
 
