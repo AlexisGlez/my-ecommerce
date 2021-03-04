@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Heading, Alert, Box } from '@chakra-ui/react'
+import { Heading, Box } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 
 import { OrderDetails } from '@app-shared/components/OrderDetails'
@@ -13,6 +13,7 @@ interface OrderProps {}
 
 export const Order: React.FC<OrderProps> = () => {
   const [isLoading, setLoading] = useState(false)
+  const [isPaypalReady, setPaypalReady] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null)
   const currentUser = UserStore.useCurrentUser()
@@ -40,9 +41,61 @@ export const Order: React.FC<OrderProps> = () => {
     getOrderDetails()
   }, [currentUser, router])
 
+  useEffect(() => {
+    async function addPaypalScript() {
+      const response = await OrderStore.getPaypalClientId()
+
+      if (!response || response.error || response.state === 'error' || !response.paypalId) {
+        console.error(response.error ?? 'Unable to get Paypal id.')
+      } else {
+        const script = document.createElement('script')
+        script.type = 'text/javascript'
+        script.src = `https://www.paypal.com/sdk/js?client-id=${response.paypalId}`
+        script.async = true
+        script.onload = () => {
+          setPaypalReady(true)
+        }
+
+        document.body.appendChild(script)
+      }
+    }
+
+    if (!(window as any).paypal) {
+      addPaypalScript()
+    } else {
+      setPaypalReady(true)
+    }
+  }, [])
+
   if (!currentUser) {
     router.replace(Config.Routes.login())
     return <Spinner />
+  }
+
+  const onSuccessPaymentHandler = async (paymentResult: PaymentResult) => {
+    console.log(paymentResult)
+
+    if (!currentUser || !router.query.id) {
+      return
+    }
+
+    setLoading(true)
+
+    const response = await OrderStore.payOrder(
+      currentUser,
+      router.query.id as string,
+      paymentResult,
+    )
+
+    if (!response || response.error || response.state === 'error' || !response.order) {
+      setErrorMessage(
+        response.error ?? 'An error occured while getting order details. Please try again later.',
+      )
+    } else {
+      setOrderDetails(response.order)
+    }
+
+    setLoading(false)
   }
 
   return (
@@ -73,6 +126,8 @@ export const Order: React.FC<OrderProps> = () => {
           }))}
           paymentMethod={orderDetails.paymentMethod}
           orderData={orderDetails}
+          onSuccessPaymentHandler={onSuccessPaymentHandler}
+          isPaypalReady={isPaypalReady}
         />
       )}
     </>

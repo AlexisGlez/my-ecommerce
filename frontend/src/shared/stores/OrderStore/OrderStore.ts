@@ -1,16 +1,17 @@
 import { proxy, useProxy } from 'valtio'
 
-import { Cookies } from '@app-shared/Cookies'
 import { Fetcher } from '@app-shared/Fetcher'
 import { Config } from '@app-shared/Config'
 import { CartState } from '@app-shared/stores/CartStore'
 
 type OrdersState = {
   orders: Array<Order>
+  paypalClientId: string
 }
 
 const state = proxy<OrdersState>({
   orders: [],
+  paypalClientId: '',
 })
 
 export class OrderStore {
@@ -58,8 +59,6 @@ export class OrderStore {
         throw new Error(response.message ?? 'empty error message received.')
       }
 
-      Cookies.set(Cookies.Order, state)
-
       return { order: response.data, state: 'success', error: null }
     } catch (error) {
       console.error(`An error occurred while creating the order:`, error)
@@ -84,12 +83,55 @@ export class OrderStore {
       if (response.status >= 400) {
         throw new Error(response.message ?? 'empty error message received.')
       }
-      console.log(response.data)
+
       return { order: response.data, state: 'success', error: null }
     } catch (error) {
       console.error(`An error occurred while getting order by id:`, error)
 
       return { order: null, state: 'error', error: error.message }
+    }
+  }
+
+  public static async payOrder(
+    currentUser: User,
+    orderId: string,
+    paymentResult: PaymentResult,
+  ): Promise<{ order: OrderDetails | null } & StateMachine> {
+    try {
+      let response = await Fetcher.patch<OrderDetails>(Config.Endpoints.payOrder(orderId), {
+        data: paymentResult,
+        headers: { Authorization: `Bearer ${currentUser.token}` },
+      })
+
+      if (!response) {
+        throw new Error('Null response received.')
+      }
+
+      if (response.status >= 400) {
+        throw new Error(response.message ?? 'empty error message received.')
+      }
+
+      return { order: response.data, state: 'success', error: null }
+    } catch (error) {
+      console.error(`An error occurred while getting order by id:`, error)
+
+      return { order: null, state: 'error', error: error.message }
+    }
+  }
+
+  public static async getPaypalClientId(): Promise<{ paypalId: string | null } & StateMachine> {
+    try {
+      let response = await Fetcher.get<string>(Config.Endpoints.paypalId())
+
+      if (!response) {
+        throw new Error('Null response received.')
+      }
+
+      return { paypalId: response.data, state: 'success', error: null }
+    } catch (error) {
+      console.error(`An error occurred while getting paypal id:`, error)
+
+      return { paypalId: null, state: 'error', error: error.message }
     }
   }
 

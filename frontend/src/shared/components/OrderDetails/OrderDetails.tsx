@@ -10,17 +10,29 @@ import {
   Flex,
   Alert,
   AlertIcon,
+  Box,
 } from '@chakra-ui/react'
+import { PayPalButton } from 'react-paypal-button-v2'
 
 import { Link } from '@app-shared/components/Link'
 import { TableRow } from '@app-shared/components/TableRow'
 import { stackDivider, divider, dividerColor } from '@app-shared/components/Divider'
+import { Spinner } from '@app-shared/components/Spinner'
 import { Config } from '@app-shared/Config'
 
 import { UserInfo } from './components/UserInfo'
 
 function formatNumber(num: number) {
   return `$${(Math.round(num * 100) / 100).toFixed(2)}`
+}
+
+function formatDate(date: string) {
+  const d = new Date(date)
+  const year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d)
+  const month = new Intl.DateTimeFormat('en', { month: 'short' }).format(d)
+  const day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d)
+
+  return `${day}-${month}-${year}`
 }
 
 interface OrderDetailsProps {
@@ -38,6 +50,8 @@ interface OrderDetailsProps {
     isLoading: boolean
   }
   orderData?: OrderDetails
+  onSuccessPaymentHandler?: (paymentResult: PaymentResult) => Promise<void>
+  isPaypalReady?: boolean
 }
 
 export const OrderDetails: React.FC<OrderDetailsProps> = ({
@@ -49,6 +63,8 @@ export const OrderDetails: React.FC<OrderDetailsProps> = ({
   paymentMethod,
   placeOrderButton,
   orderData,
+  onSuccessPaymentHandler,
+  isPaypalReady,
 }) => {
   const subtotal = items.reduce((acc, curr) => acc + curr.product.price * curr.quantity, 0)
 
@@ -68,7 +84,9 @@ export const OrderDetails: React.FC<OrderDetailsProps> = ({
       </Text>
       <Alert status={orderData?.isDelivered ? 'success' : 'error'}>
         <AlertIcon />
-        {orderData?.isDelivered ? `Delivered on ${orderData.deliveredAt}` : 'Not delivered yet.'}
+        {orderData?.isDelivered
+          ? `Delivered on ${formatDate(orderData.deliveredAt)}`
+          : 'Not delivered yet.'}
       </Alert>
     </>
   )
@@ -80,7 +98,7 @@ export const OrderDetails: React.FC<OrderDetailsProps> = ({
       </Text>
       <Alert status={orderData?.isPaid ? 'success' : 'error'}>
         <AlertIcon />
-        {orderData?.isPaid ? `Paid on ${orderData.paidAt}` : 'Not paid yet.'}
+        {orderData?.isPaid ? `Paid on ${formatDate(orderData.paidAt)}` : 'Not paid yet.'}
       </Alert>
     </>
   )
@@ -139,6 +157,19 @@ export const OrderDetails: React.FC<OrderDetailsProps> = ({
                 >
                   Place Order
                 </Button>
+              }
+            />
+          )}
+          {orderData && !orderData.isPaid && !isPaypalReady && <TableRow value={<Spinner />} />}
+          {orderData && !orderData.isPaid && isPaypalReady && (
+            <TableRow
+              value={
+                <Box width="100%">
+                  <PayPalButton
+                    amount={totalPrice.toFixed(2)}
+                    onSuccess={onSuccessPaymentHandler}
+                  />
+                </Box>
               }
             />
           )}

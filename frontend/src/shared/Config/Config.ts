@@ -84,6 +84,14 @@ class Endpoints {
   public static orderById(orderId: string) {
     return `${Endpoints.orders()}/${orderId}`
   }
+
+  public static payOrder(orderId: string) {
+    return `${Endpoints.orderById(orderId)}/pay`
+  }
+
+  public static paypalId() {
+    return `${process.env.BACKEND_ENDPOINT}/config/paypal`
+  }
 }
 
 export const Config = {
