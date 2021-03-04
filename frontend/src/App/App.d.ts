@@ -67,3 +67,5 @@ type StateMachine = {
   state: State
   error: string | null
 }
+
+type PaymentResult = {}
