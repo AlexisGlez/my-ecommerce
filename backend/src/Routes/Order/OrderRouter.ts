@@ -7,5 +7,6 @@ const OrderRouter = express.Router()
 
 OrderRouter.route('/').post(authMiddleware, OrderController.postOrder)
 OrderRouter.route('/:id').get(authMiddleware, OrderController.getOrderById)
+OrderRouter.route('/:id/pay').patch(authMiddleware, OrderController.payOrder)
 
 export { OrderRouter }
