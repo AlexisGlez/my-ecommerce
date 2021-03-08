@@ -19,21 +19,10 @@ import { TableRow } from '@app-shared/components/TableRow'
 import { stackDivider, divider, dividerColor } from '@app-shared/components/Divider'
 import { Spinner } from '@app-shared/components/Spinner'
 import { Config } from '@app-shared/Config'
+import { formatDate } from '@app-shared/utils/formatDate'
+import { formatNumber } from '@app-shared/utils/formatNumber'
 
 import { UserInfo } from './components/UserInfo'
-
-function formatNumber(num: number) {
-  return `$${(Math.round(num * 100) / 100).toFixed(2)}`
-}
-
-function formatDate(date: string) {
-  const d = new Date(date)
-  const year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d)
-  const month = new Intl.DateTimeFormat('en', { month: 'short' }).format(d)
-  const day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d)
-
-  return `${day}-${month}-${year}`
-}
 
 interface OrderDetailsProps {
   shipping: ShippingInformation

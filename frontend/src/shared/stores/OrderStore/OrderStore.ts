@@ -135,6 +135,30 @@ export class OrderStore {
     }
   }
 
+  public static async getAllOrders(
+    currentUser: User,
+  ): Promise<{ orders: Array<OrderDetails> } & StateMachine> {
+    try {
+      let response = await Fetcher.get<Array<OrderDetails>>(Config.Endpoints.allOrders(), {
+        headers: { Authorization: `Bearer ${currentUser.token}` },
+      })
+
+      if (!response) {
+        throw new Error('Null response received.')
+      }
+
+      if (response.status >= 400) {
+        throw new Error(response.message ?? 'empty error message received.')
+      }
+
+      return { orders: response.data, state: 'success', error: null }
+    } catch (error) {
+      console.error(`An error occurred while getting user orders:`, error)
+
+      return { orders: [], state: 'error', error: error.message }
+    }
+  }
+
   public static useGetPlacedOrders() {
     const snapshot = useProxy(state)
 

@@ -81,6 +81,10 @@ class Endpoints {
     return `${process.env.BACKEND_ENDPOINT}/orders`
   }
 
+  public static allOrders() {
+    return `${Endpoints.orders()}/all`
+  }
+
   public static orderById(orderId: string) {
     return `${Endpoints.orders()}/${orderId}`
   }
