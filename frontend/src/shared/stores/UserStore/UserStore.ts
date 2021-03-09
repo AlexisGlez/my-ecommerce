@@ -98,7 +98,30 @@ export class UserStore {
       return { users: response.data, state: 'success', error: null }
     } catch (error) {
       console.error(`An error occurred while retrieving users:`, error)
-      return { users: null, state: 'error', error }
+      return { users: null, state: 'error', error: error.message }
+    }
+  }
+
+  public static async deleteUser(
+    userId: string,
+  ): Promise<{ wasUserDeleted: boolean | null } & StateMachine> {
+    try {
+      const response = await Fetcher.delete<boolean>(Config.Endpoints.userById(userId), {
+        headers: { Authorization: `Bearer ${state.currentUser?.token}` },
+      })
+
+      if (!response) {
+        throw new Error('Null response received.')
+      }
+
+      if (response.status >= 400) {
+        throw new Error(response.message ?? 'empty error message received.')
+      }
+
+      return { wasUserDeleted: response.data, state: 'success', error: null }
+    } catch (error) {
+      console.error(`An error occurred while deleting user:`, error)
+      return { wasUserDeleted: null, state: 'error', error: error.message }
     }
   }
 

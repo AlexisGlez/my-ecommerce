@@ -43,8 +43,8 @@ class Routes {
     return `/admin/users`
   }
 
-  public static user(userId: string) {
-    return `/user/${userId}`
+  public static editUser(userId: string) {
+    return `/admin/user/${userId}/edit`
   }
 
   public static checkoutProcess() {
@@ -75,6 +75,10 @@ class Endpoints {
 
   public static users() {
     return `${process.env.BACKEND_ENDPOINT}/users`
+  }
+
+  public static userById(userId: string) {
+    return `${Endpoints.users()}/${userId}`
   }
 
   public static userProfile() {
