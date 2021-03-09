@@ -85,6 +85,11 @@ export const Header: React.FC<HeaderProps> = () => {
                           All Users
                         </Link>
                       </MenuItem>
+                      <MenuItem>
+                        <Link href={Config.Routes.products()} width="100%">
+                          All Products
+                        </Link>
+                      </MenuItem>
                     </>
                   )}
                   <MenuItem onClick={UserStore.logout}>Logout</MenuItem>

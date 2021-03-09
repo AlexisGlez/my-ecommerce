@@ -31,6 +31,7 @@
       "@app-order/*": ["src/App/screens/Order/*"],
       "@app-users/*": ["src/App/screens/Users/*"],
       "@app-edit-user/*": ["src/App/screens/EditUser/*"],
+      "@app-products/*": ["src/App/screens/Products/*"],
       "@app-stores/*": ["src/shared/stores/*"]
     },
     "preserveConstEnums": true,
