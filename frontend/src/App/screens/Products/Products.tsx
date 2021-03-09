@@ -22,9 +22,10 @@ import { ErrorMessage } from '@app-shared/components/ErrorMessage'
 import { Spinner } from '@app-shared/components/Spinner'
 import { useRedirect } from '@app-shared/hooks/useRedirect'
 import { useGetProducts } from '@app-shared/hooks/useGetProducts'
-import { UserStore } from '@app-stores/UserStore'
 import { Link } from '@app-shared/components/Link'
 import { formatNumber } from '@app-shared/utils/formatNumber'
+import { UserStore } from '@app-stores/UserStore'
+import { ProductsStore } from '@app-stores/ProductsStore'
 
 interface ProductsProps {}
 
@@ -33,7 +34,7 @@ export const Products: React.FC<ProductsProps> = () => {
   const [deleteProductError, setDeleteProductError] = useState('')
   const currentUser = UserStore.useCurrentUser()
   const redirect = useRedirect(Config.Routes.login())
-  const { products, state, error } = useGetProducts()
+  const { products, state, error, revalidate } = useGetProducts()
 
   if (!currentUser || !currentUser.isAdmin) {
     redirect()
@@ -47,17 +48,15 @@ export const Products: React.FC<ProductsProps> = () => {
 
     setIsDeletingProduct(true)
 
-    setDeleteProductError('')
+    const response = await ProductsStore.deleteProduct(currentUser, productId)
 
-    // const response = await UserStore.deleteUser(userId)
-
-    // if (!response || response.error || response.state === 'error' || !response.wasUserDeleted) {
-    //   setDeleteUserError(
-    //     response.error ?? 'An error occured while getting all users. Please try again later.',
-    //   )
-    // } else {
-    //   await getAllUsers()
-    // }
+    if (!response || response.error || response.state === 'error' || !response.wasProductDeleted) {
+      setDeleteProductError(
+        response.error ?? 'An error occured while deleting product. Please try again later.',
+      )
+    } else {
+      await revalidate()
+    }
 
     setIsDeletingProduct(false)
   }
