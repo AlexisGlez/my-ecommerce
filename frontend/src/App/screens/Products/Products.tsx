@@ -15,6 +15,7 @@ import {
   Flex,
   Button,
 } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa'
 
 import { Config } from '@app-src/shared/Config'
@@ -30,11 +31,14 @@ import { ProductsStore } from '@app-stores/ProductsStore'
 interface ProductsProps {}
 
 export const Products: React.FC<ProductsProps> = () => {
+  const [isCreatingProduct, setIsCreatingProduct] = useState(false)
   const [isDeletingProduct, setIsDeletingProduct] = useState(false)
+  const [createProductError, setCreateProductError] = useState('')
   const [deleteProductError, setDeleteProductError] = useState('')
   const currentUser = UserStore.useCurrentUser()
   const redirect = useRedirect(Config.Routes.login())
   const { products, state, error, revalidate } = useGetProducts()
+  const router = useRouter()
 
   if (!currentUser || !currentUser.isAdmin) {
     redirect()
@@ -61,9 +65,22 @@ export const Products: React.FC<ProductsProps> = () => {
     setIsDeletingProduct(false)
   }
 
-  const onCreateProduct = () => {}
+  const onCreateProduct = async () => {
+    setIsCreatingProduct(true)
+    const response = await ProductsStore.createProduct(currentUser)
 
-  const errorMessage = error || deleteProductError
+    if (!response || response.error || response.state === 'error' || !response.product) {
+      setCreateProductError(
+        response.error ?? 'An error occured while creating product. Please try again later.',
+      )
+    } else {
+      router.push(Config.Routes.editProduct(response.product._id))
+    }
+
+    setIsCreatingProduct(false)
+  }
+
+  const errorMessage = error || deleteProductError || createProductError
 
   return (
     <>
@@ -78,7 +95,7 @@ export const Products: React.FC<ProductsProps> = () => {
           <Icon as={FaPlus} mr="0.5rem" /> Create Product
         </Button>
       </Flex>
-      {state === 'loading' ? (
+      {state === 'loading' || isCreatingProduct ? (
         <Spinner />
       ) : (
         <Table variant="simple">
