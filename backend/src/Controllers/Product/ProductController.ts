@@ -27,4 +27,41 @@ export class ProductController {
       res.status(500).json({ data: null, message: 'Unable to find product.' })
     }
   }
+
+  public static async deleteProduct(req: Request, res: Response) {
+    try {
+      const product = await ProductModel.findById(req.params.id)
+
+      if (!product) {
+        res.status(404).json({ data: null, message: 'Not product found.' })
+        return
+      }
+
+      await product.remove()
+      res.status(200).json({ data: true, message: 'Product deleted.' })
+    } catch (error) {
+      console.error('An error happened while deleting product:', error)
+      res.status(500).json({ data: null, message: 'Unable to delete product.' })
+    }
+  }
+
+  public static async updateProductById(req: Request, res: Response) {
+    try {
+      const product = await ProductModel.findById(req.params.id)
+
+      if (!product) {
+        res.status(404).json({ data: null, message: 'Not product found.' })
+        return
+      }
+
+      product.name = req.body.name || product.name
+
+      const updatedProduct = await product.save()
+
+      res.status(200).json({ data: updatedProduct, message: 'Product updated.' })
+    } catch (error) {
+      console.error("An error happened while updating the product's data:", error)
+      res.status(500).json({ data: null, message: "Unable to update product's data." })
+    }
+  }
 }
