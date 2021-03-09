@@ -29,43 +29,69 @@ export const Users: React.FC<UsersProps> = () => {
   const [isLoading, setLoading] = useState(false)
   const [usersError, setUsersError] = useState('')
   const [users, setUsers] = useState<Array<User>>([])
+  const [isDeletingUser, setIsDeletingUser] = useState(false)
+  const [deleteUserError, setDeleteUserError] = useState('')
   const currentUser = UserStore.useCurrentUser()
   const redirect = useRedirect(Config.Routes.login())
 
-  useEffect(() => {
-    if (!currentUser) {
-      return
+  async function getAllUsers() {
+    setLoading(true)
+
+    const response = await UserStore.getAllUsers()
+
+    if (!response || response.error || response.state === 'error' || !response.users) {
+      setUsersError(
+        response.error ?? 'An error occured while getting all users. Please try again later.',
+      )
+    } else {
+      setUsers(response.users)
     }
 
-    async function getAllUsers() {
-      setLoading(true)
+    setLoading(false)
+  }
 
-      const response = await UserStore.getAllUsers()
-
-      if (!response || response.error || response.state === 'error' || !response.users) {
-        setUsersError(
-          response.error ?? 'An error occured while getting all users. Please try again later.',
-        )
-      } else {
-        setUsers(response.users)
-      }
-
-      setLoading(false)
+  useEffect(() => {
+    if (!currentUser || !currentUser.isAdmin) {
+      return
     }
 
     getAllUsers()
   }, [currentUser])
 
-  if (!currentUser) {
+  if (!currentUser || !currentUser.isAdmin) {
     redirect()
     return <Spinner />
   }
 
+  const deleteUser = async (userId: string) => {
+    if (!window.confirm('Are you sure?')) {
+      return
+    }
+
+    setIsDeletingUser(true)
+
+    const response = await UserStore.deleteUser(userId)
+
+    if (!response || response.error || response.state === 'error' || !response.wasUserDeleted) {
+      setDeleteUserError(
+        response.error ?? 'An error occured while getting all users. Please try again later.',
+      )
+    } else {
+      await getAllUsers()
+    }
+
+    setIsDeletingUser(false)
+  }
+
+  const errorMessage = usersError || deleteUserError
+
   return (
     <>
-      {usersError && <Box mb="1rem">{usersError && <ErrorMessage message={usersError} />}</Box>}
+      {errorMessage && (
+        <Box mb="1rem">{errorMessage && <ErrorMessage message={errorMessage} />}</Box>
+      )}
       <Heading as="h1" mb="1rem">
-        My Orders
+        Users
       </Heading>
       {isLoading ? (
         <Spinner />
@@ -103,7 +129,7 @@ export const Users: React.FC<UsersProps> = () => {
                 <Td textAlign="center" paddingX="1rem">
                   <Flex alignItems="center" justifyContent="center">
                     <Link
-                      href={Config.Routes.user(user._id)}
+                      href={Config.Routes.editUser(user._id)}
                       role="button"
                       justifyContent="center"
                       fontSize="1.5rem"
@@ -116,8 +142,9 @@ export const Users: React.FC<UsersProps> = () => {
                       size="xs"
                       marginLeft="1rem"
                       variant="outline"
+                      isLoading={isDeletingUser}
                       onClick={() => {
-                        console.log('Delete user', user._id)
+                        deleteUser(user._id)
                       }}
                       icon={<FaTrash />}
                     />
