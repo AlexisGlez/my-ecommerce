@@ -117,6 +117,23 @@ export class UserController {
     }
   }
 
+  public static async deleteUser(req: RequestWithUser, res: Response) {
+    try {
+      const user = await UserModel.findById(req.params.id)
+
+      if (!user) {
+        res.status(404).json({ data: null, message: 'Not user found.' })
+        return
+      }
+
+      await user.remove()
+      res.status(200).json({ data: true, message: 'User deleted.' })
+    } catch (error) {
+      console.error('An error happened while deleting user:', error)
+      res.status(500).json({ data: null, message: 'Unable to delete user.' })
+    }
+  }
+
   public static async updateUserProfile(req: RequestWithUser, res: Response) {
     if (!req.user?._id) {
       res.status(401).json({ data: null, message: 'Unauthorized. Invalid user.' })
