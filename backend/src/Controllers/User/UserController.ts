@@ -134,6 +134,22 @@ export class UserController {
     }
   }
 
+  public static async getUserById(req: RequestWithUser, res: Response) {
+    try {
+      const user = await UserModel.findById(req.params.id).select('-password')
+
+      if (!user) {
+        res.status(404).json({ data: null, message: 'Not user found.' })
+        return
+      }
+
+      res.status(200).json({ data: user, message: 'User found.' })
+    } catch (error) {
+      console.error('An error happened while getting user:', error)
+      res.status(500).json({ data: null, message: 'Unable to get user.' })
+    }
+  }
+
   public static async updateUserProfile(req: RequestWithUser, res: Response) {
     if (!req.user?._id) {
       res.status(401).json({ data: null, message: 'Unauthorized. Invalid user.' })
@@ -157,6 +173,27 @@ export class UserController {
       const updatedUser = await user.save()
 
       res.status(200).json({ data: UserController.getUserData(updatedUser) })
+    } catch (error) {
+      console.error("An error happened while updating the user's data:", error)
+      res.status(500).json({ data: null, message: "Unable to update user's data." })
+    }
+  }
+
+  public static async updateUserById(req: RequestWithUser, res: Response) {
+    try {
+      const user = await UserModel.findById(req.params.id)
+
+      if (!user) {
+        res.status(404).json({ data: null, message: 'Not user found.' })
+        return
+      }
+
+      user.name = req.body.name || user.name
+      user.isAdmin = Boolean(req.body.isAdmin)
+
+      const updatedUser = await user.save()
+
+      res.status(200).json({ data: UserController.getUserPublicData(updatedUser) })
     } catch (error) {
       console.error("An error happened while updating the user's data:", error)
       res.status(500).json({ data: null, message: "Unable to update user's data." })
