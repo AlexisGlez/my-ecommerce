@@ -125,6 +125,53 @@ export class UserStore {
     }
   }
 
+  public static async getUserById(userId: string): Promise<{ user: User | null } & StateMachine> {
+    try {
+      const response = await Fetcher.get<User>(Config.Endpoints.userById(userId), {
+        headers: { Authorization: `Bearer ${state.currentUser?.token}` },
+      })
+
+      if (!response) {
+        throw new Error('Null response received.')
+      }
+
+      if (response.status >= 400) {
+        throw new Error(response.message ?? 'empty error message received.')
+      }
+
+      return { user: response.data, state: 'success', error: null }
+    } catch (error) {
+      console.error(`An error occurred while getting user:`, error)
+      return { user: null, state: 'error', error: error.message }
+    }
+  }
+
+  public static async updateUserById(
+    userId: string,
+    name: string,
+    isAdmin: boolean,
+  ): Promise<{ user: User | null } & StateMachine> {
+    try {
+      const response = await Fetcher.patch<User>(Config.Endpoints.userById(userId), {
+        data: { name, isAdmin },
+        headers: { Authorization: `Bearer ${state.currentUser?.token}` },
+      })
+
+      if (!response) {
+        throw new Error('Null response received.')
+      }
+
+      if (response.status >= 400) {
+        throw new Error(response.message ?? 'empty error message received.')
+      }
+
+      return { user: response.data, state: 'success', error: null }
+    } catch (error) {
+      console.error(`An error occurred while updating user:`, error)
+      return { user: null, state: 'error', error: error.message }
+    }
+  }
+
   public static useCurrentUser() {
     const snapshot = useProxy(state)
 
