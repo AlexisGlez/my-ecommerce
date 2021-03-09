@@ -11,6 +11,8 @@ UserRouter.route('/').get(authMiddleware, adminMiddleware, UserController.getUse
 UserRouter.route('/login').post(UserController.authUser)
 UserRouter.route('/profile').get(authMiddleware, UserController.getUserProfile)
 UserRouter.route('/profile').patch(authMiddleware, UserController.updateUserProfile)
+UserRouter.route('/:id').get(authMiddleware, adminMiddleware, UserController.getUserById)
+UserRouter.route('/:id').patch(authMiddleware, adminMiddleware, UserController.updateUserById)
 UserRouter.route('/:id').delete(authMiddleware, adminMiddleware, UserController.deleteUser)
 
 export { UserRouter }
