@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import {
   Box,
   Heading,
@@ -13,77 +13,58 @@ import {
   Icon,
   IconButton,
   Flex,
+  Button,
 } from '@chakra-ui/react'
-import { FaCheck, FaTimes, FaEdit, FaTrash } from 'react-icons/fa'
+import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa'
 
 import { Config } from '@app-src/shared/Config'
 import { ErrorMessage } from '@app-shared/components/ErrorMessage'
 import { Spinner } from '@app-shared/components/Spinner'
 import { useRedirect } from '@app-shared/hooks/useRedirect'
+import { useGetProducts } from '@app-shared/hooks/useGetProducts'
 import { UserStore } from '@app-stores/UserStore'
 import { Link } from '@app-shared/components/Link'
+import { formatNumber } from '@app-shared/utils/formatNumber'
 
-interface UsersProps {}
+interface ProductsProps {}
 
-export const Users: React.FC<UsersProps> = () => {
-  const [isLoading, setLoading] = useState(false)
-  const [usersError, setUsersError] = useState('')
-  const [users, setUsers] = useState<Array<User>>([])
-  const [isDeletingUser, setIsDeletingUser] = useState(false)
-  const [deleteUserError, setDeleteUserError] = useState('')
+export const Products: React.FC<ProductsProps> = () => {
+  const [isDeletingProduct, setIsDeletingProduct] = useState(false)
+  const [deleteProductError, setDeleteProductError] = useState('')
   const currentUser = UserStore.useCurrentUser()
   const redirect = useRedirect(Config.Routes.login())
-
-  async function getAllUsers() {
-    setLoading(true)
-
-    const response = await UserStore.getAllUsers()
-
-    if (!response || response.error || response.state === 'error' || !response.users) {
-      setUsersError(
-        response.error ?? 'An error occured while getting all users. Please try again later.',
-      )
-    } else {
-      setUsers(response.users)
-    }
-
-    setLoading(false)
-  }
-
-  useEffect(() => {
-    if (!currentUser || !currentUser.isAdmin) {
-      return
-    }
-
-    getAllUsers()
-  }, [currentUser])
+  const { products, state, error } = useGetProducts()
 
   if (!currentUser || !currentUser.isAdmin) {
     redirect()
     return <Spinner />
   }
 
-  const deleteUser = async (userId: string) => {
+  const deleteProduct = async (productId: string) => {
     if (!window.confirm('Are you sure?')) {
       return
     }
 
-    setIsDeletingUser(true)
+    setIsDeletingProduct(true)
 
-    const response = await UserStore.deleteUser(userId)
+    setDeleteProductError('')
 
-    if (!response || response.error || response.state === 'error' || !response.wasUserDeleted) {
-      setDeleteUserError(
-        response.error ?? 'An error occured while getting all users. Please try again later.',
-      )
-    } else {
-      await getAllUsers()
-    }
+    // const response = await UserStore.deleteUser(userId)
 
-    setIsDeletingUser(false)
+    // if (!response || response.error || response.state === 'error' || !response.wasUserDeleted) {
+    //   setDeleteUserError(
+    //     response.error ?? 'An error occured while getting all users. Please try again later.',
+    //   )
+    // } else {
+    //   await getAllUsers()
+    // }
+
+    setIsDeletingProduct(false)
   }
 
-  const errorMessage = usersError || deleteUserError
+  const onCreateProduct = () => {}
+
+  const errorMessage = error || deleteProductError
 
   return (
     <>
@@ -91,45 +72,50 @@ export const Users: React.FC<UsersProps> = () => {
         <Box mb="1rem">{errorMessage && <ErrorMessage message={errorMessage} />}</Box>
       )}
       <Heading as="h1" mb="1rem">
-        Users
+        Products
       </Heading>
-      {isLoading ? (
+      <Flex justifyContent="flex-end" mb="1rem">
+        <Button textTransform="uppercase" onClick={onCreateProduct}>
+          <Icon as={FaPlus} mr="0.5rem" /> Create Product
+        </Button>
+      </Flex>
+      {state === 'loading' ? (
         <Spinner />
       ) : (
         <Table variant="simple">
-          <TableCaption>Users</TableCaption>
+          <TableCaption>Products</TableCaption>
           <Thead>
             <Tr>
               <Th textAlign="center">Id</Th>
               <Th textAlign="center">Name</Th>
-              <Th textAlign="center">Email</Th>
-              <Th textAlign="center">Admin</Th>
+              <Th textAlign="center">Price</Th>
+              <Th textAlign="center">Category</Th>
+              <Th textAlign="center">Brand</Th>
               <Th textAlign="center">Actions</Th>
             </Tr>
           </Thead>
           <Tbody>
-            {users.map((user) => (
-              <Tr key={user._id}>
+            {products.map((product) => (
+              <Tr key={product._id}>
                 <Td textAlign="center" paddingX="1rem">
-                  {user._id}
+                  {product._id}
                 </Td>
                 <Td textAlign="center" paddingX="1rem">
-                  {user.name}
+                  {product.name}
                 </Td>
                 <Td textAlign="center" paddingX="1rem">
-                  <a href={`mailto:${user.email}`}>{user.email}</a>
+                  {formatNumber(product.price)}
                 </Td>
                 <Td textAlign="center" paddingX="1rem">
-                  {user.isAdmin ? (
-                    <Icon as={FaCheck} fill="green.500" />
-                  ) : (
-                    <Icon as={FaTimes} fill="red.500" />
-                  )}
+                  {product.category}
+                </Td>
+                <Td textAlign="center" paddingX="1rem">
+                  {product.brand}
                 </Td>
                 <Td textAlign="center" paddingX="1rem">
                   <Flex alignItems="center" justifyContent="center">
                     <Link
-                      href={Config.Routes.editUser(user._id)}
+                      href={Config.Routes.editProduct(product._id)}
                       role="button"
                       justifyContent="center"
                       fontSize="1.5rem"
@@ -142,9 +128,9 @@ export const Users: React.FC<UsersProps> = () => {
                       size="xs"
                       marginLeft="1rem"
                       variant="outline"
-                      isLoading={isDeletingUser}
+                      isLoading={isDeletingProduct}
                       onClick={() => {
-                        deleteUser(user._id)
+                        deleteProduct(product._id)
                       }}
                       icon={<FaTrash />}
                     />
@@ -157,8 +143,9 @@ export const Users: React.FC<UsersProps> = () => {
             <Tr>
               <Th textAlign="center">Id</Th>
               <Th textAlign="center">Name</Th>
-              <Th textAlign="center">Email</Th>
-              <Th textAlign="center">Admin</Th>
+              <Th textAlign="center">Price</Th>
+              <Th textAlign="center">Category</Th>
+              <Th textAlign="center">Brand</Th>
               <Th textAlign="center">Actions</Th>
             </Tr>
           </Tfoot>
