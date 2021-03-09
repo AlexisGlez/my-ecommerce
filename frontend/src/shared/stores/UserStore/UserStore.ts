@@ -81,6 +81,27 @@ export class UserStore {
     }
   }
 
+  public static async getAllUsers(): Promise<{ users: Array<User> | null } & StateMachine> {
+    try {
+      const response = await Fetcher.get<Array<User>>(Config.Endpoints.users(), {
+        headers: { Authorization: `Bearer ${state.currentUser?.token}` },
+      })
+
+      if (!response) {
+        throw new Error('Null response received.')
+      }
+
+      if (response.status >= 400) {
+        throw new Error(response.message ?? 'empty error message received.')
+      }
+
+      return { users: response.data, state: 'success', error: null }
+    } catch (error) {
+      console.error(`An error occurred while retrieving users:`, error)
+      return { users: null, state: 'error', error }
+    }
+  }
+
   public static useCurrentUser() {
     const snapshot = useProxy(state)
 

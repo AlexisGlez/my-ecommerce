@@ -78,6 +78,15 @@ export const Header: React.FC<HeaderProps> = () => {
                       Profile
                     </Link>
                   </MenuItem>
+                  {currentUser.isAdmin && (
+                    <>
+                      <MenuItem>
+                        <Link href={Config.Routes.users()} width="100%">
+                          All Users
+                        </Link>
+                      </MenuItem>
+                    </>
+                  )}
                   <MenuItem onClick={UserStore.logout}>Logout</MenuItem>
                 </MenuList>
               </Menu>

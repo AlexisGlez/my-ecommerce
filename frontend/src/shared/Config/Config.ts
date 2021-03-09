@@ -39,6 +39,14 @@ class Routes {
     return `/order/${orderId}`
   }
 
+  public static users() {
+    return `/admin/users`
+  }
+
+  public static user(userId: string) {
+    return `/user/${userId}`
+  }
+
   public static checkoutProcess() {
     return `${Routes.login()}?${Routes.addRedirectTo(Routes.shipping())}`
   }
