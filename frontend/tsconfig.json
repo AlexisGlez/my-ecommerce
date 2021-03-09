@@ -30,6 +30,7 @@
       "@app-checkout/*": ["src/App/screens/Checkout/*"],
       "@app-order/*": ["src/App/screens/Order/*"],
       "@app-users/*": ["src/App/screens/Users/*"],
+      "@app-edit-user/*": ["src/App/screens/EditUser/*"],
       "@app-stores/*": ["src/shared/stores/*"]
     },
     "preserveConstEnums": true,
