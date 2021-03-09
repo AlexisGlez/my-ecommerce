@@ -107,6 +107,16 @@ export class UserController {
     }
   }
 
+  public static async getUsers(_: RequestWithUser, res: Response) {
+    try {
+      const users = await UserModel.find({})
+      res.status(200).json({ data: users })
+    } catch (error) {
+      console.error('An error happened while retrieving users:', error)
+      res.status(500).json({ data: null, message: 'Unable get users data.' })
+    }
+  }
+
   public static async updateUserProfile(req: RequestWithUser, res: Response) {
     if (!req.user?._id) {
       res.status(401).json({ data: null, message: 'Unauthorized. Invalid user.' })
