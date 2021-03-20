@@ -1,3 +1,4 @@
+import path from 'path'
 import express from 'express'
 import cors from 'cors'
 
@@ -6,6 +7,7 @@ import { ProductRouter } from '@app-routes/Product'
 import { UserRouter } from '@app-routes/User'
 import { OrderRouter } from '@app-routes/Order'
 import { ConfigRouter } from '@app-routes/Config'
+import { FileUploaderRouter } from '@app-routes/FileUploader'
 import { urlNotFound } from '@app-middlewares/urlNotFound'
 
 Config.Database.connectDB()
@@ -19,8 +21,11 @@ app.use('/api/products', ProductRouter)
 app.use('/api/users', UserRouter)
 app.use('/api/orders', OrderRouter)
 app.use('/api/config', ConfigRouter)
+app.use('/api/upload', FileUploaderRouter)
 
 app.use(urlNotFound)
+
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
 app.listen(Config.Constants.port, () => {
   console.log(
