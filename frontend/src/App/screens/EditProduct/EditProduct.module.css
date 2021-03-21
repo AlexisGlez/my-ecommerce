@@ -1,0 +1,25 @@
+.image div:last-of-type {
+	margin-left: 1rem;
+  border-color: inherit;
+  border-radius: 0.375rem;
+  border: 1px solid;
+  width: 30%;
+}
+
+.image div:last-of-type label {
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  margin: 0;
+  text-align: center;
+}
+
+.image div:last-of-type input {
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+  width: 0.1px;
+}

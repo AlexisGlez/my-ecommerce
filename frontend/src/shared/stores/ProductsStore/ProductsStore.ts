@@ -80,4 +80,28 @@ export class ProductsStore {
       return { product: null, state: 'error', error: error.message }
     }
   }
+
+  public static async uploadImage(
+    formData: FormData,
+  ): Promise<{ image: string | null } & StateMachine> {
+    try {
+      const response = await Fetcher.post<string>(Config.Endpoints.uploadProductImage(), {
+        data: formData,
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+
+      if (!response) {
+        throw new Error('Null response received.')
+      }
+
+      if (response.status >= 400) {
+        throw new Error(response.message ?? 'File type not supported.')
+      }
+
+      return { image: response.data, state: 'success', error: null }
+    } catch (error) {
+      console.error(`An error occurred while uploading product image:`, error)
+      return { image: null, state: 'error', error: 'File type not supported.' }
+    }
+  }
 }

@@ -32,6 +32,6 @@ export class FileUploaderController {
   }
 
   public static async successfulUpload(req: Request, res: Response) {
-    res.status(201).send(`/${req.file.path}`)
+    res.status(201).send({ data: `/${req.file.path}`, message: 'Image Uploaded.' })
   }
 }

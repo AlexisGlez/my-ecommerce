@@ -19,6 +19,7 @@ interface InputProps {
   helperText?: string
   error?: string
   required?: boolean
+  className?: string
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -33,11 +34,13 @@ export const Input: React.FC<InputProps> = ({
   error,
   disabled,
   required,
+  className = '',
 }) => {
   return (
     <FormControl id={id} isInvalid={isInvalid}>
       <FormLabel>{label}</FormLabel>
       <ChakraInput
+        className={className}
         type={type}
         placeholder={placeholder}
         value={value}
