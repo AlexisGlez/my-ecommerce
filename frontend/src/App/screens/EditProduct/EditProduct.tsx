@@ -1,6 +1,6 @@
-import { useState, useEffect, FormEvent } from 'react'
+import { useState, useEffect, FormEvent, ChangeEvent } from 'react'
 import { useRouter } from 'next/router'
-import { Heading, VStack, Button, Box, Alert, AlertIcon } from '@chakra-ui/react'
+import { Heading, VStack, Button, Box, Alert, AlertIcon, Flex } from '@chakra-ui/react'
 
 import { Config } from '@app-src/shared/Config'
 import { Input } from '@app-shared/components/Input'
@@ -12,10 +12,13 @@ import { ProductsStore } from '@app-stores/ProductsStore'
 import { useRedirect } from '@app-shared/hooks/useRedirect'
 import { useGetProduct } from '@app-shared/hooks/useGetProduct'
 
+import styles from './EditProduct.module.css'
+
 interface EditProductProps {}
 
 export const EditProduct: React.FC<EditProductProps> = () => {
   const [isLoading, setLoading] = useState(false)
+  const [isImageUploading, setImageUploading] = useState(false)
   const [updateProductErrorMessage, setUpdateProductErrorMessage] = useState('')
   const [updateSuccess, setUpdateSuccess] = useState('')
   const currentUser = UserStore.useCurrentUser()
@@ -153,6 +156,33 @@ export const EditProduct: React.FC<EditProductProps> = () => {
     setLoading(false)
   }
 
+  const imageFileUploadHandler = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+
+    if (!file) {
+      return
+    }
+
+    setImageError('')
+
+    const formData = new FormData()
+    formData.append('image', file)
+
+    setImageUploading(true)
+
+    const response = await ProductsStore.uploadImage(formData)
+    console.log(response)
+    if (!response || response.error || response.state === 'error' || !response.image) {
+      setImageError(
+        response.error ?? 'An error occured while updating product. Please try again later.',
+      )
+    } else {
+      setImage(response.image)
+    }
+
+    setImageUploading(false)
+  }
+
   const errorMessage = error || updateProductErrorMessage
 
   return (
@@ -243,16 +273,27 @@ export const EditProduct: React.FC<EditProductProps> = () => {
             onChange={(event) => setCountInStock(event.target.value)}
             error={countInStockError}
           />
-          <Input
-            id="image"
-            isInvalid={Boolean(imageError)}
-            label="Image"
-            type="text"
-            placeholder="Enter image url"
-            value={image}
-            onChange={(event) => setImage(event.target.value)}
-            error={imageError}
-          />
+          <Flex className={styles.image} justifyContent="space-between" width="100%">
+            <Input
+              id="image"
+              isInvalid={Boolean(imageError)}
+              label="Paste Image URL"
+              type="text"
+              placeholder="Enter image url"
+              value={image}
+              onChange={(event) => setImage(event.target.value)}
+              error={imageError}
+            />
+            <Input
+              id="image-file"
+              isInvalid={Boolean(imageError)}
+              label="Or Upload Image File"
+              type="file"
+              placeholder="Choose File"
+              value=""
+              onChange={imageFileUploadHandler}
+            />
+          </Flex>
           <Button type="submit" isLoading={isLoading} disabled={isLoading}>
             Update
           </Button>

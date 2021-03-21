@@ -81,6 +81,10 @@ class Endpoints {
     return `${Endpoints.getProducts()}/${productId}`
   }
 
+  public static uploadProductImage() {
+    return `${process.env.BACKEND_ENDPOINT}/upload`
+  }
+
   public static users() {
     return `${process.env.BACKEND_ENDPOINT}/users`
   }
