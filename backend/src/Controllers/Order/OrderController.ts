@@ -112,4 +112,20 @@ export class OrderController {
       res.status(500).json({ data: null, message: 'Unable to get orders.' })
     }
   }
+
+  public static async getAllOrders(req: RequestWithUser, res: Response) {
+    if (!req.user?.id) {
+      res.status(401).json({ data: null, message: 'Unauthorized. Invalid user.' })
+      return
+    }
+
+    try {
+      const orders = await OrderModel.find({}).populate('user', 'id name')
+
+      res.status(200).json({ data: orders || [], message: 'Orders found.' })
+    } catch (error) {
+      console.error('An error happened while getting user orders:', error)
+      res.status(500).json({ data: null, message: 'Unable to get orders.' })
+    }
+  }
 }
