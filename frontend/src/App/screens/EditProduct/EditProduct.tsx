@@ -171,7 +171,7 @@ export const EditProduct: React.FC<EditProductProps> = () => {
     setImageUploading(true)
 
     const response = await ProductsStore.uploadImage(formData)
-    console.log(response)
+
     if (!response || response.error || response.state === 'error' || !response.image) {
       setImageError(
         response.error ?? 'An error occured while updating product. Please try again later.',
@@ -294,7 +294,7 @@ export const EditProduct: React.FC<EditProductProps> = () => {
               onChange={imageFileUploadHandler}
             />
           </Flex>
-          <Button type="submit" isLoading={isLoading} disabled={isLoading}>
+          <Button type="submit" isLoading={isLoading || isImageUploading} disabled={isLoading}>
             Update
           </Button>
         </VStack>

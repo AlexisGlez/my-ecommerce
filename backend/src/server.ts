@@ -22,10 +22,9 @@ app.use('/api/users', UserRouter)
 app.use('/api/orders', OrderRouter)
 app.use('/api/config', ConfigRouter)
 app.use('/api/upload', FileUploaderRouter)
+app.use('/api/images', express.static(path.join(__dirname, '../uploads')))
 
 app.use(urlNotFound)
-
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
 app.listen(Config.Constants.port, () => {
   console.log(
