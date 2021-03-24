@@ -32,6 +32,13 @@ export class FileUploaderController {
   }
 
   public static async successfulUpload(req: Request, res: Response) {
-    res.status(201).send({ data: `/${req.file.path}`, message: 'Image Uploaded.' })
+    console.log(req.protocol + '://' + req.get('host') + req.originalUrl)
+    res.status(201).send({
+      data: `${req.protocol}://${req.get('host')}${req.originalUrl}/${req.file.path}`.replace(
+        'upload/uploads',
+        'images',
+      ),
+      message: 'Image Uploaded.',
+    })
   }
 }

@@ -16,6 +16,10 @@ export class Fetcher {
   }
 
   public static async get<T>(url: Fetcher.Url, config?: Fetcher.GetRequest) {
+    if (url.includes('undefined')) {
+      return null
+    }
+
     return Fetcher.httpPetition<T>('get', url, config)
   }
 
