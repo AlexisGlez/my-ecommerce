@@ -1,6 +1,7 @@
 import path from 'path'
 import express from 'express'
 import cors from 'cors'
+import morgan from 'morgan'
 
 import { Config } from '@app-config/Config'
 import { ProductRouter } from '@app-routes/Product'
@@ -13,6 +14,10 @@ import { urlNotFound } from '@app-middlewares/urlNotFound'
 Config.Database.connectDB()
 
 const app = express()
+
+if (Config.Constants.isDev) {
+  app.use(morgan('dev'))
+}
 
 app.use(cors({ origin: Config.Constants.allowedOrigins, optionsSuccessStatus: 200 }))
 app.use(express.json())
