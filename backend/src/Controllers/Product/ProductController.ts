@@ -106,4 +106,54 @@ export class ProductController {
       res.status(500).json({ data: [], message: 'Unable to update product.' })
     }
   }
+
+  public static async createProductReview(req: RequestWithUser, res: Response) {
+    if (!req.user?._id) {
+      res.status(401).json({ data: null, message: 'Unauthorized. Invalid user.' })
+      return
+    }
+
+    try {
+      const product = await ProductModel.findById(req.params.id)
+
+      if (!product) {
+        res.status(404).json({ data: null, message: 'Not product found.' })
+        return
+      }
+
+      const alreadyReviewed = product.reviews?.find(
+        (review) => review.user.toString() === req.user!._id.toString(),
+      )
+
+      if (alreadyReviewed) {
+        res.status(400).json({ data: null, message: 'Product already reviewed.' })
+        return
+      }
+
+      const review = {
+        name: req.user!.name,
+        rating: Number(req.body.rating),
+        comment: req.body.comment,
+        user: req.user._id,
+      }
+
+      if (!product.reviews) {
+        product.reviews = [review]
+      } else {
+        product.reviews.push(review)
+      }
+
+      product.numReviews = product.reviews.length
+
+      product.rating =
+        product.reviews.reduce((acc, review) => review.rating + acc, 0) / product.numReviews
+
+      const updatedProduct = await product.save()
+
+      res.status(201).json({ data: updatedProduct, message: 'Review created.' })
+    } catch (error) {
+      console.error('An error happened while creating product review:', error)
+      res.status(500).json({ data: [], message: 'Unable to create product review.' })
+    }
+  }
 }

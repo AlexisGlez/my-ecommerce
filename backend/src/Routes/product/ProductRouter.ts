@@ -15,5 +15,6 @@ ProductRouter.route('/:id').patch(
   ProductController.updateProductById,
 )
 ProductRouter.route('/:id').delete(authMiddleware, adminMiddleware, ProductController.deleteProduct)
+ProductRouter.route('/:id/reviews').post(authMiddleware, ProductController.createProductReview)
 
 export { ProductRouter }
