@@ -90,6 +90,11 @@ export const Header: React.FC<HeaderProps> = () => {
                           All Products
                         </Link>
                       </MenuItem>
+                      <MenuItem>
+                        <Link href={Config.Routes.orders()} width="100%">
+                          All Orders
+                        </Link>
+                      </MenuItem>
                     </>
                   )}
                   <MenuItem onClick={UserStore.logout}>Logout</MenuItem>

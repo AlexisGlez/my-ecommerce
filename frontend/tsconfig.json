@@ -30,6 +30,7 @@
       "@app-checkout/*": ["src/App/screens/Checkout/*"],
       "@app-order/*": ["src/App/screens/Order/*"],
       "@app-users/*": ["src/App/screens/Users/*"],
+      "@app-orders/*": ["src/App/screens/Orders/*"],
       "@app-edit-user/*": ["src/App/screens/EditUser/*"],
       "@app-products/*": ["src/App/screens/Products/*"],
       "@app-edit-product/*": ["src/App/screens/EditProduct/*"],

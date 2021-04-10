@@ -31,7 +31,7 @@ export const Profile: React.FC<ProfileProps> = () => {
     async function getUserOrders() {
       setAreOrdersLoading(true)
 
-      const response = await OrderStore.getAllOrders(currentUser!)
+      const response = await OrderStore.getAllUserOrders(currentUser!)
 
       if (!response || response.error || response.state === 'error' || !response.orders) {
         setOrdersError(
