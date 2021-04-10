@@ -113,7 +113,7 @@ export const Orders: React.FC<OrdersProps> = () => {
                 <Td textAlign="center" paddingX="1rem">
                   <Flex alignItems="center" justifyContent="center">
                     <Link
-                      href={Config.Routes.editOrder(order._id)}
+                      href={Config.Routes.order(order._id)}
                       role="button"
                       justifyContent="center"
                       fontSize="1.5rem"

@@ -41,6 +41,11 @@ interface OrderDetailsProps {
   orderData?: OrderDetails
   onSuccessPaymentHandler?: (paymentResult: PaymentResult) => Promise<void>
   isPaypalReady?: boolean
+  currentUser: User | null
+  deliverOrderButton: {
+    onClick: () => void
+    isLoading: boolean
+  }
 }
 
 export const OrderDetails: React.FC<OrderDetailsProps> = ({
@@ -54,6 +59,8 @@ export const OrderDetails: React.FC<OrderDetailsProps> = ({
   orderData,
   onSuccessPaymentHandler,
   isPaypalReady,
+  currentUser,
+  deliverOrderButton,
 }) => {
   const subtotal = items.reduce((acc, curr) => acc + curr.product.price * curr.quantity, 0)
 
@@ -162,6 +169,24 @@ export const OrderDetails: React.FC<OrderDetailsProps> = ({
               }
             />
           )}
+          {currentUser &&
+            currentUser.isAdmin &&
+            orderData &&
+            orderData.isPaid &&
+            !orderData.isDelivered && (
+              <TableRow
+                value={
+                  <Button
+                    width="100%"
+                    textTransform="uppercase"
+                    onClick={deliverOrderButton.onClick}
+                    isLoading={deliverOrderButton.isLoading}
+                  >
+                    Mark as Deliver
+                  </Button>
+                }
+              />
+            )}
         </VStack>
       </GridItem>
     </Grid>
