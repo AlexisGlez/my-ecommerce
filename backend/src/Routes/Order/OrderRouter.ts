@@ -11,5 +11,10 @@ OrderRouter.route('/').get(authMiddleware, adminMiddleware, OrderController.getA
 OrderRouter.route('/all').get(authMiddleware, OrderController.getAllUserOrders)
 OrderRouter.route('/:id').get(authMiddleware, OrderController.getOrderById)
 OrderRouter.route('/:id/pay').patch(authMiddleware, OrderController.payOrder)
+OrderRouter.route('/:id/deliver').patch(
+  authMiddleware,
+  adminMiddleware,
+  OrderController.deliverOrder,
+)
 
 export { OrderRouter }

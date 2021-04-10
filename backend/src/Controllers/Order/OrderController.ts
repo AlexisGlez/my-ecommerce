@@ -128,4 +128,30 @@ export class OrderController {
       res.status(500).json({ data: null, message: 'Unable to get orders.' })
     }
   }
+
+  public static async deliverOrder(req: RequestWithUser, res: Response) {
+    if (!req.params.id) {
+      res.status(400).json({ data: null, message: 'No order id found.' })
+      return
+    }
+
+    try {
+      const order = await OrderModel.findById(req.params.id)
+
+      if (!order) {
+        res.status(404).json({ data: null, message: 'No order found.' })
+        return
+      }
+
+      order.isDelivered = true
+      order.deliveredAt = Date.now().toString()
+
+      const updatedOrder = await order.save()
+
+      res.status(200).json({ data: updatedOrder, message: 'Order delivered.' })
+    } catch (error) {
+      console.error('An error happened while getting order by id:', error)
+      res.status(500).json({ data: null, message: 'Unable to get order.' })
+    }
+  }
 }
