@@ -55,6 +55,14 @@ class Routes {
     return `/admin/product/${productId}/edit`
   }
 
+  public static orders() {
+    return `/admin/orders`
+  }
+
+  public static editOrder(orderId: string) {
+    return `/admin/order/${orderId}/edit`
+  }
+
   public static checkoutProcess() {
     return `${Routes.login()}?${Routes.addRedirectTo(Routes.shipping())}`
   }
