@@ -13,6 +13,7 @@ interface OrderProps {}
 
 export const Order: React.FC<OrderProps> = () => {
   const [isLoading, setLoading] = useState(false)
+  const [isDeliveringOrder, setIsDeliveringOrder] = useState(false)
   const [isPaypalReady, setPaypalReady] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null)
@@ -73,8 +74,6 @@ export const Order: React.FC<OrderProps> = () => {
   }
 
   const onSuccessPaymentHandler = async (paymentResult: PaymentResult) => {
-    console.log(paymentResult)
-
     if (!currentUser || !router.query.id) {
       return
     }
@@ -96,6 +95,26 @@ export const Order: React.FC<OrderProps> = () => {
     }
 
     setLoading(false)
+  }
+
+  const deliverOrder = async () => {
+    if (!currentUser || !router.query.id) {
+      return
+    }
+
+    setIsDeliveringOrder(true)
+
+    const response = await OrderStore.deliverOrder(currentUser, router.query.id as string)
+
+    if (!response || response.error || response.state === 'error' || !response.order) {
+      setErrorMessage(
+        response.error ?? 'An error occured while delivering order. Please try again later.',
+      )
+    } else {
+      setOrderDetails(response.order)
+    }
+
+    setIsDeliveringOrder(false)
   }
 
   return (
@@ -128,6 +147,8 @@ export const Order: React.FC<OrderProps> = () => {
           orderData={orderDetails}
           onSuccessPaymentHandler={onSuccessPaymentHandler}
           isPaypalReady={isPaypalReady}
+          currentUser={currentUser}
+          deliverOrderButton={{ onClick: deliverOrder, isLoading: isDeliveringOrder }}
         />
       )}
     </>

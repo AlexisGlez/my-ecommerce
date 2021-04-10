@@ -59,10 +59,6 @@ class Routes {
     return `/admin/orders`
   }
 
-  public static editOrder(orderId: string) {
-    return `/admin/order/${orderId}/edit`
-  }
-
   public static checkoutProcess() {
     return `${Routes.login()}?${Routes.addRedirectTo(Routes.shipping())}`
   }
@@ -123,6 +119,10 @@ class Endpoints {
 
   public static payOrder(orderId: string) {
     return `${Endpoints.orderById(orderId)}/pay`
+  }
+
+  public static deliverOrder(orderId: string) {
+    return `${Endpoints.orderById(orderId)}/deliver`
   }
 
   public static paypalId() {

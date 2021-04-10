@@ -113,7 +113,7 @@ export class OrderStore {
 
       return { order: response.data, state: 'success', error: null }
     } catch (error) {
-      console.error(`An error occurred while getting order by id:`, error)
+      console.error(`An error occurred while paying order:`, error)
 
       return { order: null, state: 'error', error: error.message }
     }
@@ -180,6 +180,31 @@ export class OrderStore {
       console.error(`An error occurred while getting user orders:`, error)
 
       return { orders: [], state: 'error', error: error.message }
+    }
+  }
+
+  public static async deliverOrder(
+    currentUser: User,
+    orderId: string,
+  ): Promise<{ order: OrderDetails | null } & StateMachine> {
+    try {
+      let response = await Fetcher.patch<OrderDetails>(Config.Endpoints.deliverOrder(orderId), {
+        headers: { Authorization: `Bearer ${currentUser.token}` },
+      })
+
+      if (!response) {
+        throw new Error('Null response received.')
+      }
+
+      if (response.status >= 400) {
+        throw new Error(response.message ?? 'empty error message received.')
+      }
+
+      return { order: response.data, state: 'success', error: null }
+    } catch (error) {
+      console.error(`An error occurred while delivering order:`, error)
+
+      return { order: null, state: 'error', error: error.message }
     }
   }
 
