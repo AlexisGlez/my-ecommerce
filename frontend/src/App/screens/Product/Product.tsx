@@ -13,6 +13,7 @@ import { CartStore } from '@app-stores/CartStore'
 
 import { ProductInformation } from './components/ProductInformation'
 import { AddToCartTable } from './components/AddToCartTable'
+import { Reviews } from './components/Reviews'
 
 type ProductProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
@@ -50,6 +51,8 @@ export const Product: React.FC<ProductProps> = ({ productResponse }) => {
               name={product.name}
               description={product.description}
               price={product.price}
+              rating={product.rating}
+              totalReviews={product.numReviews}
               divider={stackDivider}
             />
           </GridItem>
@@ -60,6 +63,15 @@ export const Product: React.FC<ProductProps> = ({ productResponse }) => {
               divider={stackDivider}
               onAddToCart={onAddToCart}
             />
+          </GridItem>
+        </Grid>
+        <Grid
+          mt="1rem"
+          templateColumns={{ md: 'repeat(1, 1fr)', lg: 'repeat(12, 1fr)' }}
+          width="100%"
+        >
+          <GridItem colSpan={{ md: 1, lg: 6 }}>
+            <Reviews productId={product._id} reviews={product.reviews} divider={stackDivider} />
           </GridItem>
         </Grid>
       </VStack>

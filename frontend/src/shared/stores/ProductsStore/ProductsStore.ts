@@ -104,4 +104,33 @@ export class ProductsStore {
       return { image: null, state: 'error', error: 'File type not supported.' }
     }
   }
+
+  public static async createProductReview(
+    currentUser: User,
+    productId: string,
+    data: { rating: number; comment: string },
+  ): Promise<{ product: Product | null } & StateMachine> {
+    try {
+      const response = await Fetcher.post<Product>(
+        Config.Endpoints.createProductReview(productId),
+        {
+          headers: { Authorization: `Bearer ${currentUser.token}` },
+          data,
+        },
+      )
+
+      if (!response) {
+        throw new Error('Null response received.')
+      }
+
+      if (response.status >= 400) {
+        throw new Error(response.message ?? 'empty error message received.')
+      }
+
+      return { product: response.data, state: 'success', error: null }
+    } catch (error) {
+      console.error(`An error occurred while creating product review:`, error)
+      return { product: null, state: 'error', error: error.message }
+    }
+  }
 }

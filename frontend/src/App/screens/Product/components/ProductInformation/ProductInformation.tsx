@@ -17,6 +17,8 @@ interface ProductInformationProps {
   price: number
   description: string
   divider: React.ReactElement
+  totalReviews: number
+  rating: number
 }
 
 export const ProductInformation: React.FC<ProductInformationProps> = ({
@@ -24,6 +26,8 @@ export const ProductInformation: React.FC<ProductInformationProps> = ({
   price,
   description,
   divider,
+  totalReviews,
+  rating,
 }) => {
   return (
     <VStack divider={divider}>
@@ -31,7 +35,7 @@ export const ProductInformation: React.FC<ProductInformationProps> = ({
         {name}
       </Heading>
       <Flex justifyContent={{ base: 'center', lg: 'left' }} {...stackStyles}>
-        <Rating rating={5} label={`${5} reviews`} />
+        <Rating rating={rating} label={`${totalReviews} reviews`} />
       </Flex>
       <Text fontSize="md" {...textStyles}>
         Price: ${price}

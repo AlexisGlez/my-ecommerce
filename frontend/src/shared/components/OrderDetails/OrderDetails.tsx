@@ -41,8 +41,8 @@ interface OrderDetailsProps {
   orderData?: OrderDetails
   onSuccessPaymentHandler?: (paymentResult: PaymentResult) => Promise<void>
   isPaypalReady?: boolean
-  currentUser: User | null
-  deliverOrderButton: {
+  currentUser?: User | null
+  deliverOrderButton?: {
     onClick: () => void
     isLoading: boolean
   }
@@ -169,7 +169,8 @@ export const OrderDetails: React.FC<OrderDetailsProps> = ({
               }
             />
           )}
-          {currentUser &&
+          {deliverOrderButton &&
+            currentUser &&
             currentUser.isAdmin &&
             orderData &&
             orderData.isPaid &&

@@ -1,4 +1,4 @@
-import useSWR from 'swr'
+import useSWR, { mutate } from 'swr'
 
 import { Fetcher } from '@app-shared/Fetcher'
 import { Config } from '@app-shared/Config'
@@ -31,4 +31,8 @@ export function useGetProduct(
   }
 
   return { product: data.data, state: 'success', error: null }
+}
+
+export function refetchProduct(productId: string) {
+  mutate(Config.Endpoints.getProductById(productId))
 }
