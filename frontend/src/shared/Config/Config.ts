@@ -85,6 +85,10 @@ class Endpoints {
     return `${Endpoints.getProducts()}/${productId}`
   }
 
+  public static createProductReview(productId: string) {
+    return `${Endpoints.getProductById(productId)}/reviews`
+  }
+
   public static uploadProductImage() {
     return `${process.env.BACKEND_ENDPOINT}/upload`
   }

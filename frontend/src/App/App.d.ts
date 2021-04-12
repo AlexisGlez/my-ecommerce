@@ -1,3 +1,13 @@
+type Review = {
+  _id: string
+  name: string
+  rating: number
+  createdAt: string
+  comment: string
+}
+
+type Reviews = Array<Review>
+
 type Product = {
   _id: string
   name: string
@@ -9,6 +19,7 @@ type Product = {
   countInStock: number
   rating: number
   numReviews: number
+  reviews?: Reviews
 }
 
 type Products = Array<Product>
