@@ -20,6 +20,8 @@ import { Config } from '@app-shared/Config'
 import { Link } from '@app-shared/components/Link'
 import { UserStore } from '@app-stores/UserStore'
 
+import { Search } from './components/Search'
+
 interface HeaderProps {}
 
 export const Header: React.FC<HeaderProps> = () => {
@@ -62,6 +64,7 @@ export const Header: React.FC<HeaderProps> = () => {
           >
             My-Ecommerce
           </Link>
+          <Search />
           <Spacer />
           <Flex alignItems="center">
             <Link href={Config.Routes.cart()}>

@@ -11,7 +11,7 @@ interface InputProps {
   id: string
   isInvalid: boolean
   disabled?: boolean
-  label: string
+  label?: string
   type: string
   onChange: (event: ChangeEvent<HTMLInputElement>) => void
   placeholder: string
@@ -38,7 +38,7 @@ export const Input: React.FC<InputProps> = ({
 }) => {
   return (
     <FormControl id={id} isInvalid={isInvalid}>
-      <FormLabel>{label}</FormLabel>
+      {label && <FormLabel>{label}</FormLabel>}
       <ChakraInput
         className={className}
         type={type}

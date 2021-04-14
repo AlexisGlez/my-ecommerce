@@ -1,4 +1,5 @@
-import { InferGetStaticPropsType } from 'next'
+import { InferGetStaticPropsType, GetStaticProps } from 'next'
+import { useRouter } from 'next/router'
 import { SimpleGrid } from '@chakra-ui/react'
 import { useGetProducts } from '@app-shared/hooks/useGetProducts'
 import { Fetcher } from '@app-shared/Fetcher'
@@ -10,7 +11,12 @@ import { ProductCard } from './components/ProductCard'
 type HomeProps = InferGetStaticPropsType<typeof getStaticProps>
 
 export const Home: React.FC<HomeProps> = ({ productsResponse }) => {
-  const { products, state, error } = useGetProducts(productsResponse)
+  const router = useRouter()
+
+  const { products, state, error } = useGetProducts(
+    productsResponse,
+    router.query.keyword as string,
+  )
 
   return (
     <StateMachineContent state={state} error={error}>
@@ -32,7 +38,7 @@ export const Home: React.FC<HomeProps> = ({ productsResponse }) => {
   )
 }
 
-export const getStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const res = await Fetcher.get<Products>(Config.Endpoints.getProducts())
 
   if (!res || !res.data) {
