@@ -59,6 +59,10 @@ class Routes {
     return `/admin/orders`
   }
 
+  public static search(keyword: string) {
+    return `/search/${keyword}`
+  }
+
   public static checkoutProcess() {
     return `${Routes.login()}?${Routes.addRedirectTo(Routes.shipping())}`
   }
@@ -77,8 +81,8 @@ class Routes {
 }
 
 class Endpoints {
-  public static getProducts() {
-    return `${process.env.BACKEND_ENDPOINT}/products`
+  public static getProducts(keyword?: string) {
+    return `${process.env.BACKEND_ENDPOINT}/products${keyword ? `?keyword=${keyword}` : ''}`
   }
 
   public static getProductById(productId: string) {
