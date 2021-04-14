@@ -4,9 +4,17 @@ import { ProductModel } from '@app-models/Product'
 import { RequestWithUser } from '@app-middlewares/auth'
 
 export class ProductController {
-  public static async getProducts(_: Request, res: Response) {
+  public static async getProducts(req: Request, res: Response) {
     try {
-      const products = await ProductModel.find({})
+      const query = req.query.keyword
+        ? {
+            name: {
+              $regex: req.query.keyword as string,
+              $options: 'i',
+            },
+          }
+        : {}
+      const products = await ProductModel.find(query)
       res.json({ data: products })
     } catch (error) {
       console.error('An error happened while retrieving all products:', error)
