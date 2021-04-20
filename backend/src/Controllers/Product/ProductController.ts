@@ -6,6 +6,8 @@ import { RequestWithUser } from '@app-middlewares/auth'
 export class ProductController {
   public static async getProducts(req: Request, res: Response) {
     try {
+      const pageSize = Number(req.query.pageSize) || 10
+      const pageNumber = Number(req.query.currentPage) || 1
       const query = req.query.keyword
         ? {
             name: {
@@ -14,8 +16,11 @@ export class ProductController {
             },
           }
         : {}
+      const productsCount = await ProductModel.countDocuments(query)
       const products = await ProductModel.find(query)
-      res.json({ data: products })
+        .limit(pageSize)
+        .skip(pageSize * (pageNumber - 1))
+      res.json({ data: { products, page: pageNumber, pages: Math.ceil(productsCount / pageSize) } })
     } catch (error) {
       console.error('An error happened while retrieving all products:', error)
       res.status(500).json({ data: [], message: 'Unable to retrieve products.' })

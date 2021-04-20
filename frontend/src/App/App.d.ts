@@ -24,6 +24,12 @@ type Product = {
 
 type Products = Array<Product>
 
+type ProductsResponse = {
+  products: Products
+  page: number
+  pages: number
+}
+
 type User = {
   _id: string
   name: string

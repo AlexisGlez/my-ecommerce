@@ -81,8 +81,22 @@ class Routes {
 }
 
 class Endpoints {
-  public static getProducts(keyword?: string) {
-    return `${process.env.BACKEND_ENDPOINT}/products${keyword ? `?keyword=${keyword}` : ''}`
+  public static getProducts(query?: { keyword?: string; pageSize?: number; currentPage?: number }) {
+    let stringifiedQuery = ''
+    if (query) {
+      stringifiedQuery = Object.keys(query).reduce((acc, curr, index) => {
+        if ((query as any)[curr] == null) {
+          return acc
+        }
+        return `${acc}${curr}=${(query as any)[curr]}${
+          index < Object.keys(query).length - 1 ? '&' : ''
+        }`
+      }, '')
+    }
+
+    return `${process.env.BACKEND_ENDPOINT}/products${
+      stringifiedQuery.length ? `?${stringifiedQuery}` : ''
+    }`
   }
 
   public static getProductById(productId: string) {
