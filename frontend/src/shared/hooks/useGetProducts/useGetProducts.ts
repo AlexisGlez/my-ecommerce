@@ -1,7 +1,6 @@
 import useSWR from 'swr'
 
 import { Fetcher } from '@app-shared/Fetcher'
-import { Config } from '@app-shared/Config'
 
 type Response = {
   products: Products
@@ -17,13 +16,11 @@ const emptyState = {
 }
 
 export function useGetProducts(
+  productsEndpoint: string,
   initialProducts?: Fetcher.Response<ProductsResponse>,
-  keyword?: string,
-  currentPage?: number,
-  pageSize?: number,
 ): Response {
   const { data, error, revalidate } = useSWR<Fetcher.Response<ProductsResponse>>(
-    Config.Endpoints.getProducts({ keyword, currentPage, pageSize }),
+    productsEndpoint,
     Fetcher.get,
     {
       initialData: initialProducts,
