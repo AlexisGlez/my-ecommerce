@@ -37,7 +37,7 @@ export const Products: React.FC<ProductsProps> = () => {
   const [deleteProductError, setDeleteProductError] = useState('')
   const currentUser = UserStore.useCurrentUser()
   const redirect = useRedirect(Config.Routes.login())
-  const { products, state, error, revalidate } = useGetProducts()
+  const { products, state, error, revalidate } = useGetProducts(Config.Endpoints.getProducts())
   const router = useRouter()
 
   if (!currentUser || !currentUser.isAdmin) {

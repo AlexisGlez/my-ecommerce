@@ -1,0 +1,40 @@
+.pagination {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.pagination li {
+  border-radius: 8px;
+  border: 1px solid;
+  list-style-type: none;
+  margin-right: 1rem;
+  width: 3rem;
+}
+
+.pagination li:last-child {
+  margin-right: 0;
+}
+
+.pagination li a {
+  display: inline-block;
+  height: 100%;
+  padding: 4px 8px;
+  width: 100%;
+}
+
+.active {
+  opacity: 0.5;
+}
+
+@media only screen and (max-width: 510px) {
+  .pagination li {
+    margin-right: 0.5rem;
+    width: 2rem;
+  }
+
+  .pagination li a {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+}

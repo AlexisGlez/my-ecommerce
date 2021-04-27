@@ -6,7 +6,7 @@ import { RequestWithUser } from '@app-middlewares/auth'
 export class ProductController {
   public static async getProducts(req: Request, res: Response) {
     try {
-      const pageSize = Number(req.query.pageSize) || 10
+      const pageSize = Number(req.query.pageSize) || 100
       const pageNumber = Number(req.query.currentPage) || 1
       const query = req.query.keyword
         ? {
