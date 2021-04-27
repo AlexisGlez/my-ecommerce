@@ -169,4 +169,19 @@ export class ProductController {
       res.status(500).json({ data: [], message: 'Unable to create product review.' })
     }
   }
+
+  public static async getTopProducts(_: Request, res: Response) {
+    try {
+      const products = await ProductModel.find({}).sort({ rating: -1 }).limit(3)
+
+      if (products) {
+        res.json({ data: products, message: 'Top rated products.' })
+      } else {
+        res.status(404).json({ data: null, message: 'Product not found.' })
+      }
+    } catch (error) {
+      console.error('An error happened while retrieving a product by id:', error)
+      res.status(500).json({ data: null, message: 'Unable to find product.' })
+    }
+  }
 }

@@ -7,6 +7,7 @@ import { adminMiddleware } from '@app-middlewares/admin'
 const ProductRouter = express.Router()
 
 ProductRouter.route('/').get(ProductController.getProducts)
+ProductRouter.route('/top').get(ProductController.getTopProducts)
 ProductRouter.route('/').post(authMiddleware, adminMiddleware, ProductController.createProduct)
 ProductRouter.route('/:id').get(ProductController.getProductById)
 ProductRouter.route('/:id').patch(
