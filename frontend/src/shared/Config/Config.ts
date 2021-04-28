@@ -99,6 +99,10 @@ class Endpoints {
     }`
   }
 
+  public static getTopProducts() {
+    return `${Endpoints.getProducts()}/top`
+  }
+
   public static getProductById(productId: string) {
     return `${Endpoints.getProducts()}/${productId}`
   }
