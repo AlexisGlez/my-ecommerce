@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { InferGetStaticPropsType, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
-import { SimpleGrid } from '@chakra-ui/react'
+import { SimpleGrid, Heading } from '@chakra-ui/react'
 import { useGetProducts } from '@app-shared/hooks/useGetProducts'
 import { Fetcher } from '@app-shared/Fetcher'
 import { Config } from '@app-shared/Config'
@@ -9,6 +9,7 @@ import { StateMachineContent } from '@app-shared/components/StateMachineContent'
 import { Pagination } from '@app-shared/components/Pagination'
 
 import { ProductCard } from './components/ProductCard'
+import { ProductCarousel } from './components/ProductCarousel'
 
 const PAGE_SIZE = 5
 
@@ -36,23 +37,29 @@ export const Home: React.FC<HomeProps> = ({ productsResponse }) => {
   }
 
   return (
-    <StateMachineContent state={state} error={error}>
-      <SimpleGrid columns={{ sm: 1, md: 2, lg: 3, xl: 4 }} spacing="1rem">
-        {products.map((product) => (
-          <ProductCard
-            key={product._id}
-            id={product._id}
-            name={product.name}
-            image={product.image}
-            description={product.description}
-            rating={product.rating}
-            numReviews={product.numReviews}
-            price={product.price}
-          />
-        ))}
-      </SimpleGrid>
-      {pages > 1 && <Pagination pageCount={pages} onPageChange={onPageChange} />}
-    </StateMachineContent>
+    <>
+      {!router.query.keyword && <ProductCarousel />}
+      <StateMachineContent state={state} error={error}>
+        <Heading my="1rem" textAlign="start">
+          Latest Products
+        </Heading>
+        <SimpleGrid columns={{ sm: 1, md: 2, lg: 3, xl: 4 }} spacing="1rem">
+          {products.map((product) => (
+            <ProductCard
+              key={product._id}
+              id={product._id}
+              name={product.name}
+              image={product.image}
+              description={product.description}
+              rating={product.rating}
+              numReviews={product.numReviews}
+              price={product.price}
+            />
+          ))}
+        </SimpleGrid>
+        {pages > 1 && <Pagination pageCount={pages} onPageChange={onPageChange} />}
+      </StateMachineContent>
+    </>
   )
 }
 
