@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { InferGetStaticPropsType, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
-import { SimpleGrid, Heading } from '@chakra-ui/react'
+import { SimpleGrid, Heading, Box } from '@chakra-ui/react'
 import { useGetProducts } from '@app-shared/hooks/useGetProducts'
 import { Fetcher } from '@app-shared/Fetcher'
 import { Config } from '@app-shared/Config'
@@ -37,7 +37,7 @@ export const Home: React.FC<HomeProps> = ({ productsResponse }) => {
   }
 
   return (
-    <>
+    <Box flexDirection="column" alignItems="center" justifyContent="center">
       {!router.query.keyword && <ProductCarousel />}
       <StateMachineContent state={state} error={error}>
         <Heading my="1rem" textAlign="start">
@@ -59,7 +59,7 @@ export const Home: React.FC<HomeProps> = ({ productsResponse }) => {
         </SimpleGrid>
         {pages > 1 && <Pagination pageCount={pages} onPageChange={onPageChange} />}
       </StateMachineContent>
-    </>
+    </Box>
   )
 }
 
