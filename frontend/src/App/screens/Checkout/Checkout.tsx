@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useState } from 'react'
 import { VStack, Box } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
@@ -65,6 +66,11 @@ export const Checkout: React.FC<CheckoutProps> = () => {
 
   return (
     <>
+      <Head>
+        <title>My Ecommerce | Checkout</title>
+        <meta name="description" content="Complete your purchase here." />
+        <meta name="keywords" content="checkout" />
+      </Head>
       {errorMessage && (
         <Box mb="1rem">
           <ErrorMessage message={errorMessage} />

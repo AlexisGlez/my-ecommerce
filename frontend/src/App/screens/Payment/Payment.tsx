@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useState, FormEvent } from 'react'
 import {
   Heading,
@@ -46,6 +47,11 @@ export const Payment: React.FC<PaymentProps> = () => {
       as="form"
       onSubmit={onFormCompleted}
     >
+      <Head>
+        <title>My Ecommerce | Payment</title>
+        <meta name="description" content="Select Payment Method" />
+        <meta name="keywords" content="payment" />
+      </Head>
       <CheckoutSteps page="payment" />
       <Heading as="h1" textAlign="start">
         Payment Method

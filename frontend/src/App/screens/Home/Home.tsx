@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import { InferGetStaticPropsType, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
@@ -38,6 +39,11 @@ export const Home: React.FC<HomeProps> = ({ productsResponse }) => {
 
   return (
     <Box flexDirection="column" alignItems="center" justifyContent="center">
+      <Head>
+        <title>My Ecommerce | {router.query.keyword ? 'Search' : 'Home'}</title>
+        <meta name="description" content="Find the best products." />
+        <meta name="keywords" content="electronics" />
+      </Head>
       {!router.query.keyword && <ProductCarousel />}
       <StateMachineContent state={state} error={error}>
         <Heading my="1rem" textAlign="start">

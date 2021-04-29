@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useCallback } from 'react'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { Image, Grid, VStack, GridItem } from '@chakra-ui/react'
@@ -39,43 +40,50 @@ export const Product: React.FC<ProductProps> = ({ productResponse }) => {
   )
 
   return (
-    <StateMachineContent state={state} error={error}>
-      <VStack alignItems="flex-start">
-        <GoBack />
-        <Grid mt="1rem" templateColumns={{ md: 'repeat(1, 1fr)', lg: 'repeat(12, 1fr)' }} gap={6}>
-          <GridItem colSpan={{ md: 1, lg: 6 }}>
-            <Image width="100%" src={product.image} alt={product.description} />
-          </GridItem>
-          <GridItem colSpan={{ md: 1, lg: 3 }}>
-            <ProductInformation
-              name={product.name}
-              description={product.description}
-              price={product.price}
-              rating={product.rating}
-              totalReviews={product.numReviews}
-              divider={stackDivider}
-            />
-          </GridItem>
-          <GridItem colSpan={{ md: 1, lg: 3 }}>
-            <AddToCartTable
-              price={product.price}
-              countInStock={product.countInStock}
-              divider={stackDivider}
-              onAddToCart={onAddToCart}
-            />
-          </GridItem>
-        </Grid>
-        <Grid
-          mt="1rem"
-          templateColumns={{ md: 'repeat(1, 1fr)', lg: 'repeat(12, 1fr)' }}
-          width="100%"
-        >
-          <GridItem colSpan={{ md: 1, lg: 6 }}>
-            <Reviews productId={product._id} reviews={product.reviews} divider={stackDivider} />
-          </GridItem>
-        </Grid>
-      </VStack>
-    </StateMachineContent>
+    <>
+      <Head>
+        <title>My Ecommerce | {product ? product.name : 'Product'}</title>
+        <meta name="description" content={product ? product.description : 'Product description'} />
+        <meta name="keywords" content="product" />
+      </Head>
+      <StateMachineContent state={state} error={error}>
+        <VStack alignItems="flex-start">
+          <GoBack />
+          <Grid mt="1rem" templateColumns={{ md: 'repeat(1, 1fr)', lg: 'repeat(12, 1fr)' }} gap={6}>
+            <GridItem colSpan={{ md: 1, lg: 6 }}>
+              <Image width="100%" src={product.image} alt={product.description} />
+            </GridItem>
+            <GridItem colSpan={{ md: 1, lg: 3 }}>
+              <ProductInformation
+                name={product.name}
+                description={product.description}
+                price={product.price}
+                rating={product.rating}
+                totalReviews={product.numReviews}
+                divider={stackDivider}
+              />
+            </GridItem>
+            <GridItem colSpan={{ md: 1, lg: 3 }}>
+              <AddToCartTable
+                price={product.price}
+                countInStock={product.countInStock}
+                divider={stackDivider}
+                onAddToCart={onAddToCart}
+              />
+            </GridItem>
+          </Grid>
+          <Grid
+            mt="1rem"
+            templateColumns={{ md: 'repeat(1, 1fr)', lg: 'repeat(12, 1fr)' }}
+            width="100%"
+          >
+            <GridItem colSpan={{ md: 1, lg: 6 }}>
+              <Reviews productId={product._id} reviews={product.reviews} divider={stackDivider} />
+            </GridItem>
+          </Grid>
+        </VStack>
+      </StateMachineContent>
+    </>
   )
 }
 

@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useState, FormEvent, Dispatch, SetStateAction } from 'react'
 import { Heading, VStack, Button, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
@@ -117,6 +118,11 @@ export const UserForm: React.FC<UserFormProps> = ({
       as="form"
       onSubmit={onFormCompleted}
     >
+      <Head>
+        <title>My Ecommerce | {title}</title>
+        <meta name="description" content="Your info..." />
+        <meta name="keywords" content="user" />
+      </Head>
       <Heading as="h1" textAlign="start">
         {title}
       </Heading>
