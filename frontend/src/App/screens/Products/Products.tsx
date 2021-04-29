@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useState } from 'react'
 import {
   Box,
@@ -84,6 +85,11 @@ export const Products: React.FC<ProductsProps> = () => {
 
   return (
     <>
+      <Head>
+        <title>My Ecommerce | Admin | Products</title>
+        <meta name="description" content="Admin products" />
+        <meta name="keywords" content="admin,products" />
+      </Head>
       {errorMessage && (
         <Box mb="1rem">{errorMessage && <ErrorMessage message={errorMessage} />}</Box>
       )}

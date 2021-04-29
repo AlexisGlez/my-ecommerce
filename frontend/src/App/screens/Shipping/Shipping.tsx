@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useState, FormEvent } from 'react'
 import { Heading, VStack, Button } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
@@ -77,6 +78,11 @@ export const Shipping: React.FC<ShippingProps> = () => {
       as="form"
       onSubmit={onFormCompleted}
     >
+      <Head>
+        <title>My Ecommerce | Shipping</title>
+        <meta name="description" content="Shipping Address" />
+        <meta name="keywords" content="shipping,address" />
+      </Head>
       <CheckoutSteps page="shipping" />
       <Heading as="h1" textAlign="start">
         Shipping Address

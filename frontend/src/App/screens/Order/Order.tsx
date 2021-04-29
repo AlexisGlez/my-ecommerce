@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import { Heading, Box } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
@@ -119,6 +120,11 @@ export const Order: React.FC<OrderProps> = () => {
 
   return (
     <>
+      <Head>
+        <title>My Ecommerce | Order Details</title>
+        <meta name="description" content="See your order details" />
+        <meta name="keywords" content="order,details" />
+      </Head>
       {errorMessage && (
         <Box mb="1rem">
           <ErrorMessage message={errorMessage} />

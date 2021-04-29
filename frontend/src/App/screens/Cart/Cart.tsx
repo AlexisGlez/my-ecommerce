@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { Grid, Flex, GridItem, Heading, Alert, AlertIcon } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
@@ -34,6 +35,11 @@ export const Cart: React.FC<CartProps> = () => {
 
   return (
     <>
+      <Head>
+        <title>My Ecommerce | Cart</title>
+        <meta name="description" content="Your cart" />
+        <meta name="keywords" content="cart" />
+      </Head>
       <Heading as="h1" textAlign="start">
         Shopping Cart
       </Heading>

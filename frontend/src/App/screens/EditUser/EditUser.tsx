@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useState, useEffect, FormEvent } from 'react'
 import { useRouter } from 'next/router'
 import { Heading, VStack, Button, Checkbox, Box, Alert, AlertIcon } from '@chakra-ui/react'
@@ -95,6 +96,11 @@ export const EditUser: React.FC<EditUserProps> = () => {
 
   return (
     <>
+      <Head>
+        <title>My Ecommerce | Admin | Edit User</title>
+        <meta name="description" content="Admin edit user" />
+        <meta name="keywords" content="admin,edit,user" />
+      </Head>
       {(errorMessage || updateSuccess) && (
         <Box mb="1rem">
           {errorMessage && <ErrorMessage message={errorMessage} />}
