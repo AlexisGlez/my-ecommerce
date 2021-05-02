@@ -3,6 +3,7 @@ import { proxy, useProxy } from 'valtio'
 import { Fetcher } from '@app-shared/Fetcher'
 import { Config } from '@app-shared/Config'
 import { Cookies } from '@app-shared/Cookies'
+import { checkNullResponse, check4xxErrors } from '@app-stores/utils'
 
 type UserState = {
   currentUser: User | null
@@ -59,18 +60,13 @@ export class UserStore {
         )
       }
 
-      if (!response) {
-        throw new Error('Null response received.')
-      }
+      checkNullResponse(response)
+      check4xxErrors(response)
 
-      if (response.status >= 400) {
-        throw new Error(response.message ?? 'empty error message received.')
-      }
-
-      state.currentUser = response.data
+      state.currentUser = response!.data
       Cookies.set(Cookies.User, state)
 
-      return { currentUser: response.data, state: 'success', error: null }
+      return { currentUser: response!.data, state: 'success', error: null }
     } catch (error) {
       state.currentUser = null
       Cookies.remove(Cookies.User)
@@ -87,15 +83,10 @@ export class UserStore {
         headers: { Authorization: `Bearer ${state.currentUser?.token}` },
       })
 
-      if (!response) {
-        throw new Error('Null response received.')
-      }
+      checkNullResponse(response)
+      check4xxErrors(response)
 
-      if (response.status >= 400) {
-        throw new Error(response.message ?? 'empty error message received.')
-      }
-
-      return { users: response.data, state: 'success', error: null }
+      return { users: response!.data, state: 'success', error: null }
     } catch (error) {
       console.error(`An error occurred while retrieving users:`, error)
       return { users: null, state: 'error', error: error.message }
@@ -110,15 +101,10 @@ export class UserStore {
         headers: { Authorization: `Bearer ${state.currentUser?.token}` },
       })
 
-      if (!response) {
-        throw new Error('Null response received.')
-      }
+      checkNullResponse(response)
+      check4xxErrors(response)
 
-      if (response.status >= 400) {
-        throw new Error(response.message ?? 'empty error message received.')
-      }
-
-      return { wasUserDeleted: response.data, state: 'success', error: null }
+      return { wasUserDeleted: response!.data, state: 'success', error: null }
     } catch (error) {
       console.error(`An error occurred while deleting user:`, error)
       return { wasUserDeleted: null, state: 'error', error: error.message }
@@ -131,15 +117,10 @@ export class UserStore {
         headers: { Authorization: `Bearer ${state.currentUser?.token}` },
       })
 
-      if (!response) {
-        throw new Error('Null response received.')
-      }
+      checkNullResponse(response)
+      check4xxErrors(response)
 
-      if (response.status >= 400) {
-        throw new Error(response.message ?? 'empty error message received.')
-      }
-
-      return { user: response.data, state: 'success', error: null }
+      return { user: response!.data, state: 'success', error: null }
     } catch (error) {
       console.error(`An error occurred while getting user:`, error)
       return { user: null, state: 'error', error: error.message }
@@ -157,15 +138,10 @@ export class UserStore {
         headers: { Authorization: `Bearer ${state.currentUser?.token}` },
       })
 
-      if (!response) {
-        throw new Error('Null response received.')
-      }
+      checkNullResponse(response)
+      check4xxErrors(response)
 
-      if (response.status >= 400) {
-        throw new Error(response.message ?? 'empty error message received.')
-      }
-
-      return { user: response.data, state: 'success', error: null }
+      return { user: response!.data, state: 'success', error: null }
     } catch (error) {
       console.error(`An error occurred while updating user:`, error)
       return { user: null, state: 'error', error: error.message }
