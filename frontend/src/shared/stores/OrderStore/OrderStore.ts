@@ -3,6 +3,7 @@ import { proxy, useProxy } from 'valtio'
 import { Fetcher } from '@app-shared/Fetcher'
 import { Config } from '@app-shared/Config'
 import { CartState } from '@app-shared/stores/CartStore'
+import { checkNullResponse, check4xxErrors } from '@app-stores/utils'
 
 type OrdersState = {
   orders: Array<Order>
@@ -51,15 +52,10 @@ export class OrderStore {
         headers: { Authorization: `Bearer ${currentUser.token}` },
       })
 
-      if (!response) {
-        throw new Error('Null response received.')
-      }
+      checkNullResponse(response)
+      check4xxErrors(response)
 
-      if (response.status >= 400) {
-        throw new Error(response.message ?? 'empty error message received.')
-      }
-
-      return { order: response.data, state: 'success', error: null }
+      return { order: response!.data, state: 'success', error: null }
     } catch (error) {
       console.error(`An error occurred while creating the order:`, error)
 
@@ -76,15 +72,10 @@ export class OrderStore {
         headers: { Authorization: `Bearer ${currentUser.token}` },
       })
 
-      if (!response) {
-        throw new Error('Null response received.')
-      }
+      checkNullResponse(response)
+      check4xxErrors(response)
 
-      if (response.status >= 400) {
-        throw new Error(response.message ?? 'empty error message received.')
-      }
-
-      return { order: response.data, state: 'success', error: null }
+      return { order: response!.data, state: 'success', error: null }
     } catch (error) {
       console.error(`An error occurred while getting order by id:`, error)
 
@@ -103,15 +94,10 @@ export class OrderStore {
         headers: { Authorization: `Bearer ${currentUser.token}` },
       })
 
-      if (!response) {
-        throw new Error('Null response received.')
-      }
+      checkNullResponse(response)
+      check4xxErrors(response)
 
-      if (response.status >= 400) {
-        throw new Error(response.message ?? 'empty error message received.')
-      }
-
-      return { order: response.data, state: 'success', error: null }
+      return { order: response!.data, state: 'success', error: null }
     } catch (error) {
       console.error(`An error occurred while paying order:`, error)
 
@@ -123,11 +109,10 @@ export class OrderStore {
     try {
       let response = await Fetcher.get<string>(Config.Endpoints.paypalId())
 
-      if (!response) {
-        throw new Error('Null response received.')
-      }
+      checkNullResponse(response)
+      check4xxErrors(response)
 
-      return { paypalId: response.data, state: 'success', error: null }
+      return { paypalId: response!.data, state: 'success', error: null }
     } catch (error) {
       console.error(`An error occurred while getting paypal id:`, error)
 
@@ -143,15 +128,10 @@ export class OrderStore {
         headers: { Authorization: `Bearer ${currentUser.token}` },
       })
 
-      if (!response) {
-        throw new Error('Null response received.')
-      }
+      checkNullResponse(response)
+      check4xxErrors(response)
 
-      if (response.status >= 400) {
-        throw new Error(response.message ?? 'empty error message received.')
-      }
-
-      return { orders: response.data, state: 'success', error: null }
+      return { orders: response!.data, state: 'success', error: null }
     } catch (error) {
       console.error(`An error occurred while getting user orders:`, error)
 
@@ -167,15 +147,10 @@ export class OrderStore {
         headers: { Authorization: `Bearer ${currentUser.token}` },
       })
 
-      if (!response) {
-        throw new Error('Null response received.')
-      }
+      checkNullResponse(response)
+      check4xxErrors(response)
 
-      if (response.status >= 400) {
-        throw new Error(response.message ?? 'empty error message received.')
-      }
-
-      return { orders: response.data, state: 'success', error: null }
+      return { orders: response!.data, state: 'success', error: null }
     } catch (error) {
       console.error(`An error occurred while getting user orders:`, error)
 
@@ -192,15 +167,10 @@ export class OrderStore {
         headers: { Authorization: `Bearer ${currentUser.token}` },
       })
 
-      if (!response) {
-        throw new Error('Null response received.')
-      }
+      checkNullResponse(response)
+      check4xxErrors(response)
 
-      if (response.status >= 400) {
-        throw new Error(response.message ?? 'empty error message received.')
-      }
-
-      return { order: response.data, state: 'success', error: null }
+      return { order: response!.data, state: 'success', error: null }
     } catch (error) {
       console.error(`An error occurred while delivering order:`, error)
 

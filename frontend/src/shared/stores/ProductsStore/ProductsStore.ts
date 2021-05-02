@@ -1,5 +1,6 @@
 import { Fetcher } from '@app-shared/Fetcher'
 import { Config } from '@app-shared/Config'
+import { checkNullResponse, check4xxErrors } from '@app-stores/utils'
 
 export class ProductsStore {
   public static async createProduct(
@@ -10,15 +11,10 @@ export class ProductsStore {
         headers: { Authorization: `Bearer ${currentUser.token}` },
       })
 
-      if (!response) {
-        throw new Error('Null response received.')
-      }
+      checkNullResponse(response)
+      check4xxErrors(response)
 
-      if (response.status >= 400) {
-        throw new Error(response.message ?? 'empty error message received.')
-      }
-
-      return { product: response.data, state: 'success', error: null }
+      return { product: response!.data, state: 'success', error: null }
     } catch (error) {
       console.error(`An error occurred while creating product:`, error)
       return { product: null, state: 'error', error: error.message }
@@ -34,15 +30,10 @@ export class ProductsStore {
         headers: { Authorization: `Bearer ${currentUser.token}` },
       })
 
-      if (!response) {
-        throw new Error('Null response received.')
-      }
+      checkNullResponse(response)
+      check4xxErrors(response)
 
-      if (response.status >= 400) {
-        throw new Error(response.message ?? 'empty error message received.')
-      }
-
-      return { wasProductDeleted: response.data, state: 'success', error: null }
+      return { wasProductDeleted: response!.data, state: 'success', error: null }
     } catch (error) {
       console.error(`An error occurred while deleting product:`, error)
       return { wasProductDeleted: null, state: 'error', error: error.message }
@@ -66,15 +57,10 @@ export class ProductsStore {
         headers: { Authorization: `Bearer ${currentUser.token}` },
       })
 
-      if (!response) {
-        throw new Error('Null response received.')
-      }
+      checkNullResponse(response)
+      check4xxErrors(response)
 
-      if (response.status >= 400) {
-        throw new Error(response.message ?? 'empty error message received.')
-      }
-
-      return { product: response.data, state: 'success', error: null }
+      return { product: response!.data, state: 'success', error: null }
     } catch (error) {
       console.error(`An error occurred while updating product:`, error)
       return { product: null, state: 'error', error: error.message }
@@ -90,15 +76,10 @@ export class ProductsStore {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
 
-      if (!response) {
-        throw new Error('Null response received.')
-      }
+      checkNullResponse(response)
+      check4xxErrors(response)
 
-      if (response.status >= 400) {
-        throw new Error(response.message ?? 'File type not supported.')
-      }
-
-      return { image: response.data, state: 'success', error: null }
+      return { image: response!.data, state: 'success', error: null }
     } catch (error) {
       console.error(`An error occurred while uploading product image:`, error)
       return { image: null, state: 'error', error: 'File type not supported.' }
@@ -119,15 +100,10 @@ export class ProductsStore {
         },
       )
 
-      if (!response) {
-        throw new Error('Null response received.')
-      }
+      checkNullResponse(response)
+      check4xxErrors(response)
 
-      if (response.status >= 400) {
-        throw new Error(response.message ?? 'empty error message received.')
-      }
-
-      return { product: response.data, state: 'success', error: null }
+      return { product: response!.data, state: 'success', error: null }
     } catch (error) {
       console.error(`An error occurred while creating product review:`, error)
       return { product: null, state: 'error', error: error.message }
