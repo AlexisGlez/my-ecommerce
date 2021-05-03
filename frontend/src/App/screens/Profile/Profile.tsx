@@ -85,8 +85,8 @@ export const Profile: React.FC<ProfileProps> = () => {
           )}
         </Box>
       )}
-      <Grid templateColumns="repeat(12, 1fr)" gap={1}>
-        <GridItem colSpan={3}>
+      <Grid templateColumns={{ base: 'repeat(1, 1fr)', lg: 'repeat(12, 1fr)' }} gap={1}>
+        <GridItem colSpan={{ base: 1, lg: 3 }}>
           {currentUser && (
             <UserForm
               type="profile"
@@ -97,8 +97,15 @@ export const Profile: React.FC<ProfileProps> = () => {
             />
           )}
         </GridItem>
-        <GridItem colSpan={9} paddingLeft="1rem">
-          <Heading as="h1" mb="1rem">
+        <GridItem
+          colSpan={{ base: 1, lg: 9 }}
+          paddingTop={{ base: '1rem', lg: 0 }}
+          paddingLeft={{ base: 0, lg: '1rem' }}
+          maxWidth={{ base: '500px', lg: '100%' }}
+          margin={{ base: 0, sm: '0 auto' }}
+          overflow="scroll"
+        >
+          <Heading textAlign={{ base: 'start', lg: 'center' }} as="h1" mb="1rem">
             My Orders
           </Heading>
           <UserOrders

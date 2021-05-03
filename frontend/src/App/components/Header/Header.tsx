@@ -12,9 +12,12 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Box,
+  useDisclosure,
+  Slide,
 } from '@chakra-ui/react'
 import { useViewportScroll } from 'framer-motion'
-import { FaMoon, FaSun, FaShoppingCart, FaUser, FaChevronDown } from 'react-icons/fa'
+import { FaMoon, FaSun, FaShoppingCart, FaUser, FaChevronDown, FaBars } from 'react-icons/fa'
 
 import { Config } from '@app-shared/Config'
 import { Link } from '@app-shared/components/Link'
@@ -41,6 +44,64 @@ export const Header: React.FC<HeaderProps> = () => {
   const [isMounted, setIsMounted] = useState(false)
   useEffect(() => setIsMounted(true), [setIsMounted])
 
+  const { isOpen, onToggle } = useDisclosure()
+
+  const navItems = (
+    <>
+      <Link href={Config.Routes.cart()}>
+        <Icon as={FaShoppingCart} mr="0.5rem" /> Cart
+      </Link>
+      {isMounted && currentUser ? (
+        <Menu>
+          <MenuButton as={Button} ml="1rem" rightIcon={<FaChevronDown />}>
+            {currentUser.name}
+          </MenuButton>
+          <MenuList>
+            <MenuItem>
+              <Link href={Config.Routes.profile()} width="100%">
+                Profile
+              </Link>
+            </MenuItem>
+            {currentUser.isAdmin && (
+              <>
+                <MenuItem>
+                  <Link href={Config.Routes.users()} width="100%">
+                    All Users
+                  </Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link href={Config.Routes.products()} width="100%">
+                    All Products
+                  </Link>
+                </MenuItem>
+                <MenuItem>
+                  <Link href={Config.Routes.orders()} width="100%">
+                    All Orders
+                  </Link>
+                </MenuItem>
+              </>
+            )}
+            <MenuItem onClick={UserStore.logout}>Logout</MenuItem>
+          </MenuList>
+        </Menu>
+      ) : (
+        <Link href={Config.Routes.login()} ml="1rem">
+          <Icon as={FaUser} mr="0.5rem" /> Sign In
+        </Link>
+      )}
+      <IconButton
+        size="md"
+        fontSize="lg"
+        aria-label={`Switch to ${colorMode} mode`}
+        variant="ghost"
+        color="current"
+        ml={{ base: '0', md: '3' }}
+        onClick={toggleColorMode}
+        icon={<SwitchIcon />}
+      />
+    </>
+  )
+
   return (
     <chakra.header
       ref={ref}
@@ -64,61 +125,38 @@ export const Header: React.FC<HeaderProps> = () => {
           >
             My-Ecommerce
           </Link>
-          <Search />
+          <Box display={{ base: 'none', md: 'block' }}>
+            <Search />
+          </Box>
           <Spacer />
-          <Flex alignItems="center">
-            <Link href={Config.Routes.cart()}>
-              <Icon as={FaShoppingCart} mr="0.5rem" /> Cart
-            </Link>
-            {isMounted && currentUser ? (
-              <Menu>
-                <MenuButton as={Button} ml="1rem" rightIcon={<FaChevronDown />}>
-                  {currentUser.name}
-                </MenuButton>
-                <MenuList>
-                  <MenuItem>
-                    <Link href={Config.Routes.profile()} width="100%">
-                      Profile
-                    </Link>
-                  </MenuItem>
-                  {currentUser.isAdmin && (
-                    <>
-                      <MenuItem>
-                        <Link href={Config.Routes.users()} width="100%">
-                          All Users
-                        </Link>
-                      </MenuItem>
-                      <MenuItem>
-                        <Link href={Config.Routes.products()} width="100%">
-                          All Products
-                        </Link>
-                      </MenuItem>
-                      <MenuItem>
-                        <Link href={Config.Routes.orders()} width="100%">
-                          All Orders
-                        </Link>
-                      </MenuItem>
-                    </>
-                  )}
-                  <MenuItem onClick={UserStore.logout}>Logout</MenuItem>
-                </MenuList>
-              </Menu>
-            ) : (
-              <Link href={Config.Routes.login()} ml="1rem">
-                <Icon as={FaUser} mr="0.5rem" /> Sign In
-              </Link>
-            )}
+          <Flex display={{ base: 'none', md: 'flex' }} alignItems="center">
+            {navItems}
+          </Flex>
+          <Box display={{ base: 'block', md: 'none' }}>
             <IconButton
               size="md"
               fontSize="lg"
-              aria-label={`Switch to ${colorMode} mode`}
+              aria-label="Open nav options"
               variant="ghost"
               color="current"
               ml={{ base: '0', md: '3' }}
-              onClick={toggleColorMode}
-              icon={<SwitchIcon />}
+              onClick={onToggle}
+              icon={<FaBars />}
             />
-          </Flex>
+            <Slide direction="right" in={isOpen} style={{ zIndex: 100, marginTop: '5rem' }}>
+              <Box p="1rem" height="100%" bg={bg} shadow="md">
+                <Flex
+                  flexDirection="column"
+                  alignItems="center"
+                  justifyContent="space-between"
+                  minHeight="35%"
+                >
+                  <Search />
+                  {navItems}
+                </Flex>
+              </Box>
+            </Slide>
+          </Box>
         </Flex>
       </chakra.nav>
     </chakra.header>

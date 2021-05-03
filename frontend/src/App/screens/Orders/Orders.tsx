@@ -78,71 +78,73 @@ export const Orders: React.FC<OrdersProps> = () => {
       {isLoading ? (
         <Spinner />
       ) : (
-        <Table variant="simple">
-          <TableCaption>Orders</TableCaption>
-          <Thead>
-            <Tr>
-              <Th textAlign="center">Id</Th>
-              <Th textAlign="center">User</Th>
-              <Th textAlign="center">Date</Th>
-              <Th textAlign="center">Total</Th>
-              <Th textAlign="center">Paid</Th>
-              <Th textAlign="center">Delivered</Th>
-              <Th textAlign="center">Actions</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {orders.map((order) => (
-              <Tr key={order._id}>
-                <Td textAlign="center" paddingX="1rem">
-                  {order._id}
-                </Td>
-                <Td textAlign="center" paddingX="1rem">
-                  {order.user.name}
-                </Td>
-                <Td textAlign="center" paddingX="1rem">
-                  {formatDate(order.createdAt)}
-                </Td>
-                <Td textAlign="center" paddingX="1rem">
-                  {formatNumber(order.totalPrice)}
-                </Td>
-                <Td textAlign="center" paddingX="1rem">
-                  {order.isPaid ? formatDate(order.paidAt) : <Icon as={FaTimes} fill="red.500" />}
-                </Td>
-                <Td textAlign="center" paddingX="1rem">
-                  {order.isDelivered ? (
-                    formatDate(order.deliveredAt)
-                  ) : (
-                    <Icon as={FaTimes} fill="red.500" />
-                  )}
-                </Td>
-                <Td textAlign="center" paddingX="1rem">
-                  <Flex alignItems="center" justifyContent="center">
-                    <Link
-                      href={Config.Routes.order(order._id)}
-                      role="button"
-                      justifyContent="center"
-                      fontSize="1.5rem"
-                    >
-                      <Icon as={FaEdit} fill="teal.500" />
-                    </Link>
-                  </Flex>
-                </Td>
+        <Box maxWidth="100%" overflow="scroll">
+          <Table variant="simple">
+            <TableCaption>Orders</TableCaption>
+            <Thead>
+              <Tr>
+                <Th textAlign="center">Id</Th>
+                <Th textAlign="center">User</Th>
+                <Th textAlign="center">Date</Th>
+                <Th textAlign="center">Total</Th>
+                <Th textAlign="center">Paid</Th>
+                <Th textAlign="center">Delivered</Th>
+                <Th textAlign="center">Actions</Th>
               </Tr>
-            ))}
-          </Tbody>
-          <Tfoot>
-            <Tr>
-              <Th textAlign="center">Id</Th>
-              <Th textAlign="center">User</Th>
-              <Th textAlign="center">Date</Th>
-              <Th textAlign="center">Total</Th>
-              <Th textAlign="center">Paid</Th>
-              <Th textAlign="center">Delivered</Th>
-              <Th textAlign="center">Actions</Th>
-            </Tr>
-          </Tfoot>
-        </Table>
+            </Thead>
+            <Tbody>
+              {orders.map((order) => (
+                <Tr key={order._id}>
+                  <Td textAlign="center" paddingX="1rem">
+                    {order._id}
+                  </Td>
+                  <Td textAlign="center" paddingX="1rem">
+                    {order.user.name}
+                  </Td>
+                  <Td textAlign="center" paddingX="1rem">
+                    {formatDate(order.createdAt)}
+                  </Td>
+                  <Td textAlign="center" paddingX="1rem">
+                    {formatNumber(order.totalPrice)}
+                  </Td>
+                  <Td textAlign="center" paddingX="1rem">
+                    {order.isPaid ? formatDate(order.paidAt) : <Icon as={FaTimes} fill="red.500" />}
+                  </Td>
+                  <Td textAlign="center" paddingX="1rem">
+                    {order.isDelivered ? (
+                      formatDate(order.deliveredAt)
+                    ) : (
+                      <Icon as={FaTimes} fill="red.500" />
+                    )}
+                  </Td>
+                  <Td textAlign="center" paddingX="1rem">
+                    <Flex alignItems="center" justifyContent="center">
+                      <Link
+                        href={Config.Routes.order(order._id)}
+                        role="button"
+                        justifyContent="center"
+                        fontSize="1.5rem"
+                      >
+                        <Icon as={FaEdit} fill="teal.500" />
+                      </Link>
+                    </Flex>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+            <Tfoot>
+              <Tr>
+                <Th textAlign="center">Id</Th>
+                <Th textAlign="center">User</Th>
+                <Th textAlign="center">Date</Th>
+                <Th textAlign="center">Total</Th>
+                <Th textAlign="center">Paid</Th>
+                <Th textAlign="center">Delivered</Th>
+                <Th textAlign="center">Actions</Th>
+              </Tr>
+            </Tfoot>
+          </Table>
+        </Box>
       )}
     </>
   )

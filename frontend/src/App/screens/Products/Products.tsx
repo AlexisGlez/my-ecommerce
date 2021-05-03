@@ -96,7 +96,7 @@ export const Products: React.FC<ProductsProps> = () => {
       <Heading as="h1" mb="1rem">
         Products
       </Heading>
-      <Flex justifyContent="flex-end" mb="1rem">
+      <Flex justifyContent={{ base: 'center', lg: 'flex-end' }} mb="1rem">
         <Button textTransform="uppercase" onClick={onCreateProduct}>
           <Icon as={FaPlus} mr="0.5rem" /> Create Product
         </Button>
@@ -104,74 +104,76 @@ export const Products: React.FC<ProductsProps> = () => {
       {state === 'loading' || isCreatingProduct ? (
         <Spinner />
       ) : (
-        <Table variant="simple">
-          <TableCaption>Products</TableCaption>
-          <Thead>
-            <Tr>
-              <Th textAlign="center">Id</Th>
-              <Th textAlign="center">Name</Th>
-              <Th textAlign="center">Price</Th>
-              <Th textAlign="center">Category</Th>
-              <Th textAlign="center">Brand</Th>
-              <Th textAlign="center">Actions</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {products.map((product) => (
-              <Tr key={product._id}>
-                <Td textAlign="center" paddingX="1rem">
-                  {product._id}
-                </Td>
-                <Td textAlign="center" paddingX="1rem">
-                  {product.name}
-                </Td>
-                <Td textAlign="center" paddingX="1rem">
-                  {formatNumber(product.price)}
-                </Td>
-                <Td textAlign="center" paddingX="1rem">
-                  {product.category}
-                </Td>
-                <Td textAlign="center" paddingX="1rem">
-                  {product.brand}
-                </Td>
-                <Td textAlign="center" paddingX="1rem">
-                  <Flex alignItems="center" justifyContent="center">
-                    <Link
-                      href={Config.Routes.editProduct(product._id)}
-                      role="button"
-                      justifyContent="center"
-                      fontSize="1.5rem"
-                    >
-                      <Icon as={FaEdit} fill="teal.500" />
-                    </Link>
-                    <IconButton
-                      aria-label="Delete user"
-                      colorScheme="red"
-                      size="xs"
-                      marginLeft="1rem"
-                      variant="outline"
-                      isLoading={isDeletingProduct}
-                      onClick={() => {
-                        deleteProduct(product._id)
-                      }}
-                      icon={<FaTrash />}
-                    />
-                  </Flex>
-                </Td>
+        <Box maxWidth="100%" overflow="scroll">
+          <Table variant="simple">
+            <TableCaption>Products</TableCaption>
+            <Thead>
+              <Tr>
+                <Th textAlign="center">Id</Th>
+                <Th textAlign="center">Name</Th>
+                <Th textAlign="center">Price</Th>
+                <Th textAlign="center">Category</Th>
+                <Th textAlign="center">Brand</Th>
+                <Th textAlign="center">Actions</Th>
               </Tr>
-            ))}
-          </Tbody>
-          <Tfoot>
-            <Tr>
-              <Th textAlign="center">Id</Th>
-              <Th textAlign="center">Name</Th>
-              <Th textAlign="center">Price</Th>
-              <Th textAlign="center">Category</Th>
-              <Th textAlign="center">Brand</Th>
-              <Th textAlign="center">Actions</Th>
-            </Tr>
-          </Tfoot>
-        </Table>
+            </Thead>
+            <Tbody>
+              {products.map((product) => (
+                <Tr key={product._id}>
+                  <Td textAlign="center" paddingX="1rem">
+                    {product._id}
+                  </Td>
+                  <Td textAlign="center" paddingX="1rem">
+                    {product.name}
+                  </Td>
+                  <Td textAlign="center" paddingX="1rem">
+                    {formatNumber(product.price)}
+                  </Td>
+                  <Td textAlign="center" paddingX="1rem">
+                    {product.category}
+                  </Td>
+                  <Td textAlign="center" paddingX="1rem">
+                    {product.brand}
+                  </Td>
+                  <Td textAlign="center" paddingX="1rem">
+                    <Flex alignItems="center" justifyContent="center">
+                      <Link
+                        href={Config.Routes.editProduct(product._id)}
+                        role="button"
+                        justifyContent="center"
+                        fontSize="1.5rem"
+                      >
+                        <Icon as={FaEdit} fill="teal.500" />
+                      </Link>
+                      <IconButton
+                        aria-label="Delete user"
+                        colorScheme="red"
+                        size="xs"
+                        marginLeft="1rem"
+                        variant="outline"
+                        isLoading={isDeletingProduct}
+                        onClick={() => {
+                          deleteProduct(product._id)
+                        }}
+                        icon={<FaTrash />}
+                      />
+                    </Flex>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+            <Tfoot>
+              <Tr>
+                <Th textAlign="center">Id</Th>
+                <Th textAlign="center">Name</Th>
+                <Th textAlign="center">Price</Th>
+                <Th textAlign="center">Category</Th>
+                <Th textAlign="center">Brand</Th>
+                <Th textAlign="center">Actions</Th>
+              </Tr>
+            </Tfoot>
+          </Table>
+        </Box>
       )}
     </>
   )

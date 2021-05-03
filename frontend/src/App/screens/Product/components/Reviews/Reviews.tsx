@@ -102,11 +102,11 @@ export const Reviews: React.FC<ReviewsProps> = ({ productId, reviews, divider })
       {isMounted && !currentUser && (
         <Alert status="info">
           <AlertIcon />
-          Please{' '}
+          Please&nbsp;
           <Link href={Config.Routes.login()} justifyContent="center" textDecoration="underline">
             sign in
-          </Link>{' '}
-          to write a review.
+          </Link>
+          &nbsp; to write a review.
         </Alert>
       )}
       {isMounted && currentUser && (
