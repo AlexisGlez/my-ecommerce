@@ -15,7 +15,7 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = () => {
 
   return (
     <StateMachineContent state={state} error={error}>
-      <Box mt="7rem" backgroundColor="#1A202C" padding="1rem">
+      <Box mt="7rem" backgroundColor="#1A202C" padding="1rem" position="relative" zIndex="0">
         <Carousel showArrows autoPlay infiniteLoop showThumbs={false}>
           {products.map((product) => (
             <Link key={product._id} href={Config.Routes.product(product._id)} display="block">
