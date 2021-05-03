@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "heroku-prebuild": "cd backend && yarn",
-    "heroku-postbuild": "cd backend && yarn build:prod",
+    "heroku-postbuild": "cd backend",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

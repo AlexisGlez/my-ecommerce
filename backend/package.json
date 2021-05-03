@@ -7,7 +7,7 @@
     "dev": "nodemon",
     "start": "NODE_ENV=production node -r tsconfig-paths/register -r ts-node/register build/server.js",
     "build:dev": "tsc --project ./",
-    "build:prod": "tsc",
+    "build:prod": "tsc --project ./tsconfig.prod.json",
     "db:fill": "yarn build && NODE_ENV=development node -r tsconfig-paths/register -r ts-node/register build/scripts/dbSeeder.js",
     "db:empty": "yarn build && NODE_ENV=development node -r tsconfig-paths/register -r ts-node/register build/scripts/dbSeeder.js -e",
     "test": "echo \"Error: no test specified\" && exit 1"

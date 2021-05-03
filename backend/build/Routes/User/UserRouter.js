@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserRouter = void 0;
+const express_1 = __importDefault(require("express"));
+const User_1 = require("@app-controllers/User");
+const auth_1 = require("@app-middlewares/auth");
+const admin_1 = require("@app-middlewares/admin");
+const UserRouter = express_1.default.Router();
+exports.UserRouter = UserRouter;
+UserRouter.route('/').post(User_1.UserController.createUser);
+UserRouter.route('/').get(auth_1.authMiddleware, admin_1.adminMiddleware, User_1.UserController.getUsers);
+UserRouter.route('/login').post(User_1.UserController.authUser);
+UserRouter.route('/profile').get(auth_1.authMiddleware, User_1.UserController.getUserProfile);
+UserRouter.route('/profile').patch(auth_1.authMiddleware, User_1.UserController.updateUserProfile);
+UserRouter.route('/:id').get(auth_1.authMiddleware, admin_1.adminMiddleware, User_1.UserController.getUserById);
+UserRouter.route('/:id').patch(auth_1.authMiddleware, admin_1.adminMiddleware, User_1.UserController.updateUserById);
+UserRouter.route('/:id').delete(auth_1.authMiddleware, admin_1.adminMiddleware, User_1.UserController.deleteUser);
