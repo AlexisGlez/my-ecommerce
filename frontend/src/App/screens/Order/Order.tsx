@@ -9,6 +9,7 @@ import { ErrorMessage } from '@app-shared/components/ErrorMessage'
 import { Config } from '@app-shared/Config'
 import { UserStore } from '@app-shared/stores/UserStore'
 import { OrderStore } from '@app-shared/stores/OrderStore'
+import { CartStore } from '@app-src/shared/stores/CartStore'
 
 interface OrderProps {}
 
@@ -93,6 +94,7 @@ export const Order: React.FC<OrderProps> = () => {
       )
     } else {
       setOrderDetails(response.order)
+      CartStore.removeItemsFromCart()
     }
 
     setLoading(false)

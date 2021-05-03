@@ -3,6 +3,7 @@ import { proxy, useProxy } from 'valtio'
 import { Fetcher } from '@app-shared/Fetcher'
 import { Config } from '@app-shared/Config'
 import { Cookies } from '@app-shared/Cookies'
+import { CartStore } from '@app-stores/CartStore'
 import { checkNullResponse, check4xxErrors } from '@app-stores/utils'
 
 type UserState = {
@@ -24,6 +25,7 @@ export class UserStore {
   }
 
   public static logout() {
+    CartStore.removeItemsFromCart()
     Cookies.remove(Cookies.User)
     state.currentUser = null
   }

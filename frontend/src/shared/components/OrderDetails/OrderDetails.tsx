@@ -183,7 +183,7 @@ export const OrderDetails: React.FC<OrderDetailsProps> = ({
                     onClick={deliverOrderButton.onClick}
                     isLoading={deliverOrderButton.isLoading}
                   >
-                    Mark as Deliver
+                    Mark as Delivered
                   </Button>
                 }
               />

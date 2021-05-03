@@ -46,6 +46,12 @@ export class CartStore {
     Cookies.set(Cookies.Cart, state)
   }
 
+  public static removeItemsFromCart() {
+    state.items = {}
+
+    Cookies.set(Cookies.Cart, state)
+  }
+
   public static saveShippingAddress(
     address: string,
     city: string,
