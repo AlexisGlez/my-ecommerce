@@ -37,5 +37,13 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.6"
+  },
+  "_moduleAliases": {
+    "@app-src": "src",
+    "@app-config": "src/Config",
+    "@app-models": "src/Models",
+    "@app-routes": "src/Routes",
+    "@app-controllers": "src/Controllers",
+    "@app-middlewares": "src/Middlewares"
   }
 }
