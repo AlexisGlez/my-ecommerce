@@ -1,0 +1,8 @@
+{
+  "name": "my-ecommerce",
+  "short_name": "my-ecommerce",
+  "start_url": "/",
+  "theme_color": "#222",
+  "background_color": "#222",
+  "display": "standalone"
+}

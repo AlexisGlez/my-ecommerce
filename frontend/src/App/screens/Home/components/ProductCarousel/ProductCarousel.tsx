@@ -29,6 +29,7 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = () => {
                   width={{ base: '280px !important', md: '300px !important' }}
                   height={{ base: '280px !important', md: '300px !important' }}
                   borderRadius="50%"
+                  objectFit="cover"
                 />
               </Box>
             </Link>
