@@ -4,7 +4,8 @@
   "description": "My Ecommerce",
   "main": "index.js",
   "scripts": {
-    "heroku-prebuild": "cd backend && yarn && yarn build:prod",
+    "heroku-prebuild": "cd backend && yarn",
+    "heroku-postinstall": "cd backend && yarn build:prod",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
