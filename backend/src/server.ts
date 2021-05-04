@@ -4,7 +4,7 @@ import cors from 'cors'
 import morgan from 'morgan'
 
 import { Config } from '@app-config/Config'
-import { ProductRouter } from '@app-routes/Product/index'
+import { ProductRouter } from '@app-routes/Product/ProductRouter'
 import { UserRouter } from '@app-routes/User'
 import { OrderRouter } from '@app-routes/Order'
 import { ConfigRouter } from '@app-routes/Config'
