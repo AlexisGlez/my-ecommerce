@@ -1,0 +1,27 @@
+{
+  "presets": [
+    "@babel/preset-typescript",
+    ["@babel/preset-env", {
+      "targets": {
+        "node": true
+      }
+    }]
+  ],
+  "plugins": [
+    ["module-resolver", {
+      "root": ["./"],
+      "alias": {
+        "@mynamespace": "./src",
+        "@app-src": "./src",
+        "@app-config": "./src/Config",
+        "@app-models": "./src/Models",
+        "@app-routes": "./src/Routes",
+        "@app-controllers": "./src/Controllers",
+        "@app-middlewares": "./src/Middlewares"
+      },
+      "extensions": [".js", ".ts"]
+    }],
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-object-rest-spread"   
+  ]
+}
