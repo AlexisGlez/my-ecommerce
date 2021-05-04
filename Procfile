@@ -1,1 +1,1 @@
-web: cd backend && yarn start
+web: node backend/build/server.js

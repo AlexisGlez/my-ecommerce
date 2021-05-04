@@ -2,9 +2,6 @@ import path from 'path'
 import express from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
-
-console.log(__dirname)
-
 import { Config } from '@app-config/Config'
 import { ProductRouter } from '@app-routes/Product'
 import { UserRouter } from '@app-routes/User'
