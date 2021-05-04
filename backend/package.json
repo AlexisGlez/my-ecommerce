@@ -5,7 +5,7 @@
   "main": "build/server.js",
   "scripts": {
     "dev": "nodemon",
-    "start": "NODE_ENV=production node -r tsconfig-paths/register -r ts-node/register build/server.js",
+    "start": "NODE_ENV=production node build/server.js",
     "build:dev": "tsc --project ./",
     "build:prod": "babel ./src --out-dir ./build --extensions '.ts,.js'",
     "db:fill": "yarn build && NODE_ENV=development node -r tsconfig-paths/register -r ts-node/register build/scripts/dbSeeder.js",
