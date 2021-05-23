@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import {
   chakra,
   Flex,
@@ -45,6 +46,19 @@ export const Header: React.FC<HeaderProps> = () => {
   useEffect(() => setIsMounted(true), [setIsMounted])
 
   const { isOpen, onToggle } = useDisclosure()
+
+  const router = useRouter()
+  useEffect(() => {
+    const routerChangeHandler = () => {
+      onToggle()
+    }
+
+    router.events.on('routeChangeComplete', routerChangeHandler)
+
+    return () => {
+      router.events.off('routeChangeComplete', routerChangeHandler)
+    }
+  }, [onToggle, router])
 
   const navItems = (
     <>
