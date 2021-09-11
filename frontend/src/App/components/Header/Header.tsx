@@ -45,12 +45,13 @@ export const Header: React.FC<HeaderProps> = () => {
   const [isMounted, setIsMounted] = useState(false)
   useEffect(() => setIsMounted(true), [setIsMounted])
 
-  const { isOpen, onToggle } = useDisclosure()
+  const { isOpen, onToggle, onClose } = useDisclosure()
 
   const router = useRouter()
+
   useEffect(() => {
     const routerChangeHandler = () => {
-      onToggle()
+      onClose()
     }
 
     router.events.on('routeChangeComplete', routerChangeHandler)
@@ -58,7 +59,7 @@ export const Header: React.FC<HeaderProps> = () => {
     return () => {
       router.events.off('routeChangeComplete', routerChangeHandler)
     }
-  }, [onToggle, router])
+  }, [router, onClose])
 
   const navItems = (
     <>
